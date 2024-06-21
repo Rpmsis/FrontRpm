@@ -1,0 +1,65 @@
+[
+  {
+    "name": "inicio",
+    "path": "/inicio",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\inicio.vue",
+    "chunkName": "pages/inicio",
+    "_name": "_74f9e757"
+  },
+  {
+    "name": "activos-activosFijos",
+    "path": "/activos/activosFijos",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\activos\\\\activosFijos.vue",
+    "chunkName": "pages/activos/activosFijos",
+    "_name": "_64883dae"
+  },
+  {
+    "name": "activos-insumos",
+    "path": "/activos/insumos",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\activos\\\\insumos.vue",
+    "chunkName": "pages/activos/insumos",
+    "_name": "_de6c314e"
+  },
+  {
+    "name": "activos-mantenimiento",
+    "path": "/activos/mantenimiento",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\activos\\\\mantenimiento.vue",
+    "chunkName": "pages/activos/mantenimiento",
+    "_name": "_4ea36e16"
+  },
+  {
+    "name": "preguntaSeg-formulario",
+    "path": "/preguntaSeg/formulario",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\preguntaSeg\\\\formulario.vue",
+    "chunkName": "pages/preguntaSeg/formulario",
+    "_name": "_4961270a"
+  },
+  {
+    "name": "preguntaSeg-mostrarPreg",
+    "path": "/preguntaSeg/mostrarPreg",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\preguntaSeg\\\\mostrarPreg.vue",
+    "chunkName": "pages/preguntaSeg/mostrarPreg",
+    "_name": "_76579c6a"
+  },
+  {
+    "name": "SGI-ejejmplo",
+    "path": "/SGI/ejejmplo",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\SGI\\\\ejejmplo.vue",
+    "chunkName": "pages/SGI/ejejmplo",
+    "_name": "_ffe58dba"
+  },
+  {
+    "name": "SGI-noconformidad",
+    "path": "/SGI/noconformidad",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\SGI\\\\noconformidad.vue",
+    "chunkName": "pages/SGI/noconformidad",
+    "_name": "_3b104d80"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\index.vue",
+    "chunkName": "pages/index",
+    "_name": "_3935de50"
+  }
+]
