@@ -4,10 +4,16 @@ import { normalizeURL, decode } from 'ufo'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
+const _e3df6410 = () => interopDefault(import('..\\pages\\ayuda.vue' /* webpackChunkName: "pages/ayuda" */))
 const _74f9e757 = () => interopDefault(import('..\\pages\\inicio.vue' /* webpackChunkName: "pages/inicio" */))
+const _024ce13a = () => interopDefault(import('..\\pages\\actividades\\actForaneas.vue' /* webpackChunkName: "pages/actividades/actForaneas" */))
 const _64883dae = () => interopDefault(import('..\\pages\\activos\\activosFijos.vue' /* webpackChunkName: "pages/activos/activosFijos" */))
 const _de6c314e = () => interopDefault(import('..\\pages\\activos\\insumos.vue' /* webpackChunkName: "pages/activos/insumos" */))
 const _4ea36e16 = () => interopDefault(import('..\\pages\\activos\\mantenimiento.vue' /* webpackChunkName: "pages/activos/mantenimiento" */))
+const _ec095468 = () => interopDefault(import('..\\pages\\activos\\mostActmantt.vue' /* webpackChunkName: "pages/activos/mostActmantt" */))
+const _13c93b66 = () => interopDefault(import('..\\pages\\activos\\mostmantt.vue' /* webpackChunkName: "pages/activos/mostmantt" */))
+const _35847f64 = () => interopDefault(import('..\\pages\\activos\\ubicacion.vue' /* webpackChunkName: "pages/activos/ubicacion" */))
+const _590682d1 = () => interopDefault(import('..\\pages\\consumibles\\consumible.vue' /* webpackChunkName: "pages/consumibles/consumible" */))
 const _4961270a = () => interopDefault(import('..\\pages\\preguntaSeg\\formulario.vue' /* webpackChunkName: "pages/preguntaSeg/formulario" */))
 const _76579c6a = () => interopDefault(import('..\\pages\\preguntaSeg\\mostrarPreg.vue' /* webpackChunkName: "pages/preguntaSeg/mostrarPreg" */))
 const _ffe58dba = () => interopDefault(import('..\\pages\\SGI\\ejejmplo.vue' /* webpackChunkName: "pages/SGI/ejejmplo" */))
@@ -26,9 +32,17 @@ export const routerOptions = {
   scrollBehavior,
 
   routes: [{
+    path: "/ayuda",
+    component: _e3df6410,
+    name: "ayuda"
+  }, {
     path: "/inicio",
     component: _74f9e757,
     name: "inicio"
+  }, {
+    path: "/actividades/actForaneas",
+    component: _024ce13a,
+    name: "actividades-actForaneas"
   }, {
     path: "/activos/activosFijos",
     component: _64883dae,
@@ -41,6 +55,22 @@ export const routerOptions = {
     path: "/activos/mantenimiento",
     component: _4ea36e16,
     name: "activos-mantenimiento"
+  }, {
+    path: "/activos/mostActmantt",
+    component: _ec095468,
+    name: "activos-mostActmantt"
+  }, {
+    path: "/activos/mostmantt",
+    component: _13c93b66,
+    name: "activos-mostmantt"
+  }, {
+    path: "/activos/ubicacion",
+    component: _35847f64,
+    name: "activos-ubicacion"
+  }, {
+    path: "/consumibles/consumible",
+    component: _590682d1,
+    name: "consumibles-consumible"
   }, {
     path: "/preguntaSeg/formulario",
     component: _4961270a,

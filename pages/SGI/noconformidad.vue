@@ -3,8 +3,7 @@
     <v-container>
       <v-layout row wrap>
         <v-flex xs12>
-          <br /><br /><br />
-          <v-card>
+          <v-card class="mt-7">
             <v-row>
               <v-col cols="12" md="8">
                 <div class="mt-6">
@@ -115,7 +114,6 @@
                 </div>
               </v-col>
             </v-row>
-
             <v-row>
               <v-col cols="12" md="2">
                 <v-radio-group v-model="opcionSeleccionada">
@@ -152,7 +150,6 @@
                 </v-form>
               </v-col>
             </v-row>
-
             <div>
               <v-form @submit.prevent="enviarfomulario" v-show="habilitarComentario2">
                 <hr />
@@ -246,7 +243,6 @@
               </template>
             </v-snackbar>
           </v-card>
-          <br />
           <v-card>
             <div class="mt-6">
               <v-row>
@@ -261,11 +257,10 @@
               </v-row>
               <v-row>
                 <v-col cols="12" md="12">
-                  <v-data-table :headers="headers"> </v-data-table>
+                  <v-data-table :headers="headers" :item="mostrardatos"> </v-data-table>
                 </v-col>
               </v-row>
             </div>
-
             <template>
               <div class="pa-4 text-center">
                 <v-dialog v-model="dialog2" max-width="600">
@@ -322,7 +317,6 @@
               </div>
             </template>
           </v-card>
-          <br /><br />
         </v-flex>
       </v-layout>
     </v-container>
@@ -335,6 +329,7 @@ export default {
   layout: "barra",
   data() {
     return {
+      mostrardatos: {},
       opcionSeleccionada: "",
       menuCom: false,
       fechaCom: null,
@@ -386,16 +381,22 @@ export default {
         descripcion: "",
       },
       headers: [
-        { text: "Folio", value: "*" },
-        { text: "Clasificación", value: "*" },
-        { text: "Observaciones", value: "*" },
-        { text: "Fecha de creación", value: "*" },
+        {
+          text: "Folio",
+          align: "start",
+          filterable: true,
+          value: "folioMant",
+        },
+        { text: "Nombre", value: "nombre" },
+        { text: "Tipo de activo", value: "tipoAct" },
+        
       ],
     };
   },
   mounted() {
     this.fechaCom = this.fechaMinima;
     this.fechaAten = this.fechaMinima;
+    this.mostrar();
   },
 
   computed: {
@@ -410,6 +411,22 @@ export default {
   },
 
   methods: {
+    /* Mostrar datos de una tabla ejemplo */
+    async mostrar() {
+      try {
+        const res = await fetch("http://192.168.1.82:3001/mantenimiento");
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          this.mostrardatos = datos.respuesta.respuesta;
+          console.log(datos.respuesta.respuesta);
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
+    /* ----------------------------------- */
     datoSeleccionado() {
       if (this.opcionSeleccionada === "si") {
         this.habilitarComentario2 = true;

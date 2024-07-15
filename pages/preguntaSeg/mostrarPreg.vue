@@ -8,11 +8,9 @@
             <br />
             <v-data-table :headers="headers" :items="preguntas" class="elevation-1">
               <template v-slot:[`item.actions`]="item">
-                <v-btn
-                  color="warning"
-                  @click="(dialog2 = true), actualizar(item.item.idForms)"
-                  >Editar</v-btn
-                >
+                <v-btn icon @click="(dialog2 = true), actualizar(item.item.idForms)">
+                  <v-icon style="font-size: 16px">mdi-eye purple--text</v-icon>
+                </v-btn>
                 <br />
               </template>
             </v-data-table>
@@ -20,7 +18,7 @@
             <template>
               <div class="pa-4 text-center">
                 <v-dialog v-model="dialog2" max-width="600">
-                  <v-card v-card title="Dialog 1">
+                  <v-card>
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="error" @click="dialog2 = false">X</v-btn>
@@ -53,11 +51,7 @@
                         <v-btn type="submit" color="primary">Actualizar</v-btn>
                       </center>
                     </v-form>
-                    <v-card-text>
-                      <small class="text-caption text-medium-emphasis"
-                        >*No se pueden quedar vacios</small
-                      >
-                    </v-card-text>
+                    <br />
                   </v-card>
                 </v-dialog>
               </div>
@@ -71,6 +65,7 @@
 
 /* Fijoo */
 <script>
+import "@mdi/font/css/materialdesignicons.css";
 export default {
   layout: "barra",
   data() {
@@ -92,7 +87,7 @@ export default {
   },
   async mounted() {
     try {
-      const res = await fetch("http://192.168.1.210:3001/preguntas");
+      const res = await fetch("http://192.168.1.82:3001/preguntas");
       const datos = await res.json();
       if (res.status == 404) {
         console.error("Error al obtener los datos:", error);
@@ -107,6 +102,11 @@ export default {
 
   computed: {},
   methods: {
+    /* Mostrar el formulario de editar */
+    async mostraredit() {
+      this.dialog2 = true;
+    },
+    /* ------------------------------------- */
     /* Abre el formulario de actualizar */
     async actualizar(item) {
       this.formDatos.id = item;
@@ -120,7 +120,7 @@ export default {
     /* Api que actualiza los datos  de la tabla */
     async submitForm() {
       console.log(this.formDatos);
-      const res = await fetch("http://localhost:3001/actualizarPreg", {
+      const res = await fetch("http://192.168.1.82:3001/actualizarPreg", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

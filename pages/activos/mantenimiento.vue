@@ -4,11 +4,49 @@
       <v-layout row wrap>
         <v-flex xs12>
           <v-card>
-            <v-card-title>Asignar activo de mantenimiento</v-card-title>
-            <br />
+            <v-card-title style="padding: 50px">Alta de activos de mantenimiento</v-card-title>
             <v-form @submit.prevent="submitForm">
+              <!-- row 1: nombre, clasificacion  -->
               <v-row>
-                <v-col cols="12" md="12">
+                <v-col cols="12" md="4">
+                  <v-select
+                    v-model="datoNuevo.tipoAct"
+                    :items="tipoActivo"
+                    label="*TIPO DE ACTIVO"
+                    filled
+                    @change="cambiar"
+                  ></v-select>
+                </v-col>
+                <v-col cols="12" md="8">
+                  <v-text-field v-model="datoNuevo.descripgen" label="DESCRIPCIÓN GENERAL" filled>
+                  </v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="8">
+                  <v-select
+                    v-model="datoNuevo.idubicacion"
+                    :items="ubicaciones"
+                    label="*UBICACIÓN"
+                    filled
+                  ></v-select>
+                </v-col>
+                <v-col cols="12" md="4">
+                  <v-select
+                    v-model="datoNuevo.clasificacion"
+                    :items="clasificacion"
+                    label="CLASIFICACIÓN"
+                    filled
+                  ></v-select>
+                </v-col>
+              </v-row>
+              <!-- row 2: capacidad, fecha de fabricacion -->
+              <v-row v-show="contmat" >
+                <v-col cols="12" md="6">
+                  <v-text-field v-model="datoNuevo.capacidad" label="CAPACIDAD" filled>
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" md="6">
                   <v-menu
                     v-model="menu"
                     :close-on-content-click="false"
@@ -20,7 +58,7 @@
                     <template v-slot:activator="{ on }">
                       <v-text-field
                         v-model="fecha"
-                        label="Fecha compromiso"
+                        label="Fecha de fabricación"
                         outlined
                         readonly
                         v-on="on"
@@ -35,24 +73,69 @@
                   </v-menu>
                 </v-col>
               </v-row>
-              <v-row>
+              <!-- row 3: tipo, especificacion -->
+              <v-row v-show="contmat">
+                <v-col cols="12" md="6">
+                  <v-select
+                    :items="tipo"
+                    label="Tipo"
+                    v-model="datoNuevo.tipocontmate"
+                    @change="cambiarotro1"
+                    filled
+                  ></v-select>
+                  <div v-show="habilitarotro1">
+                    <v-text-field v-model="otrotipo" label="Especifica.."></v-text-field>
+                  </div>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-select
+                    :items="espec"
+                    label="ESPECIFICACIÓN"
+                    v-model="datoNuevo.espeficicacion"
+                    @change="cambiarotro2"
+                    filled
+                  ></v-select>
+                  <div v-show="habilitarotro2">
+                    <v-text-field v-model="otroesp" label="Especifica.."></v-text-field>
+                  </div>
+                </v-col>
+              </v-row>
+              <!-- row 4:  descrip -->
+              <v-row v-show="infra">
                 <v-col cols="12" md="12">
                   <v-textarea
                     clear-icon="mdi-close-circle"
-                    label="Descripción"
+                    label="DESCRIPCIÓN ADICIONAL"
                     clearable
                     style="border: white"
-                    v-model="formData.descrip"
+                    v-model="datoNuevo.descripadi"
                   ></v-textarea>
                 </v-col>
               </v-row>
-              <br />
               <center>
                 <v-btn class="btnEnviar" type="submit" color="success">Enviar</v-btn>
               </center>
             </v-form>
           </v-card>
         </v-flex>
+        <v-dialog v-model="alerta" max-width="500">
+          <v-card>
+              <v-card-title class="text-h4">
+                  {{ Titulo }}
+              </v-card-title>
+              <v-card-text class="text-h6 text-center">
+              {{ Mensaje }}
+            </v-card-text>
+              <v-divider></v-divider>
+
+              <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="primary" text @click="alerta = false">
+                      Cerrar
+                  </v-btn>
+              </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-layout>
     </v-container>
   </v-app>
@@ -64,17 +147,64 @@ export default {
   layout: "barra",
   data() {
     return {
+      alerta: false,
+      Mensaje: "",
+      Titulo: "",
+      ubicaciones: [],
       activosF: [],
+      otrotipo: "",
+      otroesp: "",
       menu: false,
       fecha: null,
-      formData: {
-        falta: "",
-        descrip: "",
+      contmat: false,
+      infra: false,
+      tipoActivo: [ "INFRAESTRUCTURA", "EQUIPOS DE CONTENCIÓN", "EQUIPOS PARA MANEJO DE MATERIALES"],
+      clasificacion: ["A", "B", "C"],
+      tipo: [
+        "BASCULANTE/GÓNDOLA",
+        "TINE ABIERTA/ RACK",
+        "CARRO TRANSPORTADOR",
+        "CAJAS METALICAS CON TAPA",
+        "CONTENEDOR ROLL OFF CAMIONETA",
+        "CONTENEDOR ROLL OFF ESTANDAR 33M3",
+        "CONTENEDOR ROLL OFF MODIFICADO",
+        "ESCURRIDOR",
+        "OTROS CONTENEDORES",
+        "ESPECIAL/OTRO",
+      ],
+      espec: [
+        "CONTIENE LÍQUIDOS",
+        "TAPAS/CUBIERTAS",
+        "DRENAJES",
+        "ESCURRIDORES",
+        "DESMONTABLE",
+        "PROTECCIÓNES",
+        "VISTA AL INTERIOR",
+        "SIN VISTA EL INTERIOR",
+        "CERROJO PARA CANDADO",
+        "OTRO",
+      ],
+      habilitarotro1: false,
+      habilitarotro2: false,
+      datoNuevo: {
+        fabricacion: "",
+        tipoAct: "",
+        modelo: "",
+        capacidad: "",
+        clasificacion: "",
+        nmotor: "",
+        tipocontmate: "",
+        espeficicacion: "",
+        marca: "",
+        descripadi:"",
+        descripgen:"",
+        idubicacion:""
       },
     };
   },
   mounted() {
     this.fecha = this.fechaMinima;
+    this.mostrarubi();
   },
 
   computed: {
@@ -88,23 +218,116 @@ export default {
     },
   },
   methods: {
+    async mostrarubi(){
+      try {
+        const res = await fetch("http://192.168.1.82:3001/ubicacion");
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          //this.ubicaciones = datos.respuesta.respuesta;
+          this.ubicaciones =  datos.respuesta.respuesta.map((ubi) => [ubi.descrip]);
+          console.log(this.ubicaciones);
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
+
+    async cambiar(){
+      const tipo = this.datoNuevo.tipoAct;
+      if(tipo === "EQUIPOS DE CONTENCIÓN" || tipo === "EQUIPOS PARA MANEJO DE MATERIALES"){
+        this.contmat = true;
+        this.infra = false;
+      }else{
+          if(tipo === "INFRAESTRUCTURA"){
+            this.infra = true;
+            this.contmat = false;
+          }
+      }
+
+    },
+
+    async enviarComparar(){
+      console.log(this.datoNuevo.tipocontmate);
+      const otro1 = this.datoNuevo.tipocontmate;
+      console.log(this.datoNuevo.espeficicacion);
+      const otro2 = this.datoNuevo.espeficicacion;
+      if(otro1 === "ESPECIAL/OTRO"){
+        this.datoNuevo.tipocontmate = this.otrotipo;
+      }
+
+    },
+
     async submitForm() {
-      this.formData.falta = this.fecha;
-      console.log(this.formData);
-      const res = await fetch("http://localhost:3001/insertarMante", {
+      this.datoNuevo.fabricacion = this.fecha;
+      console.log(this.datoNuevo);
+      const res = await fetch("http://192.168.1.82.240:3001/insertarMante", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(this.formData),
+        body: JSON.stringify(this.datoNuevo),
       });
       const datos = await res.json();
+      if(res.status === 400){
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje =
+          "Parece que existen campos vacíos, válida la información nuevamente";
+        
+      }else{
+        this.alerta = true;
+        //this.Titulo = "El ID del activo es: ";
+        this.Titulo = "Id del activo:";
+        this.Mensaje = datos.mensaje;
+        this.limpiarFormulario();
+        this.contmat= false;
+        this.infra= false;
+      } 
       console.log(datos);
-      this.limpiarFormulario();
+      
     },
     limpiarFormulario() {
       this.fecha = this.fechaMinima;
-      this.formData.descrip = "";
+      this.datoNuevo.tipoAct = "";
+      this.datoNuevo.fabricacion="";
+      this.datoNuevo.capacidad = "";
+      this.datoNuevo.clasificacion = "";
+      this.datoNuevo.tipocontmate = "";
+      this.datoNuevo.espeficicacion = "";
+      this.datoNuevo.descripadi = "";
+      this.datoNuevo.descripgen = "";
+      this.datoNuevo.modelo = "";
+      this.datoNuevo.nmotor = "";
+      this.datoNuevo.idubicacion="";
+      this.habilitarotro1 = false;
+      this.otrotipo = "";
+      this.habilitarotro2 = false;
+      this.otroesp = "";
+    },
+
+    async cambiarotro1() {
+      //console.log(this.datoNuevo.tipocontmate);
+      const tipo = this.datoNuevo.tipocontmate;
+      if (tipo === "ESPECIAL/OTRO") {
+        this.habilitarotro1 = true;
+        //console.log(this.otrotipo);
+      } else {
+        this.habilitarotro1 = false;
+        this.otrotipo = "";
+      }
+    },
+    async cambiarotro2() {
+      //console.log(this.datoNuevo.espeficicacion);
+      const esp = this.datoNuevo.espeficicacion;
+      if (esp === "OTRO") {
+        this.habilitarotro2 = true;
+        //console.log(this.datoNuevo.espeficicacion);
+      } else {
+        this.habilitarotro2 = false;
+        this.otroesp = "";
+      }
     },
   },
 };

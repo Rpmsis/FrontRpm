@@ -4,34 +4,38 @@
       <v-layout row wrap>
         <v-flex xs12>
           <v-card>
-            <v-card-title>Asignar activo de insumos</v-card-title>
-            <br />
+            <v-card-title style="padding: 50px">Alta de activos de insumos</v-card-title>
             <v-form @submit.prevent="submitForm">
+              <!-- row 1: tipo, proveedor, folio OC -->
               <v-row>
+                <v-col cols="12" md="3">
+                  <v-select
+                    :items="tipo"
+                    v-model="formData.tipoAct"
+                    label="Tipo de activo"
+                    filled
+                  >
+                  </v-select>
+                </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
-                    v-model="formData.prov"
+                    v-model="formData.proveedor"
                     type="text"
                     label="Proveedor"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="3">
                   <v-text-field
-                    v-model="formData.fDOS"
+                    v-model="formData.folioOC"
                     type="text"
-                    label="Folio D.O.S"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <v-text-field
-                    v-model="formData.numserie"
-                    type="text"
-                    label="Numero de serie"
+                    label="Folio de orden de compra"
                   ></v-text-field>
                 </v-col>
               </v-row>
+
+              <!-- row 2: fecha adquisicion, fecha alta, monto, serie -->
               <v-row>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="3">
                   <v-menu
                     v-model="menuAdqui"
                     :close-on-content-click="false"
@@ -57,7 +61,7 @@
                     </v-date-picker>
                   </v-menu>
                 </v-col>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="3">
                   <v-menu
                     v-model="menuAlta"
                     :close-on-content-click="false"
@@ -83,14 +87,23 @@
                     </v-date-picker>
                   </v-menu>
                 </v-col>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="3">
                   <v-text-field
                     v-model="formData.monto"
-                    type="number"
+                    prefix="$"
                     label="Monto"
                   ></v-text-field>
                 </v-col>
+                <v-col cols="12" md="3">
+                  <v-text-field
+                    v-model="formData.numserie"
+                    type="text"
+                    label="Número de serie"
+                  ></v-text-field>
+                </v-col>
               </v-row>
+
+              <!-- Descripcion -->
               <v-row>
                 <v-col cols="12" md="12">
                   <v-textarea
@@ -102,13 +115,30 @@
                   ></v-textarea>
                 </v-col>
               </v-row>
-              <br />
               <center>
                 <v-btn class="btnEnviar" type="submit" color="success">Enviar</v-btn>
               </center>
             </v-form>
           </v-card>
         </v-flex>
+        <v-dialog v-model="alerta" max-width="500">
+          <v-card>
+              <v-card-title class="text-h4">
+                  {{ Titulo }}
+              </v-card-title>
+              <v-card-text class="text-h6 text-center">
+              {{ Mensaje }}
+            </v-card-text>
+              <v-divider></v-divider>
+
+              <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="primary" text @click="alerta = false">
+                      Cerrar
+                  </v-btn>
+              </v-card-actions>
+          </v-card>
+      </v-dialog>
       </v-layout>
     </v-container>
   </v-app>
@@ -124,16 +154,27 @@ export default {
   layout: "barra",
   data() {
     return {
+      alerta: false,
+      Mensaje: "",
+      Titulo: "",
       activosF: [],
       menuAlta: false,
       menuAdqui: false,
       fechaAlta: null,
       fechaAdqui: null,
+      tipo: [
+        "HERRAMIENTA",
+        "VEHÍCULOS",
+        "MONTACARGAS",
+        "MAQUINARIA",
+        "EQUIPOS ELECTRONICOS",
+      ],
       formData: {
+        tipoAct: "",
         falta: "",
         descrip: "",
-        prov: "",
-        fDOS: "",
+        proveedor: "",
+        folioOC: "",
         monto: "",
         fadqui: "",
         numserie: "",
@@ -158,9 +199,8 @@ export default {
   methods: {
     async submitForm() {
       this.formData.falta = this.fechaAlta;
-      this.formData.fadqui = this.fechaAdqui;
-      console.log(this.formData);
-      const res = await fetch("http://192.168.1.210:3001/insertarInsumos", {
+      this.formData.fadqui = this.fechaAdqui; 
+      const res = await fetch("http://192.168.1.82:3001/insertarInsumos", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -168,19 +208,32 @@ export default {
         body: JSON.stringify(this.formData),
       });
       const datos = await res.json();
-      console.log(datos);
-      this.limpiarFormulario();
+      if(res.status === 400){
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje =
+          "Parece que existen campos vacíos, válida la información nuevamente";
+        
+      }else{
+        this.alerta = true;
+        //this.Titulo = "El ID del activo es: ";
+        this.Titulo = "Id del activo:";
+        this.Mensaje = datos.mensaje;
+        this.limpiarFormulario();
+      }
+      console.log(datos); 
     },
     /* ------------------------------------------------------------ */
 
     limpiarFormulario() {
-      this.formData.prov = "";
-      this.formData.fDOS = "";
+      this.formData.proveedor = "";
+      this.formData.folioOC = "";
       this.formData.numserie = "";
       this.fechaAdqui = this.fechaMinima;
       this.fechaAlta = this.fechaMinima;
       this.formData.monto = "";
       this.formData.descrip = "";
+      this.formData.tipoAct = "";
     },
   },
 };

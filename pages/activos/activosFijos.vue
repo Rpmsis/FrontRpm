@@ -4,7 +4,7 @@
       <v-layout row wrap>
         <v-flex xs12>
           <v-card>
-            <v-card-title>Asignar activo</v-card-title>
+            <v-card-title>Alta de activos</v-card-title>
             <br />
             <v-form @submit.prevent="submitForm">
               <v-row>
@@ -91,7 +91,7 @@ export default {
     async submitForm() {
       this.formData.falta = this.fecha;
       console.log(this.formData);
-      const res = await fetch("http://192.168.1.210:3001/insertarFolio", {
+      const res = await fetch("http://192.168.1.82:3001/insertarFolio", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
