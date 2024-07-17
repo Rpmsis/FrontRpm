@@ -6,6 +6,7 @@ import scrollBehavior from './router.scrollBehavior.js'
 
 const _e3df6410 = () => interopDefault(import('..\\pages\\ayuda.vue' /* webpackChunkName: "pages/ayuda" */))
 const _74f9e757 = () => interopDefault(import('..\\pages\\inicio.vue' /* webpackChunkName: "pages/inicio" */))
+const _1ace9570 = () => interopDefault(import('..\\pages\\tabla.vue' /* webpackChunkName: "pages/tabla" */))
 const _024ce13a = () => interopDefault(import('..\\pages\\actividades\\actForaneas.vue' /* webpackChunkName: "pages/actividades/actForaneas" */))
 const _64883dae = () => interopDefault(import('..\\pages\\activos\\activosFijos.vue' /* webpackChunkName: "pages/activos/activosFijos" */))
 const _de6c314e = () => interopDefault(import('..\\pages\\activos\\insumos.vue' /* webpackChunkName: "pages/activos/insumos" */))
@@ -18,6 +19,7 @@ const _4961270a = () => interopDefault(import('..\\pages\\preguntaSeg\\formulari
 const _76579c6a = () => interopDefault(import('..\\pages\\preguntaSeg\\mostrarPreg.vue' /* webpackChunkName: "pages/preguntaSeg/mostrarPreg" */))
 const _ffe58dba = () => interopDefault(import('..\\pages\\SGI\\ejejmplo.vue' /* webpackChunkName: "pages/SGI/ejejmplo" */))
 const _3b104d80 = () => interopDefault(import('..\\pages\\SGI\\noconformidad.vue' /* webpackChunkName: "pages/SGI/noconformidad" */))
+const _3356acd7 = () => interopDefault(import('..\\pages\\socioscomerciales\\proveedores.vue' /* webpackChunkName: "pages/socioscomerciales/proveedores" */))
 const _3935de50 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages/index" */))
 
 const emptyFn = () => {}
@@ -39,6 +41,10 @@ export const routerOptions = {
     path: "/inicio",
     component: _74f9e757,
     name: "inicio"
+  }, {
+    path: "/tabla",
+    component: _1ace9570,
+    name: "tabla"
   }, {
     path: "/actividades/actForaneas",
     component: _024ce13a,
@@ -87,6 +93,10 @@ export const routerOptions = {
     path: "/SGI/noconformidad",
     component: _3b104d80,
     name: "SGI-noconformidad"
+  }, {
+    path: "/socioscomerciales/proveedores",
+    component: _3356acd7,
+    name: "socioscomerciales-proveedores"
   }, {
     path: "/",
     component: _3935de50,

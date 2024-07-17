@@ -1,147 +1,278 @@
 <template>
-  <v-app>
-    <v-container>
-      <v-layout row wrap>
-        <v-flex xs12>
-          <v-card>
-            <v-card-title style="padding: 50px">Alta de activos de insumos</v-card-title>
-            <v-form @submit.prevent="submitForm">
-              <!-- row 1: tipo, proveedor, folio OC -->
-              <v-row>
-                <v-col cols="12" md="3">
-                  <v-select
-                    :items="tipo"
-                    v-model="formData.tipoAct"
-                    label="Tipo de activo"
-                    filled
-                  >
-                  </v-select>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="formData.proveedor"
-                    type="text"
-                    label="Proveedor"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <v-text-field
-                    v-model="formData.folioOC"
-                    type="text"
-                    label="Folio de orden de compra"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
+  <v-container>
+    <v-card class="mt-5">
+      <v-card-title>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Buscar"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="datosinsumos"
+        :search="search"
+        :footer-props="{
+          'items-per-page-options': [5, 10, 20, 30, 40, 50],
+        }"
+        :items-per-page="5"
+        :sort-desc="true"
+      >
+        <template v-slot:item.actions="{ item }">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon
+                color="white"
+                dark
+                v-bind="attrs"
+                v-on="on"
+                @click="actualizar(item.IdInsumos)"
+                small
+                class="mr-2"
+              >
+                mdi-eye
+              </v-icon>
+            </template>
+            <span>Visualizar</span>
+          </v-tooltip>
+        </template>
+      </v-data-table>
+      <v-btn icon @click="insumos = true" style="margin-left: 15px; margin-top: 5px">
+        <v-icon style="font-size: 50px">mdi-plus-circle theme--dark green--text</v-icon>
+      </v-btn>
 
-              <!-- row 2: fecha adquisicion, fecha alta, monto, serie -->
-              <v-row>
-                <v-col cols="12" md="3">
-                  <v-menu
-                    v-model="menuAdqui"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-text-field
-                        v-model="fechaAdqui"
-                        label="Fecha adquisición"
-                        outlined
-                        readonly
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="fechaAdqui"
-                      :min="fechaMinima"
-                      @input="menuAdqui = false"
-                    >
-                    </v-date-picker>
-                  </v-menu>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <v-menu
-                    v-model="menuAlta"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-text-field
-                        v-model="fechaAlta"
-                        label="Fecha alta"
-                        outlined
-                        readonly
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="fechaAlta"
-                      :min="fechaMinima"
-                      @input="menuAlta = false"
-                    >
-                    </v-date-picker>
-                  </v-menu>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <v-text-field
-                    v-model="formData.monto"
-                    prefix="$"
-                    label="Monto"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <v-text-field
-                    v-model="formData.numserie"
-                    type="text"
-                    label="Número de serie"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-
-              <!-- Descripcion -->
-              <v-row>
-                <v-col cols="12" md="12">
-                  <v-textarea
-                    clear-icon="mdi-close-circle"
-                    label="Descripción"
-                    clearable
-                    style="border: white"
-                    v-model="formData.descrip"
-                  ></v-textarea>
-                </v-col>
-              </v-row>
-              <center>
-                <v-btn class="btnEnviar" type="submit" color="success">Enviar</v-btn>
-              </center>
-            </v-form>
-          </v-card>
-        </v-flex>
-        <v-dialog v-model="alerta" max-width="500">
-          <v-card>
-              <v-card-title class="text-h4">
-                  {{ Titulo }}
-              </v-card-title>
-              <v-card-text class="text-h6 text-center">
-              {{ Mensaje }}
-            </v-card-text>
-              <v-divider></v-divider>
-
+      <!-- Formulario insertar -->
+      <template>
+        <div class="pa-4 text-center">
+          <v-dialog v-model="insumos" max-width="1200px">
+            <v-card style="padding: 15px">
               <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="primary" text @click="alerta = false">
-                      Cerrar
-                  </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn icon @click="(insumos = false), limpiarFormulario()">
+                  <v-icon style="font-size: 30px"
+                    >mdi-close theme--dark red--text</v-icon
+                  ></v-btn
+                >
               </v-card-actions>
-          </v-card>
-      </v-dialog>
-      </v-layout>
-    </v-container>
-  </v-app>
+              <v-divider></v-divider>
+              <v-divider></v-divider>
+              <v-form class="mt-7" @submit.prevent="submitForm">
+                <!-- row 1: tipo, proveedor, folio OC -->
+                <v-row>
+                  <v-col cols="12" md="3">
+                    <v-select
+                      :items="tipo"
+                      v-model="formData.tipoAct"
+                      label="Tipo de activo"
+                      filled
+                    >
+                    </v-select>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-select
+                      :items="proveedores"
+                      v-model="formData.proveedor"
+                      label="Proveedor"
+                      filled
+                    >
+                    </v-select>
+                  </v-col>
+                  <v-col cols="12" md="3">
+                    <v-text-field
+                      v-model="formData.folioOC"
+                      type="text"
+                      label="Folio de orden de compra"
+                      filled
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <!-- row 2: fecha adquisicion, fecha alta, monto, serie -->
+                <v-row>
+                  <v-col cols="12" md="3">
+                    <v-menu
+                      v-model="menuAdqui"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{ on }">
+                        <v-text-field
+                          v-model="fechaAdqui"
+                          label="Fecha adquisición"
+                          outlined
+                          readonly
+                          v-on="on"
+                          filled
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        v-model="fechaAdqui"
+                        :min="fechaMinima"
+                        @input="menuAdqui = false"
+                        filled
+                      >
+                      </v-date-picker>
+                    </v-menu>
+                  </v-col>
+                  <v-col cols="12" md="3">
+                    <v-menu
+                      v-model="menuAlta"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{ on }">
+                        <v-text-field
+                          v-model="fechaAlta"
+                          label="Fecha alta"
+                          outlined
+                          readonly
+                          v-on="on"
+                          filled
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        v-model="fechaAlta"
+                        :min="fechaMinima"
+                        @input="menuAlta = false"
+                        filled
+                      >
+                      </v-date-picker>
+                    </v-menu>
+                  </v-col>
+                  <v-col cols="12" md="3">
+                    <v-text-field
+                      v-model="formData.monto"
+                      prefix="$"
+                      label="Monto"
+                      filled
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="3">
+                    <v-text-field
+                      v-model="formData.numserie"
+                      type="text"
+                      label="Número de serie"
+                      filled
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <!-- Descripcion -->
+                <v-row>
+                  <v-col cols="12" md="12">
+                    <v-textarea
+                      clear-icon="mdi-close-circle"
+                      label="Descripción"
+                      clearable
+                      style="border: white"
+                      v-model="formData.descrip"
+                      filled
+                    ></v-textarea>
+                  </v-col>
+                </v-row>
+                <center>
+                  <v-btn class="btnEnviar" type="submit" block outlined color="success">Enviar</v-btn>
+                </center>
+              </v-form>
+            </v-card>
+          </v-dialog>
+        </div>
+      </template>
+
+      <!-- Formulario actualizar-->
+      <template>
+        <div class="pa-4 text-center">
+          <v-dialog v-model="insumoActualizar" max-width="800px">
+            <v-card style="padding: 15px">
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn icon @click="insumoActualizar = false">
+                  <v-icon style="font-size: 30px"
+                    >mdi-close theme--dark red--text</v-icon
+                  ></v-btn
+                >
+              </v-card-actions>
+              <v-divider></v-divider>
+              <v-divider></v-divider>
+              <v-form class="mt-5" @submit.prevent="actualizaracti">
+                <!-- row 1: tipo, proveedor, folio OC -->
+                <v-row>
+                  <v-col cols="12" md="12">
+                    <v-select
+                      :items="proveedores"
+                      v-model="formDataact.proveedor"
+                      label="Proveedor"
+                      filled
+                    >
+                    </v-select>
+                  </v-col>
+                </v-row>
+
+                <!-- row 2: fecha adquisicion, fecha alta, monto, serie -->
+                <v-row>
+                  <v-col cols="12" md="4">
+                    <v-text-field
+                      v-model="formDataact.monto"
+                      prefix="$"
+                      label="Monto"
+                      filled
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field
+                      v-model="formDataact.Numserie"
+                      type="text"
+                      label="Número de serie"
+                      filled
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field
+                      v-model="formDataact.folioOC"
+                      type="text"
+                      label="Folio de orden de compra"
+                      filled
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <center>
+                  <v-btn block outlined color="orange" class="btnEnviar" type="submit"
+                    >Actualizar</v-btn
+                  >
+                </center>
+              </v-form>
+            </v-card>
+          </v-dialog>
+        </div>
+      </template>
+    </v-card>
+
+    <!-- Ventana emergente -->
+    <v-dialog v-model="alerta" max-width="500">
+      <v-card>
+        <v-card-title class="text-h4">
+          {{ Titulo }}
+        </v-card-title>
+        <v-card-text class="text-h6 text-center">
+          {{ Mensaje }}
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="alerta = false"> Cerrar </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-container>
 </template>
 
 /* Fijoo */
@@ -157,7 +288,11 @@ export default {
       alerta: false,
       Mensaje: "",
       Titulo: "",
-      activosF: [],
+      search: "",
+      datosinsumos: [],
+      insumos: false,
+      insumoActualizar: false,
+      proveedores: ["Ejemplo1", "Ejemplo2", "Ejemplo3"],
       menuAlta: false,
       menuAdqui: false,
       fechaAlta: null,
@@ -169,6 +304,16 @@ export default {
         "MAQUINARIA",
         "EQUIPOS ELECTRONICOS",
       ],
+      headers: [
+        { text: "Id del activo ", value: "folioInsumos" },
+        { text: "Tipo de activo", value: "tipoAct" },
+        { text: "Descripción", value: "descrip" },
+        { text: "Proveedor", value: "proveedor" },
+        { text: "Folio de orden de compra", value: "folioOC" },
+        { text: "Monto", value: "monto" },
+        { text: "Número de serie", value: "Numserie" },
+        { text: "Editar", value: "actions", sortable: false },
+      ],
       formData: {
         tipoAct: "",
         falta: "",
@@ -179,11 +324,23 @@ export default {
         fadqui: "",
         numserie: "",
       },
+      formDataact: {
+        IdInsumos:"",
+        tipoAct: "",
+        falta: "",
+        descrip: "",
+        proveedor: "",
+        folioOC: "",
+        monto: "",
+        fadqui: "",
+        Numserie: "",
+      },
     };
   },
   mounted() {
     this.fechaAlta = this.fechaMinima;
     this.fechaAdqui = this.fechaMinima;
+    this.mostrar();
   },
 
   computed: {
@@ -197,10 +354,35 @@ export default {
     },
   },
   methods: {
+    /* Mostrar los datos de la tabla*/
+    async mostrar() {
+      try {
+        const res = await fetch("http://192.168.1.105:3001/insumos");
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          this.datosinsumos = datos.respuesta.respuesta;
+          console.log(datos.respuesta.respuesta);
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
+
+    /* Abre el formulario de actualizar */
+    async actualizar(item) {
+      console.log(item)
+      const objeto = this.datosinsumos.find((filtro) => filtro.IdInsumos === item);
+      this.formDataact = objeto;
+      console.log(this.formDataact);
+      this.insumoActualizar = true;
+    },
+    /* -------------------------------- */
     async submitForm() {
       this.formData.falta = this.fechaAlta;
-      this.formData.fadqui = this.fechaAdqui; 
-      const res = await fetch("http://192.168.1.82:3001/insertarInsumos", {
+      this.formData.fadqui = this.fechaAdqui;
+      const res = await fetch("http://192.168.1.105:3001/insertarInsumos", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -208,22 +390,48 @@ export default {
         body: JSON.stringify(this.formData),
       });
       const datos = await res.json();
-      if(res.status === 400){
+      if (res.status === 400) {
         this.alerta = true;
         this.Titulo = "¡Upss!";
         this.Mensaje =
           "Parece que existen campos vacíos, válida la información nuevamente";
-        
-      }else{
+      } else {
         this.alerta = true;
         //this.Titulo = "El ID del activo es: ";
         this.Titulo = "Id del activo:";
         this.Mensaje = datos.mensaje;
         this.limpiarFormulario();
+        this.insumos= false;
+        this.mostrar();
       }
-      console.log(datos); 
+      console.log(datos);
     },
     /* ------------------------------------------------------------ */
+
+    /* Api que actualiza los datos  de la tabla */
+    async actualizaracti() {
+      const res = await fetch("http://192.168.1.105:3001/actualizarInsumos", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.formDataact),
+      });
+      const datos = await res.json();
+      if (res.status === 400) {
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje = datos.mensaje;
+      } else {
+        this.alerta = true;
+        //this.Titulo = "El ID del activo es: ";
+        this.Titulo = "Datos actualizados";
+        this.Mensaje = " ";
+        this.insumoActualizar = false;
+        this.mostrar();
+      }
+    },
+    /* ------------------------------------------ */
 
     limpiarFormulario() {
       this.formData.proveedor = "";
@@ -248,11 +456,11 @@ export default {
   font-size: 30px !important;
 }
 .row {
-  padding: 0px 50px 0px 50px;
+  padding: 0px 10px 0px 10px;
 }
 .btnEnviar {
-  margin-top: 30px;
-  margin-bottom: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   width: 30%;
   font-size: 20px !important;
 }

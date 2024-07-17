@@ -6,7 +6,7 @@
           <v-card>
             <v-card-title style="padding: 50px">Alta de activos de mantenimiento</v-card-title>
             <v-form @submit.prevent="submitForm">
-              <!-- row 1: nombre, clasificacion  -->
+              <!-- row 1: TIPO, DESCRIPCION GENERAL  -->
               <v-row>
                 <v-col cols="12" md="4">
                   <v-select
@@ -22,6 +22,7 @@
                   </v-text-field>
                 </v-col>
               </v-row>
+              <!-- row 2: UBICACIÓN, CLASIFICACIÓN  -->
               <v-row>
                 <v-col cols="12" md="8">
                   <v-select
@@ -40,7 +41,7 @@
                   ></v-select>
                 </v-col>
               </v-row>
-              <!-- row 2: capacidad, fecha de fabricacion -->
+              <!-- row 3: capacidad, fecha de fabricacion -->
               <v-row v-show="contmat" >
                 <v-col cols="12" md="6">
                   <v-text-field v-model="datoNuevo.capacidad" label="CAPACIDAD" filled>
@@ -100,7 +101,7 @@
                   </div>
                 </v-col>
               </v-row>
-              <!-- row 4:  descrip -->
+              <!-- row 4:  DESCRIPCIÓN ADICIONAL -->
               <v-row v-show="infra">
                 <v-col cols="12" md="12">
                   <v-textarea
@@ -112,8 +113,24 @@
                   ></v-textarea>
                 </v-col>
               </v-row>
+              <v-row v-show="maqui">
+                <v-col cols="12" md="6">
+                  <v-text-field
+                      v-model="datoNuevo.modelo"
+                      label="* MODELO"
+                      filled
+                    ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                      v-model="datoNuevo.capacidad"
+                      label="* CAPACIDAD"
+                      filled
+                    ></v-text-field>
+                </v-col>
+              </v-row>
               <center>
-                <v-btn class="btnEnviar" type="submit" color="success">Enviar</v-btn>
+                <v-btn class="btnEnviar" type="submit" color="success" block >Enviar</v-btn>
               </center>
             </v-form>
           </v-card>
@@ -158,7 +175,8 @@ export default {
       fecha: null,
       contmat: false,
       infra: false,
-      tipoActivo: [ "INFRAESTRUCTURA", "EQUIPOS DE CONTENCIÓN", "EQUIPOS PARA MANEJO DE MATERIALES"],
+      maqui: false,
+      tipoActivo: [ "INFRAESTRUCTURA", "EQUIPOS DE CONTENCIÓN","MAQUINARIA", "EQUIPOS PARA MANEJO DE MATERIALES"],
       clasificacion: ["A", "B", "C"],
       tipo: [
         "BASCULANTE/GÓNDOLA",
@@ -187,6 +205,7 @@ export default {
       habilitarotro1: false,
       habilitarotro2: false,
       datoNuevo: {
+        folioActivo: "",
         fabricacion: "",
         tipoAct: "",
         modelo: "",
@@ -220,7 +239,7 @@ export default {
   methods: {
     async mostrarubi(){
       try {
-        const res = await fetch("http://192.168.1.82:3001/ubicacion");
+        const res = await fetch("http://192.168.1.105:3001/ubicacion");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -239,10 +258,29 @@ export default {
       if(tipo === "EQUIPOS DE CONTENCIÓN" || tipo === "EQUIPOS PARA MANEJO DE MATERIALES"){
         this.contmat = true;
         this.infra = false;
+        this.maqui = false;
+        this.limpiarFormulario();
+        this.datoNuevo.tipoAct= tipo;
+        console.log("Tipo de dato",this.datoNuevo.tipoAct)
       }else{
           if(tipo === "INFRAESTRUCTURA"){
             this.infra = true;
             this.contmat = false;
+            this.maqui = false;
+            this.limpiarFormulario();
+            this.datoNuevo.tipoAct= tipo;
+            console.log("Tipo de dato",this.datoNuevo.tipoAct)
+          }
+          else{
+            if(tipo === "MAQUINARIA"){
+              this.maqui = true;
+              this.infra = false;
+              this.contmat = false;
+              this.limpiarFormulario();
+              this.datoNuevo.tipoAct= tipo;
+              console.log("Tipo de dato",this.datoNuevo.tipoAct)
+
+            }
           }
       }
 
@@ -261,8 +299,8 @@ export default {
 
     async submitForm() {
       this.datoNuevo.fabricacion = this.fecha;
-      console.log(this.datoNuevo);
-      const res = await fetch("http://192.168.1.82.240:3001/insertarMante", {
+      console.log(this.datoNuevo.tipoAct);
+      const res = await fetch("http://192.168.1.105:3001/insertarMante", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -280,10 +318,11 @@ export default {
         this.alerta = true;
         //this.Titulo = "El ID del activo es: ";
         this.Titulo = "Id del activo:";
-        this.Mensaje = datos.mensaje;
+        this.Mensaje = datos.respuestaMante.mensaje;
         this.limpiarFormulario();
         this.contmat= false;
         this.infra= false;
+        this.maqui= false;
       } 
       console.log(datos);
       

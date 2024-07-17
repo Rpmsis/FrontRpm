@@ -91,7 +91,7 @@ export default {
     async submitForm() {
       this.formData.falta = this.fecha;
       console.log(this.formData);
-      const res = await fetch("http://192.168.1.82:3001/insertarFolio", {
+      const res = await fetch("http://192.168.1.105:3001/insertarFolio", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

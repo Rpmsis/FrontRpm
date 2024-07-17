@@ -17,7 +17,7 @@
             </v-card> 
             <v-card class="v-sheet theme--dark">
               <a href="/activos/insumos">
-                  <h4 class="modulo" >Alta de activos de insumos</h4>
+                  <h4 class="modulo" >Activos de insumos</h4>
               </a>
             </v-card>
             <v-card class="v-sheet theme--dark">

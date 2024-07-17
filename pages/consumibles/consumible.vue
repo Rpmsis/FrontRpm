@@ -61,22 +61,23 @@
               <v-form class="mt-5" @submit.prevent="submitForm">
                 <!-- row 1: tipo, proveedor, folio OC -->
                 <v-row>
-                  <v-col cols="12" md="8">
+                  <v-col cols="12" md="4">
+                    <v-select
+                      v-model="formData.unidadmedida"
+                      :items="unidadesmedida"
+                      label="Unidad de medida"
+                      filled
+                    ></v-select>
+                  </v-col>
+
+                  <v-col cols="12" md="4">
                     <v-text-field
-                      v-model="formData.actividad"
+                      v-model="formData.tipo"
                       type="text"
-                      label="ACTIVIDAD"
+                      label="Li"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="2">
-                    <v-text-field
-                      v-model="formData.hora"
-                      type="number"
-                      label="HORA"
-                      min="1"
-                      max="24"
-                    ></v-text-field>
-                  </v-col>
+
                   <v-col cols="12" md="2">
                     <v-text-field
                       v-model="formData.minutos"
@@ -84,33 +85,6 @@
                       label="MINUTOS"
                       min="1"
                       max="60"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12" md="4">
-                    <v-select
-                      v-model="formData.ubicacion"
-                      :items="ubicaciones"
-                      label="UBICACIÓN"
-                      filled
-                    ></v-select>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-select
-                      v-model="formData.material"
-                      :items="materiales"
-                      label="MATERIAL"
-                      filled
-                    ></v-select>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-text-field
-                      v-model="formData.kg"
-                      type="number"
-                      min="1"
-                      prefix="Kg"
-                      label="KILOGRAMOS"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -128,11 +102,11 @@
       <!-- Formulario actualizar-->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="actiActualizar" max-width="1200px">
+          <v-dialog v-model="consuActualizar" max-width="1200px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn icon @click="actiActualizar = false">
+                <v-btn icon @click="consuActualizar = false">
                   <v-icon style="font-size: 30px"
                     >mdi-close theme--dark red--text</v-icon
                   ></v-btn
@@ -142,58 +116,7 @@
               <v-divider></v-divider>
               <v-form class="mt-5" @submit.prevent="actualizaracti">
                 <!-- row 1: tipo, proveedor, folio OC -->
-                <v-row>
-                  <v-col cols="12" md="8">
-                    <v-text-field
-                      v-model="formDataact.actividad"
-                      type="text"
-                      label="* ACTIVIDAD"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="2">
-                    <v-text-field
-                      v-model="formDataact.hora"
-                      type="number"
-                      label="* HORA"
-                      min="1"
-                      max="24"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="2">
-                    <v-text-field
-                      v-model="formDataact.minutos"
-                      type="number"
-                      label="* MINUTOS"
-                      min="1"
-                      max="60"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12" md="4">
-                    <v-select
-                      v-model="formDataact.ubicacion"
-                      :items="ubicaciones"
-                      label="* UBICACIÓN"
-                      filled
-                    ></v-select>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-select
-                      v-model="formDataact.material"
-                      :items="materiales"
-                      label="* MATERIAL"
-                      filled
-                    ></v-select>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-text-field
-                      v-model="formDataact.kg"
-                      type="text"
-                      label="* KILOGRAMOS"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
+                
                 <center>
                   <v-btn block outlined color="orange" class="btnEnviar" type="submit"
                     >Actualizar</v-btn
@@ -240,9 +163,10 @@ export default {
       Mensaje: "",
       Titulo: "",
       consumibles: [],
+      unidadesmedida:["PIEZAS","LITROS", "KILOS"],
       search: "",
-      acti: false,
-      actiActualizar: false,
+      consu: false,
+      consuActualizar: false,
       headers: [
         { text: "Id del activo", value: "folioActivo" },
         { text: "Unidad de medida", value: "unidadmedida" },
@@ -262,27 +186,23 @@ export default {
       ],
 
       formData: {
-        ubicacion: "",
-        hora: "",
-        minutos: "",
-        kg: "",
-        material: "",
-        actividad: "",
+        unidadmedida: "",
+        enteros:"",
+        fracciones: "",
+        tipo: "",
+        descripcion: "",
       },
 
       formDataact: {
-        idactividades: "",
-        ubicacion: "",
-        hora: "",
-        minutos: "",
-        kg: "",
-        material: "",
-        actividad: "",
+        id: "",
+        enteros:"",
+        fracciones: "",
+        tipo: "",
+        descripcion: "",
       },
     };
   },
   mounted() {
-    this.mostrarubi();
     this.mostrar();
   },
 
@@ -291,12 +211,12 @@ export default {
     /* Mostrar los datos de la tabla*/
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.82:3001/consumibles");
+        const res = await fetch("http://192.168.1.105:3001/consumibles");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          this.actividad = datos.respuesta.respuesta;
+          this.consumibles = datos.respuesta.respuesta;
           console.log(datos.respuesta.respuesta);
         }
       } catch (error) {
@@ -306,16 +226,16 @@ export default {
 
     /* Abre el formulario de actualizar */
     async actualizar(item) {
-      const objeto = this.actividad.find((filtro) => filtro.idactividades === item);
+      const objeto = this.consumibles.find((filtro) => filtro.idconsumible === item);
       this.formDataact = objeto;
       console.log(this.formDataact);
-      this.actiActualizar = true;
+      this.consuActualizar = true;
     },
     /* -------------------------------- */
 
     /* Enviar formulario de actividades */
     async submitForm() {
-      const res = await fetch("http://192.168.1.82:3001/insertarActif", {
+      const res = await fetch("http://192.168.1.105:3001/insertarConsumibles", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -333,7 +253,7 @@ export default {
         this.Titulo = "El ID del activo es: ";
         this.Mensaje = datos.mensaje;
         this.limpiarFormulario();
-        this.acti = false;
+        this.consu = false;
         this.mostrar();
       }
     },
@@ -341,7 +261,7 @@ export default {
 
     /* Api que actualiza los datos  de la tabla */
     async actualizaracti() {
-      const res = await fetch("http://192.168.1.82:3001/actualizaractivi", {
+      const res = await fetch("http://192.168.1.105:3001/actualizarconsu", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -359,19 +279,18 @@ export default {
         //this.Titulo = "El ID del activo es: ";
         this.Titulo = "Datos actualizados";
         this.Mensaje = " ";
-        this.actiActualizar = false;
+        this.consuActualizar = false;
         this.mostrar();
       }
     },
     /* ------------------------------------------ */
 
     limpiarFormulario() {
-      this.formData.ubicacion = "";
-      this.formData.kg = "";
-      this.formData.material = "";
-      this.formData.actividad = "";
-      this.formData.hora = "";
-      this.formData.minutos = "";
+      this.formData.unidadmedida = "";
+      this.formData.enteros="";
+      this.formData.fracciones= "";
+      this.formData.tipo="";
+      this.formData.descripcion="";
     },
   },
 };

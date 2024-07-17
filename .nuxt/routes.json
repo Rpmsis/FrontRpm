@@ -12,6 +12,12 @@
     "chunkName": "pages/inicio"
   },
   {
+    "name": "tabla",
+    "path": "/tabla",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\tabla.vue",
+    "chunkName": "pages/tabla"
+  },
+  {
     "name": "actividades-actForaneas",
     "path": "/actividades/actForaneas",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\actForaneas.vue",
@@ -82,6 +88,12 @@
     "path": "/SGI/noconformidad",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\SGI\\\\noconformidad.vue",
     "chunkName": "pages/SGI/noconformidad"
+  },
+  {
+    "name": "socioscomerciales-proveedores",
+    "path": "/socioscomerciales/proveedores",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\socioscomerciales\\\\proveedores.vue",
+    "chunkName": "pages/socioscomerciales/proveedores"
   },
   {
     "name": "index",
