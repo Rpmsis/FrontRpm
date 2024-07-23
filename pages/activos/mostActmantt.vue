@@ -532,7 +532,7 @@ export default {
     /* Mostrar los datos de la tabla*/
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.105:3001/actmantt");
+        const res = await fetch("http://192.168.1.82:3001/actmantt");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -548,7 +548,7 @@ export default {
     /* Mostrar ubicación */
     async mostrarubi() {
       try {
-        const res = await fetch("http://192.168.1.105:3001/ubicacion");
+        const res = await fetch("http://192.168.1.82:3001/ubicacion");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -589,7 +589,7 @@ export default {
 
     /* Enviar el formulario */
     async enviarForm() {
-      const res = await fetch("http://192.168.1.105:3001/insertarMante", {
+      const res = await fetch("http://192.168.1.82:3001/insertarMante", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -609,7 +609,7 @@ export default {
     },
 
     async actualiarDes() {
-      const res = await fetch("http://192.168.1.105:3001/actualizarDesinsum", {
+      const res = await fetch("http://192.168.1.82:3001/actualizarDesinsum", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -15,7 +15,7 @@
         :items="actividad"
         :search="search"
         :footer-props="{
-          'items-per-page-options': [5,10, 20, 30, 40, 50],
+          'items-per-page-options': [5, 10, 20, 30, 40, 50],
         }"
         :items-per-page="5"
         :sort-desc="true"
@@ -59,14 +59,45 @@
               <v-divider></v-divider>
               <v-divider></v-divider>
               <v-form class="mt-5" @submit.prevent="submitForm">
-                <!-- row 1: tipo, proveedor, folio OC -->
                 <v-row>
+                  <v-col cols="12" md="4">
+                    <h4>¿La actividad requiere unidad de medida?</h4>
+                    <v-radio-group v-model="opcionSeleccionada">
+                      <v-row>
+                        <v-col cols="12" md="6">
+                          <v-radio
+                            @click="datoSeleccionado()"
+                            label="Si"
+                            value="si"
+                          ></v-radio>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                          <v-radio
+                            @click="datoSeleccionado()"
+                            label="No"
+                            value="no"
+                          ></v-radio>
+                        </v-col>
+                      </v-row>
+                    </v-radio-group>
+                  </v-col>
                   <v-col cols="12" md="8">
                     <v-text-field
                       v-model="formData.actividad"
                       type="text"
                       label="ACTIVIDAD"
                     ></v-text-field>
+                  </v-col>
+                </v-row>
+                <!-- row 1: tipo, proveedor, folio OC -->
+                <v-row>
+                  <v-col cols="12" md="4">
+                    <v-select
+                      v-model="formData.ubicacion"
+                      :items="ubicaciones"
+                      label="UBICACIÓN DONDE SE REALIZA.."
+                      filled
+                    ></v-select>
                   </v-col>
                   <v-col cols="12" md="2">
                     <v-text-field
@@ -86,32 +117,50 @@
                       max="60"
                     ></v-text-field>
                   </v-col>
+                  <v-col cols="12" md="4">
+                    <v-select
+                      v-model="formData.responsable"
+                      :items="responsable"
+                      label="RESPONSABLE"
+                      filled
+                    ></v-select>
+                  </v-col>
                 </v-row>
-                <v-row>
-                  <v-col cols="12" md="4">
-                    <v-select
-                      v-model="formData.ubicacion"
-                      :items="ubicaciones"
-                      label="UBICACIÓN DONDE SE REALIZA.."
-                      filled
-                    ></v-select>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-select
-                      v-model="formData.material"
-                      :items="materiales"
-                      label="MATERIAL"
-                      filled
-                    ></v-select>
-                  </v-col>
-                  <v-col cols="12" md="4">
+                <v-row v-show="medibles">
+                  <v-col cols="12" md="2">
                     <v-text-field
                       v-model="formData.kg"
                       type="number"
                       min="1"
                       prefix="Kg"
-                      label="KILOS"
                     ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-select
+                      v-model="formData.familias"
+                      :items="familias"
+                      label="FAMILIAS"
+                      @change="mostrarproduc"
+                      filled
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12" md="5" xs="7" >
+                    <v-select
+                      v-model="formData.productos"
+                      :items="productos"
+                      label="PRODUCTOS"
+                      filled
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12" md="1" xs="5" >
+                    <v-btn
+                      icon
+                      @click="addMaterial = true"
+                    >
+                      <v-icon style="font-size: 50px"
+                        >mdi-plus-circle theme--dark green--text</v-icon
+                      >
+                    </v-btn>
                   </v-col>
                 </v-row>
                 <center>
@@ -128,7 +177,7 @@
       <!-- Formulario actualizar-->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="actiActualizar" max-width="1200px">
+          <v-dialog v-model="actiActualizar" max-width="600px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -169,34 +218,54 @@
                     ></v-text-field>
                   </v-col>
                 </v-row>
+                <center>
+                  <v-btn block outlined color="orange" class="btnEnviar" type="submit"
+                    >Actualizar</v-btn
+                  >
+                </center>
+              </v-form>
+            </v-card>
+          </v-dialog>
+        </div>
+      </template>
+
+       <!-- Formulario material-->
+       <template>
+        <div class="pa-4 text-center">
+          <v-dialog v-model="addMaterial" max-width="600px">
+            <v-card style="padding: 15px">
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn icon @click="addMaterial = false">
+                  <v-icon style="font-size: 30px"
+                    >mdi-close theme--dark red--text</v-icon
+                  ></v-btn
+                >
+              </v-card-actions>
+              <v-divider></v-divider>
+              <v-divider></v-divider>
+              <v-form class="mt-5" @submit.prevent="submitFormAdd">
+                <!-- row 1: tipo, proveedor, folio OC -->
                 <v-row>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="6">
                     <v-select
-                      v-model="formDataact.ubicacion"
-                      :items="ubicaciones"
-                      label="* UBICACIÓN"
+                      v-model="formDataAdd.fam"
+                      :items="familias"
+                      label="FAMILIAS"
                       filled
                     ></v-select>
                   </v-col>
-                  <v-col cols="12" md="4">
-                    <v-select
-                      v-model="formDataact.material"
-                      :items="materiales"
-                      label="* MATERIAL"
-                      filled
-                    ></v-select>
-                  </v-col>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="6">
                     <v-text-field
-                      v-model="formDataact.kg"
-                      type="text"
-                      label="* KILOS"
+                      v-model="formDataAdd.produc"
+                      type="producto"
+                      label="* PRODUCTO"
                     ></v-text-field>
                   </v-col>
                 </v-row>
                 <center>
                   <v-btn block outlined color="orange" class="btnEnviar" type="submit"
-                    >Actualizar</v-btn
+                    >Agregar</v-btn
                   >
                 </center>
               </v-form>
@@ -244,39 +313,44 @@ export default {
       search: "",
       acti: false,
       actiActualizar: false,
-      materiales: [
-        "ALMACÉN 1",
-        "TEJOS 316",
-        "ALUMINIO PERFIL PEDACERIA",
+      medibles: false,
+      addMaterial: false,
+      tipoactividad: ["", "PRODUCTO 2", "PRODUCTO 3"],
+      productos: [],
+      familias: [
+        "CARTÓN",
+        "PLÁSTICO",
+        "MADERA",
+        "COBRE",
         "BRONCE",
-        "NAVE 2",
-        "SCRAP 400",
-        "ALEACIONES",
-        "REBABA 316",
-        "304",
+        "ALUMINIO",
+        "FIERRO",
+        "INOX 304",
+        "INOX 316",
+        "INOX 400",
       ],
+      responsable:["Maria Eugenia Romero Velez", "Miguel de la Cruz Pueblita"],
       headers: [
         { text: "Id actividad", value: "idactividades" },
+        { text: "Responsable", value: "responsable" },
         { text: "Actividad", value: "actividad" },
         { text: "Fecha creación", value: "fecha" },
-        {
-          text: "Tiempo estandar\nen MINUTOS",
-          value: "timestandar",
-          align: "start", // Alineación del texto
-          class: "multi-line-header", // Clase CSS para el estilo
-        },
-        { text: "Kilogramos", value: "kg" },
-        { text: "Material", value: "material" },
+        { text: "Hora", value: "hora" },
+        { text: "Minutos", value: "minutos" },
+        { text: "Material", value: "producto" },
         { text: "Ubicación", value: "ubicacion" },
         { text: "Editar", value: "actions", sortable: false },
       ],
-
+      opcionSeleccionada: "",
       formData: {
+        unidad: "",
+        responsable:"",
+        familias: "",
         ubicacion: "",
         hora: "",
         minutos: "",
         kg: "",
-        material: "",
+        productos: "",
         actividad: "",
       },
 
@@ -286,9 +360,15 @@ export default {
         hora: "",
         minutos: "",
         kg: "",
-        material: "",
+        familias: "",
+        productos: "",
         actividad: "",
       },
+
+      formDataAdd: {
+        fam:"",
+        produc:""
+      }
     };
   },
   mounted() {
@@ -301,14 +381,14 @@ export default {
     /* Mostrar ubicación */
     async mostrarubi() {
       try {
-        const res = await fetch("http://192.168.1.105:3001/ubicacion");
+        const res = await fetch("http://192.168.1.31:3001/ubicacion");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
           //this.ubicaciones = datos.respuesta.respuesta;
           this.ubicaciones = datos.respuesta.respuesta.map((ubi) => [ubi.descrip]);
-          console.log(datos.respuesta.respuesta);
+          //console.log(datos.respuesta.respuesta);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -318,17 +398,37 @@ export default {
     /* Mostrar los datos de la tabla*/
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.105:3001/actividades");
+        const res = await fetch("http://192.168.1.31:3001/actividades");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
           this.actividad = datos.respuesta.respuesta;
-          console.log(datos.respuesta.respuesta);
+          //console.log(datos.respuesta.respuesta);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
+    },
+
+    /* Mostrar material */
+    async mostrarproduc() {
+      const famil = this.formData.familias;
+      //console.log(famil);
+      try {
+        const res = await fetch( `http://192.168.1.31:3001/material`);
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          //this.ubicaciones = datos.respuesta.respuesta;
+          const datosFam = datos.respuesta.respuesta.filter((mate) => mate.familia===famil);
+          this.productos = datosFam.map((produc) => [produc.producto])
+          //console.log(datosFam);
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      } 
     },
 
     /* Abre el formulario de actualizar */
@@ -342,7 +442,7 @@ export default {
 
     /* Enviar formulario de actividades */
     async submitForm() {
-      const res = await fetch("http://192.168.1.105:3001/insertarActif", {
+      const res = await fetch("http://192.168.1.31:3001/insertarActif", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -366,9 +466,35 @@ export default {
     },
     /* ------------------------------------------------------------ */
 
+    /* Enviar formulario de material */
+    async submitFormAdd() {
+      const res = await fetch("http://192.168.1.31:3001/insertarMaterial", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.formDataAdd),
+      });
+      const datos = await res.json();
+      if (res.status === 400) {
+        this.alerta = true;
+        //this.Titulo = "Error";
+        this.Titulo = "¡Upss!";
+        this.Mensaje =
+          "Parece que existen campos vacíos, válida la información nuevamente";
+      } else {
+        this.alerta = true;
+        this.Titulo = datos.mensaje;
+        this.Mensaje = "";
+        this.limpiarFormularioAdd();
+        this.addMaterial = false;
+        this.mostrarproduc();
+      }
+    },
+    /* ------------------------------------------------------------ */
     /* Api que actualiza los datos  de la tabla */
     async actualizaracti() {
-      const res = await fetch("http://192.168.1.105:3001/actualizaractivi", {
+      const res = await fetch("http://192.168.1.31:3001/actualizaractivi", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -398,6 +524,34 @@ export default {
       this.formData.actividad = "";
       this.formData.hora = "";
       this.formData.minutos = "";
+      this.formData.familias = "";
+      this.formData.productos = "";
+      this.opcionSeleccionada = "";
+      this.medibles = false;
+    },
+    limpiarFormularioAdd() {
+      this.formDataAdd.fam= "";
+      this.formDataAdd.produc = "";
+    },
+    limpiarselecion(){
+      this.formData.kg = "";
+      this.formData.familias = "";
+      this.formData.productos = "";
+    },
+
+    /* SI TIENE DIAS DE CREDITO */
+    datoSeleccionado() {
+      if (this.opcionSeleccionada === "si") {
+        this.formData.unidad = "SI";
+        this.medibles = true;
+      } else {
+        if (this.opcionSeleccionada === "no") {
+          this.formData.unidad = "NO";
+          this.medibles = false;
+          this.limpiarselecion();
+          this.mostrarproduc();
+        }
+      }
     },
   },
 };

@@ -239,7 +239,7 @@ export default {
   methods: {
     async mostrarubi(){
       try {
-        const res = await fetch("http://192.168.1.105:3001/ubicacion");
+        const res = await fetch("http://192.168.1.31:3001/ubicacion");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -300,7 +300,7 @@ export default {
     async submitForm() {
       this.datoNuevo.fabricacion = this.fecha;
       console.log(this.datoNuevo.tipoAct);
-      const res = await fetch("http://192.168.1.105:3001/insertarMante", {
+      const res = await fetch("http://192.168.1.31:3001/insertarMante", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -308,6 +308,7 @@ export default {
         body: JSON.stringify(this.datoNuevo),
       });
       const datos = await res.json();
+      console.log(datos);
       if(res.status === 400){
         this.alerta = true;
         this.Titulo = "¡Upss!";
@@ -318,13 +319,13 @@ export default {
         this.alerta = true;
         //this.Titulo = "El ID del activo es: ";
         this.Titulo = "Id del activo:";
-        this.Mensaje = datos.respuestaMante.mensaje;
+        this.Mensaje = datos.mensaje;
         this.limpiarFormulario();
         this.contmat= false;
         this.infra= false;
         this.maqui= false;
       } 
-      console.log(datos);
+      //console.log(datos.respuestaMante.mensaje);
       
     },
     limpiarFormulario() {

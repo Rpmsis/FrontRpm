@@ -39,7 +39,7 @@
           </v-tooltip>
         </template>
       </v-data-table>
-      <v-btn icon @click="insertprove = true" style="margin-left: 15px; margin-top: 5px">
+      <v-btn icon @click="(insertprove = true),siguientef()" style="margin-left: 15px; margin-top: 5px">
         <v-icon style="font-size: 50px">mdi-plus-circle theme--dark green--text</v-icon>
       </v-btn>
 
@@ -50,7 +50,7 @@
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn icon @click="(insertprove = false), limpiarFormulario()">
+                <v-btn icon @click="(insertprove=false),siguientef(), limpiarFormulario()">
                   <v-icon style="font-size: 30px"
                     >mdi-close theme--dark red--text</v-icon
                   ></v-btn
@@ -58,154 +58,340 @@
               </v-card-actions>
               <v-divider></v-divider>
               <v-divider></v-divider>
+
               <v-form class="mt-7" @submit.prevent="submitForm">
-                <!-- row 1: nombre, email -->
-                <v-row>
-                  <v-col cols="12" md="8">
-                    <v-text-field
-                      v-model="formData.nombre"
-                      type="text"
-                      label="Nombre completo"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-text-field
-                      v-model="formData.email"
-                      type="email"
-                      label="Correo electrónico"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
+                <div>
+                  <h4 v-show="caja1">DATOS DEL SOCIO COMERCIAL:</h4>
+                  <!-- row 1: nombre, email -->
+                  <v-row v-show="caja1">
+                    <v-col cols="12" md="6">
+                      <v-text-field
+                        v-model="formData.nombre"
+                        type="text"
+                        label="Nombre completo"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.email"
+                        type="email"
+                        label="Correo electrónico"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.rfc"
+                        type="text"
+                        :counter="13"
+                        label="RFC o ID FISCAL"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
 
-                <!-- row 2: rfc,celular, tel,  -->
-                <v-row>
-                  <v-col cols="12" md="4">
-                    <v-text-field
-                      v-model="formData.rfc"
-                      type="text"
-                      label="RFC o ID FISCAL"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-text-field
-                      v-model="formData.movil"
-                      type="text"
-                      label="Celular"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-text-field
-                      v-model="formData.tel"
-                      type="text"
-                      label="Teléfono"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
+                  <!-- row 2: rfc,celular, tel,  -->
+                  <v-row v-show="caja1">
+                    <v-col cols="12" md="6">
+                      <v-text-field
+                        v-model="formData.rsocial"
+                        type="text"
+                        label="DENOMINACIÓN O RAZON SOCIAL"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.movil"
+                        type="text"
+                        label="Celular"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.tel"
+                        type="text"
+                        label="Teléfono"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
 
-                <!-- row 3: rsocial, rfiscal   -->
-                <v-row>
-                  <v-col cols="12" md="6">
-                    <v-text-field
-                      v-model="formData.rsocial"
-                      type="text"
-                      label="DENOMINACIÓN O RAZON SOCIAL"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <v-text-field
-                      v-model="formData.rfiscal"
-                      type="text"
-                      label="RÉGIMEN FISCAL"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
+                  <!-- row 3: rsocial, rfiscal   -->
+                  <v-row v-show="caja1">
+                    <v-col cols="12" md="4">
+                      <v-select
+                        :items="rfiscal"
+                        v-model="formData.rfiscal"
+                        label="RÉGIMEN FISCAL"
+                        filled
+                      >
+                      </v-select>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-select
+                        :items="cfdi"
+                        v-model="formData.cfdi"
+                        label="USO DE CFDI"
+                        filled
+                      >
+                      </v-select>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-select
+                        :items="pago"
+                        v-model="formData.fpago"
+                        label="FORMA DE PAGO"
+                        filled
+                      >
+                      </v-select>
+                    </v-col>
+                  </v-row>
+                  <v-row v-show="caja1">
+                    <v-col cols="12" md="6"></v-col>
+                    <v-col cols="12" md="6">
+                      <center>
+                        <v-btn
+                          class="btnEnviar"
+                          @click="siguiente()"
+                          outlined
+                          color="info"
+                          >Siguiente</v-btn
+                        >
+                      </center>
+                    </v-col>
+                  </v-row>
+                </div>
 
-                <!-- row 4:  cdfi, fpago  -->
-                <v-row>
-                  <v-col cols="12" md="6">
-                    <v-select
-                      :items="cfdi"
-                      v-model="formData.formData.cfdi"
-                      label="USO DE CFDI"
-                      filled
-                    >
-                    </v-select>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <v-select
-                      :items="pago"
-                      v-model="formData.fpago"
-                      label="FORMA DE PAGO"
-                      filled
-                    >
-                    </v-select>
-                  </v-col>
-                </v-row>
+                <div>
+                  <h4 v-show="caja2">DIRECCIÓN DEL SOCIO COMERCIAL:</h4>
+                  <!-- row 5: CPOSTAL, MUNICIPIO, CIUDAD  -->
+                  <v-row v-show="caja2">
+                    <v-col cols="12" md="2">
+                      <v-text-field
+                        v-model="formData.cpostal"
+                        type="number"
+                        label="CÓDIGO POSTAL"
+                        :counter="5"
+                        @change="mostrarCP(formData.cpostal)"
+                        filled
+                        color="red"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.municipio"
+                        type="text"
+                        label="MUNICIPIO/DELEGACIÓN"
+                        filled
+                        disabled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.ciudad"
+                        type="text"
+                        label="CIUDAD/ESTADO"
+                        filled
+                        disabled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-select
+                        v-show="coloni"
+                        :items="colonias"
+                        v-model="formData.colonia"
+                        label="COLONIA"
+                        filled
+                      >
+                      </v-select>
+                    </v-col>
+                  </v-row>
+                  <!-- row 6:  colonia, ninten  -->
+                  <v-row v-show="caja2">
+                    <v-col cols="12" md="6">
+                      <v-text-field
+                        v-model="formData.calle"
+                        type="text"
+                        label="CALLE, AVENIDA O VÍA"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.next"
+                        type="text"
+                        label="No.EXT"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.ninten"
+                        type="text"
+                        label="No.INT"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row v-show="caja2">
+                    <v-col cols="12" md="6">
+                      <center>
+                        <v-btn class="btnEnviar" @click="atras()" outlined color="red"
+                          >Atras</v-btn
+                        >
+                      </center>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <center>
+                        <v-btn
+                          class="btnEnviar"
+                          @click="siguiente2()"
+                          outlined
+                          color="info"
+                          >Siguiente</v-btn
+                        >
+                      </center>
+                    </v-col>
+                  </v-row>
+                </div>
 
-                <!-- row 5:  calle, next  -->
-                <v-row>
-                  <v-col cols="12" md="8">
-                    <v-text-field
-                      v-model="formData.calle"
-                      type="text"
-                      label="CALL, AVENIDA O VÍA"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-text-field
-                      v-model="formData.next"
-                      type="text"
-                      label="No.EXT"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
+                <div>
+                  <!-- row 8:  CNOMBRE, CEMAIL -->
+                  <h4 v-show="caja3">
+                    DEPARTAMENTO DE CONTABILIDAD (Para envío de comprobantes de pago,
+                    facturas, estados de cuentay/o aclaraciones):
+                  </h4>
+                  <v-row v-show="caja3" class="mt-3">
+                    <v-col cols="12" md="6">
+                      <v-text-field
+                        v-model="formData.cnombre"
+                        type="text"
+                        label="NOMBRE COMPLETO"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-text-field
+                        v-model="formData.beneficiario"
+                        type="text"
+                        label="BENEFICIARIO"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <!-- row 10:  BENEFICIARIO, NOMBANCO -->
+                  <v-row v-show="caja3">
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.cemail"
+                        type="text"
+                        label="E-MAIL"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.cmovil"
+                        type="text"
+                        label="MÓVIL"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.nombanco"
+                        type="text"
+                        label="NOMBRE DEL BANCO"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.ctel"
+                        type="text"
+                        label="TEL. Y/O EXTENSIÓN"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
 
-                <!-- row 6:  colonia, ninten  -->
-                <v-row>
-                  <v-col cols="12" md="8">
-                    <v-text-field
-                      v-model="formData.colonia"
-                      type="text"
-                      label="COLONIA"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-text-field
-                      v-model="formData.ninten"
-                      type="text"
-                      label="No.INT"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-
-                <!-- row 7:    -->
-                <v-row>
-                  <v-col cols="12" md="4">
-                    <v-select
-                      :items="municipio"
-                      v-model="formData.municipio"
-                      label="MUNICIPIO/DELEGACIÓN"
-                      filled
-                    >
-                    </v-select>
-                  </v-col>
-                </v-row>
-                <center>
-                  <v-btn class="btnEnviar" type="submit" block outlined color="success"
-                    >Enviar</v-btn
-                  >
-                </center>
+                  <!-- row 11: CLABE, CUENTA -->
+                  <v-row v-show="caja3">
+                    <v-col cols="12" md="3">
+                      <h4>APLICABILIDAD DE CREDITO</h4>
+                      <v-radio-group v-model="opcionSeleccionada">
+                        <v-radio
+                          @click="datoSeleccionado()"
+                          label="Si"
+                          value="si"
+                        ></v-radio>
+                        <v-radio
+                          @click="datoSeleccionado()"
+                          label="No"
+                          value="no"
+                        ></v-radio>
+                      </v-radio-group>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.clabe"
+                        type="text"
+                        label="CLABE INTERBANCARIA"
+                        :counter="18"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.cuenta"
+                        type="text"
+                        label="CUENTA INTERBANCARIA"
+                        :counter="18"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.refpago"
+                        type="text"
+                        label="REFERENCIA DE PAGOS"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <!-- row 12: REFPAGO, CREDITO, CDIAS  -->
+                  <v-row v-show="caja3">
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formData.cdias"
+                        type="text"
+                        label="DÍAS DE CREDITO"
+                        v-show="dias"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-divider></v-divider>
+                  <v-row v-show="caja3">
+                    <v-col cols="12" md="6">
+                      <center>
+                        <v-btn class="btnEnviar" @click="atras2()" outlined color="red"
+                          >Atras</v-btn
+                        >
+                      </center>
+                    </v-col>
+                    <v-col cols="12" md="6"
+                      ><center>
+                        <v-btn class="btnEnviar" type="submit" outlined color="success"
+                          >Enviar</v-btn
+                        >
+                      </center>
+                    </v-col>
+                  </v-row>
+                </div>
               </v-form>
             </v-card>
           </v-dialog>
@@ -215,7 +401,7 @@
       <!-- Formulario actualizar-->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="proveactualizar" max-width="800px">
+          <v-dialog v-model="proveactualizar" max-width="1200px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -228,52 +414,329 @@
               <v-divider></v-divider>
               <v-divider></v-divider>
               <v-form class="mt-5" @submit.prevent="actualizaracti">
-                <!-- row 1: tipo, proveedor, folio OC -->
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-select
-                      :items="proveedores"
-                      v-model="formDataact.proveedor"
-                      label="Proveedor"
-                      filled
-                    >
-                    </v-select>
-                  </v-col>
-                </v-row>
+                <div>
+                  <h4 v-show="caja1">DATOS DEL SOCIO COMERCIAL:</h4>
+                  <!-- row 1: nombre, email -->
+                  <v-row v-show="caja1">
+                    <v-col cols="12" md="6">
+                      <v-text-field
+                        v-model="formDataact.nombre"
+                        type="text"
+                        label="Nombre completo"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.email"
+                        type="email"
+                        label="Correo electrónico"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.rfc"
+                        type="text"
+                        :counter="13"
+                        label="RFC o ID FISCAL"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
 
-                <!-- row 2: fecha adquisicion, fecha alta, monto, serie -->
-                <v-row>
-                  <v-col cols="12" md="4">
-                    <v-text-field
-                      v-model="formDataact.monto"
-                      prefix="$"
-                      label="Monto"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-text-field
-                      v-model="formDataact.Numserie"
-                      type="text"
-                      label="Número de serie"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-text-field
-                      v-model="formDataact.folioOC"
-                      type="text"
-                      label="Folio de orden de compra"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
+                  <!-- row 2: rfc,celular, tel,  -->
+                  <v-row v-show="caja1">
+                    <v-col cols="12" md="6">
+                      <v-text-field
+                        v-model="formDataact.rsocial"
+                        type="text"
+                        label="DENOMINACIÓN O RAZON SOCIAL"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.movil"
+                        type="text"
+                        label="Celular"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.tel"
+                        type="text"
+                        label="Teléfono"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
 
-                <center>
-                  <v-btn block outlined color="orange" class="btnEnviar" type="submit"
-                    >Actualizar</v-btn
-                  >
-                </center>
+                  <!-- row 3: rsocial, rfiscal   -->
+                  <v-row v-show="caja1">
+                    <v-col cols="12" md="4">
+                      <v-select
+                        :items="rfiscal"
+                        v-model="formDataact.rfiscal"
+                        label="RÉGIMEN FISCAL"
+                        filled
+                      >
+                      </v-select>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-select
+                        :items="cfdi"
+                        v-model="formDataact.cfdi"
+                        label="USO DE CFDI"
+                        filled
+                      >
+                      </v-select>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-select
+                        :items="pago"
+                        v-model="formDataact.fpago"
+                        label="FORMA DE PAGO"
+                        filled
+                      >
+                      </v-select>
+                    </v-col>
+                  </v-row>
+                  <v-row v-show="caja1">
+                    <v-col cols="12" md="6"></v-col>
+                    <v-col cols="12" md="6">
+                      <center>
+                        <v-btn
+                          class="btnEnviar"
+                          @click="siguiente()"
+                          outlined
+                          color="info"
+                          >Siguiente</v-btn
+                        >
+                      </center>
+                    </v-col>
+                  </v-row>
+                </div>
+
+                <div>
+                  <h4 v-show="caja2">DIRECCIÓN DEL SOCIO COMERCIAL:</h4>
+                  <!-- row 5: CPOSTAL, MUNICIPIO, CIUDAD  -->
+                  <v-row v-show="caja2">
+                    <v-col cols="12" md="2">
+                      <v-text-field
+                        v-model="formDataact.cpostal"
+                        type="number"
+                        label="CÓDIGO POSTAL"
+                        :counter="5"
+                        filled
+                        color="red"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.municipio"
+                        type="text"
+                        label="MUNICIPIO/DELEGACIÓN"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.ciudad"
+                        type="text"
+                        label="CIUDAD/ESTADO"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-text-field
+                        v-model="formDataact.colonia"
+                        type="text"
+                        label="COLONIA"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <!-- row 6:  colonia, ninten  -->
+                  <v-row v-show="caja2">
+                    <v-col cols="12" md="6">
+                      <v-text-field
+                        v-model="formDataact.calle"
+                        type="text"
+                        label="CALLE, AVENIDA O VÍA"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.next"
+                        type="text"
+                        label="No.EXT"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.ninten"
+                        type="text"
+                        label="No.INT"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row v-show="caja2">
+                    <v-col cols="12" md="6">
+                      <center>
+                        <v-btn class="btnEnviar" @click="atras()" outlined color="red"
+                          >Atras</v-btn
+                        >
+                      </center>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <center>
+                        <v-btn
+                          class="btnEnviar"
+                          @click="siguiente2()"
+                          outlined
+                          color="info"
+                          >Siguiente</v-btn
+                        >
+                      </center>
+                    </v-col>
+                  </v-row>
+                </div>
+
+                <div>
+                  <!-- row 8:  CNOMBRE, CEMAIL -->
+                  <h4 v-show="caja3">
+                    DEPARTAMENTO DE CONTABILIDAD (Para envío de comprobantes de pago,
+                    facturas, estados de cuentay/o aclaraciones):
+                  </h4>
+                  <v-row v-show="caja3" class="mt-3">
+                    <v-col cols="12" md="6">
+                      <v-text-field
+                        v-model="formDataact.cnombre"
+                        type="text"
+                        label="NOMBRE COMPLETO"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-text-field
+                        v-model="formDataact.beneficiario"
+                        type="text"
+                        label="BENEFICIARIO"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <!-- row 10:  BENEFICIARIO, NOMBANCO -->
+                  <v-row v-show="caja3">
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.cemail"
+                        type="text"
+                        label="E-MAIL"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.cmovil"
+                        type="text"
+                        label="MÓVIL"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.nombanco"
+                        type="text"
+                        label="NOMBRE DEL BANCO"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.ctel"
+                        type="text"
+                        label="TEL. Y/O EXTENSIÓN"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <!-- row 11: CLABE, CUENTA -->
+                  <v-row v-show="caja3">
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.credito"
+                        type="text"
+                        label="APLICABILIDAD DE CREDITO"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.clabe"
+                        type="text"
+                        label="CLABE INTERBANCARIA"
+                        :counter="18"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.cuenta"
+                        type="text"
+                        label="CUENTA INTERBANCARIA"
+                        :counter="18"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.refpago"
+                        type="text"
+                        label="REFERENCIA DE PAGOS"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <!-- row 12: REFPAGO, CREDITO, CDIAS  -->
+                  <v-row v-show="caja3">
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="formDataact.cdias"
+                        type="text"
+                        label="DÍAS DE CREDITO"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-divider></v-divider>
+                  <v-row v-show="caja3">
+                    <v-col cols="12" md="6">
+                      <center>
+                        <v-btn class="btnEnviar" @click="atras2()" outlined color="red"
+                          >Atras</v-btn
+                        >
+                      </center>
+                    </v-col>
+                    <v-col cols="12" md="6"
+                      ><center>
+                        <v-btn
+                          outlined
+                          color="orange"
+                          class="btnEnviar"
+                          type="submit"
+                          >Guardar</v-btn
+                        >
+                      </center>
+                    </v-col>
+                  </v-row>
+                </div>
               </v-form>
             </v-card>
           </v-dialog>
@@ -314,15 +777,79 @@ export default {
       Mensaje: "",
       Titulo: "",
       search: "",
+      caja1: true,
+      caja2: false,
+      caja3: false,
       datosproveedores: [],
+      cfdi: [
+        "Adquisición de mercancías",
+        "Devoluciones, descuentos o bonificaciones",
+        "Gastos en general",
+        "Construcciones",
+        "Mobiliario y equipo de oficina por inversiones",
+        "Equipo de transporte",
+        "Equipo de computo y accesorios",
+        "Dados, troqueles, moldes, matrices y herramental",
+        "Comunicaciones telefónicas",
+        "Comunicaciones satelitales",
+        "Otra maquinaria y equipo",
+        "Honorarios médicos, dentales y gastos hospitalarios",
+        "Gastos médicos por incapacidad o discapacidad",
+        "Gastos funerales",
+        "Donativos",
+        "Intereses reales efectivamente pagados por créditos hipotecarios (casa habitación)",
+        "Aportaciones voluntarias al SAR",
+        "Primas por seguros de gastos médicos",
+        "Gastos de transportación escolar obligatoria",
+        "Depósitos en cuentas para el ahorro, primas que tengan como base planes de pensiones",
+        "Pagos por servicios educativos (colegiaturas)",
+        "Sin efectos fiscales",
+        "Pagos",
+        "Nómina",
+      ],
+      pago: ["PUE", "PPD"],
+      rfiscal: [
+        "General de Ley Personas Morales",
+        "Personas Morales con Fines no Lucrativos",
+        "Sueldos y Salarios e Ingresos Asimilados a Salarios",
+        "Arrendamiento",
+        "Demás ingresos",
+        "Consolidación",
+        "Residentes en el Extranjero sin Establecimiento Permanente en México",
+        "Ingresos por Dividendos (socios y accionistas)",
+        "Personas Físicas con Actividades Empresariales y Profesionales",
+        "Ingresos por intereses",
+        "Sin obligaciones fiscales",
+        "Sociedades Cooperativas de Producción que optan por diferir sus ingresos",
+        "Incorporación Fiscal",
+        "Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras",
+        "Opcional para Grupos de Sociedades",
+        "Coordinados",
+        "Hidrocarburos",
+        "Régimen de Enajenación o Adquisición de Bienes",
+        "De los Regímenes Fiscales Preferentes y de las Empresas Multinacionales",
+        "Enajenación de acciones en bolsa de valores",
+        "Régimen de los ingresos por obtención de premios",
+        "Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas",
+        "Régimen Simplificado de Confianza",
+      ],
+      municipios: [],
+      estados: [],
+      dias: false,
       insertprove: false,
       proveactualizar: false,
+      coloni: false,
       proveedores: ["Ejemplo1", "Ejemplo2", "Ejemplo3"],
       headers: [
-        { text: "Id del activo ", value: "folioInsumos" },
+        { text: "Id del activo ", value: "foliorpm" },
         { text: "Nombre completo", value: "nombre" },
+        { text: "Móvil", value: "movil" },
+        { text: "Télefono", value: "tel" },
+        { text: "Código postal", value: "cpostal" },
         { text: "Editar", value: "actions", sortable: false },
       ],
+      opcionSeleccionada: "",
+      colonias: [],
       formData: {
         nombre: "",
         email: "",
@@ -353,7 +880,7 @@ export default {
         cdias: "",
       },
       formDataact: {
-        idproveedor: "",
+        idusuarioprov: "",
         nombre: "",
         email: "",
         movil: "",
@@ -385,26 +912,40 @@ export default {
     };
   },
   mounted() {
-    this.fechaAlta = this.fechaMinima;
-    this.fechaAdqui = this.fechaMinima;
     this.mostrar();
   },
 
-  computed: {
-    fechaMinima() {
-      // Obtener la fecha actual
-      const fechaAct = new Date();
-      const year = fechaAct.getFullYear();
-      const month = String(fechaAct.getMonth() + 1).padStart(2, "0");
-      const day = String(fechaAct.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    },
-  },
+  computed: {},
   methods: {
+    async siguientef() {
+      this.caja1 = true;
+      this.caja3 = false;
+      this.caja2 = false;
+    },
+    async siguiente() {
+      this.caja1 = false;
+      this.caja3 = false;
+      this.caja2 = true;
+    },
+    async siguiente2() {
+      this.caja1 = false;
+      this.caja3 = true;
+      this.caja2 = false;
+    },
+    async atras() {
+      this.caja1 = true;
+      this.caja3 = false;
+      this.caja2 = false;
+    },
+    async atras2() {
+      this.caja1 = false;
+      this.caja3 = false;
+      this.caja2 = true;
+    },
     /* Mostrar los datos de la tabla*/
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.105:3001/proveedores");
+        const res = await fetch("http://192.168.1.82:3001/Usuarioprov");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -417,6 +958,34 @@ export default {
       }
     },
 
+    /* MOSTRAR DATOS DEL CODIGO POSTAL */
+    async mostrarCP(cp) {
+      console.log(cp);
+      try {
+        const res = await fetch(`http://192.168.1.82:3001/codigo_postal?cp=${cp}`);
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+          this.alerta = true;
+          this.Titulo = "¡Upss!";
+          this.Mensaje = "El código postal es incorrecto";
+        } else {
+          if (
+            datos.datosback.codigo_postal.colonias &&
+            datos.datosback.codigo_postal.municipio &&
+            datos.datosback.codigo_postal.estado
+          ) {
+            this.colonias = datos.datosback.codigo_postal.colonias;
+            this.formData.municipio = datos.datosback.codigo_postal.municipio;
+            this.formData.ciudad = datos.datosback.codigo_postal.estado;
+            this.coloni = true;
+            //console.log(datos.datosback.codigo_postal);
+          }
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
     /* Abre el formulario de actualizar */
     async actualizar(item) {
       console.log(item);
@@ -427,9 +996,7 @@ export default {
     },
     /* -------------------------------- */
     async submitForm() {
-      this.formData.falta = this.fechaAlta;
-      this.formData.fadqui = this.fechaAdqui;
-      const res = await fetch("http://192.168.1.105:3001/insertarProveedor", {
+      const res = await fetch("http://192.168.1.82:3001/insertarProveedor", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -443,13 +1010,14 @@ export default {
         this.Mensaje =
           "Parece que existen campos vacíos, válida la información nuevamente";
       } else {
-        this.alerta = true;
-        //this.Titulo = "El ID del activo es: ";
-        this.Titulo = "Id del activo:";
-        this.Mensaje = datos.mensaje;
-        this.limpiarFormulario();
-        this.datosproveedores = false;
-        this.mostrar();
+        if (res.status === 200) {
+          /*  this.alerta = true;
+          //this.Titulo = "El ID del activo es: ";
+          this.Titulo = "DATOS GUARDADOS:"; */
+          this.limpiarFormulario();
+          this.siguientef();
+          this.mostrar();
+        }
       }
       console.log(datos);
     },
@@ -457,8 +1025,8 @@ export default {
 
     /* Api que actualiza los datos  de la tabla */
     async actualizaracti() {
-      const res = await fetch("http://192.168.1.105:3001/actualizarInsumos", {
-        method: "PUT",
+      const res = await fetch("http://192.168.1.82:3001/insertarProveedor", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -478,6 +1046,21 @@ export default {
         this.mostrar();
       }
     },
+    /* ------------------------------------------ */
+
+    /* SI TIENE DIAS DE CREDITO */
+    datoSeleccionado() {
+      if (this.opcionSeleccionada === "si") {
+        this.formData.credito = "SI";
+        this.dias = true;
+      } else {
+        if (this.opcionSeleccionada === "no") {
+          this.formData.credito = "NO";
+          this.dias = false;
+        }
+      }
+    },
+
     /* ------------------------------------------ */
 
     limpiarFormulario() {
@@ -525,8 +1108,8 @@ export default {
   padding: 0px 10px 0px 10px;
 }
 .btnEnviar {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   width: 30%;
   font-size: 20px !important;
 }

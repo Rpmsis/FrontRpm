@@ -78,22 +78,28 @@
     "chunkName": "pages/preguntaSeg/mostrarPreg"
   },
   {
-    "name": "SGI-ejejmplo",
-    "path": "/SGI/ejejmplo",
-    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\SGI\\\\ejejmplo.vue",
-    "chunkName": "pages/SGI/ejejmplo"
-  },
-  {
     "name": "SGI-noconformidad",
     "path": "/SGI/noconformidad",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\SGI\\\\noconformidad.vue",
     "chunkName": "pages/SGI/noconformidad"
   },
   {
+    "name": "socioscomerciales-mostrarProv",
+    "path": "/socioscomerciales/mostrarProv",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\socioscomerciales\\\\mostrarProv.vue",
+    "chunkName": "pages/socioscomerciales/mostrarProv"
+  },
+  {
     "name": "socioscomerciales-proveedores",
     "path": "/socioscomerciales/proveedores",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\socioscomerciales\\\\proveedores.vue",
     "chunkName": "pages/socioscomerciales/proveedores"
+  },
+  {
+    "name": "socioscomerciales-provusuario",
+    "path": "/socioscomerciales/provusuario",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\socioscomerciales\\\\provusuario.vue",
+    "chunkName": "pages/socioscomerciales/provusuario"
   },
   {
     "name": "index",

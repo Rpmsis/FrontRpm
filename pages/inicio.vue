@@ -10,11 +10,26 @@
                   <h4 class="modulo">Tickets de no conformidad</h4>
               </a>
             </v-card> -->
-            <v-card class="v-sheet theme--dark">
+            <!-- <v-card class="v-sheet theme--dark">
               <a href="/activos/ubicacion">
                   <h4 class="modulo">Alta de ubicaciones</h4>
               </a>
-            </v-card> 
+            </v-card>  -->
+            <v-card class="v-sheet theme--dark">
+              <a href="/socioscomerciales/provusuario">
+                  <h4 class="modulo">Usuario proveedor</h4>
+              </a>
+            </v-card>
+            <v-card class="v-sheet theme--dark">
+              <a href="/socioscomerciales/proveedores">
+                  <h4 class="modulo">Aprobar proveedores</h4>
+              </a>
+            </v-card>
+            <v-card class="v-sheet theme--dark">
+              <a href="/socioscomerciales/mostrarProv">
+                  <h4 class="modulo">Mostrar proveedores</h4>
+              </a>
+            </v-card>
             <v-card class="v-sheet theme--dark">
               <a href="/activos/insumos">
                   <h4 class="modulo" >Activos de insumos</h4>

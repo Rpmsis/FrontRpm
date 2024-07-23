@@ -143,7 +143,7 @@ export default {
     /* Mostrar los datos de la tabla*/
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.105:3001/mantenimiento");
+        const res = await fetch("http://192.168.1.82:3001/mantenimiento");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -159,7 +159,7 @@ export default {
     /* Mostrar ubicación */
     async mostrarubi() {
       try {
-        const res = await fetch("http://192.168.1.105:3001/ubicacion");
+        const res = await fetch("http://192.168.1.82:3001/ubicacion");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -183,7 +183,7 @@ export default {
 
     /* Actualizar ubicación de mantt */
     async actualiarDes() {
-      const res = await fetch("http://192.168.1.105:3001/actualizarmantt", {
+      const res = await fetch("http://192.168.1.82:3001/actualizarmantt", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

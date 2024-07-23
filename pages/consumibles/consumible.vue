@@ -12,7 +12,7 @@
       </v-card-title>
       <v-data-table
         :headers="headers"
-        :items="actividad"
+        :items="consumibles"
         :search="search"
         :footer-props="{
           'items-per-page-options': [5, 10, 20, 30, 40, 50],
@@ -39,7 +39,7 @@
           </v-tooltip>
         </template>
       </v-data-table>
-      <v-btn icon @click="acti = true" style="margin-left: 15px; margin-top: 5px">
+      <v-btn icon @click="consu = true" style="margin-left: 15px; margin-top: 5px">
         <v-icon style="font-size: 50px">mdi-plus-circle theme--dark green--text</v-icon>
       </v-btn>
 
@@ -61,31 +61,83 @@
               <v-form class="mt-5" @submit.prevent="submitForm">
                 <!-- row 1: tipo, proveedor, folio OC -->
                 <v-row>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="3">
                     <v-select
                       v-model="formData.unidadmedida"
                       :items="unidadesmedida"
-                      label="Unidad de medida"
+                      label="UNIDAD DE MEDIDA"
                       filled
                     ></v-select>
                   </v-col>
 
                   <v-col cols="12" md="4">
-                    <v-text-field
+                    <v-select
                       v-model="formData.tipo"
-                      type="text"
-                      label="Li"
-                    ></v-text-field>
+                      :items="tipoc"
+                      label="TIPO DE CONSUMIBLE"
+                      filled
+                    ></v-select>
                   </v-col>
 
                   <v-col cols="12" md="2">
                     <v-text-field
-                      v-model="formData.minutos"
+                      v-model="formData.enteros"
                       type="number"
-                      label="MINUTOS"
+                      label="KILOS O LITROS"
                       min="1"
-                      max="60"
+                      max="1000"
+                      filled
                     ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="3">
+                    <v-text-field
+                      v-model="formData.fracciones"
+                      type="number"
+                      label="MILILITROS O GRAMOS"
+                      min="1"
+                      max="1000"
+                      filled
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="4">
+                    <v-text-field
+                      v-model="formData.oc"
+                      type="text"
+                      label="ORDEN DE COMPRA"
+                      filled
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-select
+                      :items="prov"
+                      v-model="formData.proveedor"
+                      label="Proveedor"
+                      filled
+                    >
+                    </v-select>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field
+                      v-model="formData.unitario"
+                      type="text"
+                      prefix="$"
+                      label="COSTO UNITARIO"
+                      filled
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="12">
+                    <v-textarea
+                      clear-icon="mdi-close-circle"
+                      label="DESCRIPCIÓN GENERAL DEL CONSUMIBLE..."
+                      clearable
+                      style="border: white"
+                      v-model="formData.descripcion"
+                      filled
+                    ></v-textarea>
                   </v-col>
                 </v-row>
                 <center>
@@ -116,7 +168,7 @@
               <v-divider></v-divider>
               <v-form class="mt-5" @submit.prevent="actualizaracti">
                 <!-- row 1: tipo, proveedor, folio OC -->
-                
+
                 <center>
                   <v-btn block outlined color="orange" class="btnEnviar" type="submit"
                     >Actualizar</v-btn
@@ -163,7 +215,9 @@ export default {
       Mensaje: "",
       Titulo: "",
       consumibles: [],
-      unidadesmedida:["PIEZAS","LITROS", "KILOS"],
+      tipoc: ["PRODUCTOS DE LIMPIEZA", "PAPELERIA", "DE PRODUCCION", "GASOLINA", "GAS", "DISEL", "MANTENIMIENTO", "UNIFORME EPP"],
+      unidadesmedida: ["PIEZAS", "LITROS", "KILOS"],
+      prov: ["Ejemplo1", "Ejemplo2", "Ejemplo3"],
       search: "",
       consu: false,
       consuActualizar: false,
@@ -171,23 +225,25 @@ export default {
         { text: "Id del activo", value: "folioActivo" },
         { text: "Unidad de medida", value: "unidadmedida" },
         { text: "Tipo", value: "tipo" },
-        { text: "Kilos\no\nLitros", 
+        {
+          text: "Kilos\no\nLitros",
           value: "enteros",
           align: "start", // Alineación del texto
-          class: "multi-line-header", // Clase CSS para el estilo 
+          class: "multi-line-header", // Clase CSS para el estilo
         },
-        { text: "Kilogramos o Mililitros", 
+        {
+          text: "Kilogramos o Mililitros",
           value: "enteros",
           align: "start", // Alineación del texto
-          class: "multi-line-header", // Clase CSS para el estilo 
+          class: "multi-line-header", // Clase CSS para el estilo
         },
         { text: "Descripción", value: "descripcion" },
-        { text: "Editar", value: "actions", sortable: false },
+        //{ text: "Editar", value: "actions", sortable: false },
       ],
 
       formData: {
         unidadmedida: "",
-        enteros:"",
+        enteros: "",
         fracciones: "",
         tipo: "",
         descripcion: "",
@@ -195,10 +251,13 @@ export default {
 
       formDataact: {
         id: "",
-        enteros:"",
+        enteros: "",
         fracciones: "",
         tipo: "",
         descripcion: "",
+        oc: "",
+        proveedor: "",
+        unitario:"",
       },
     };
   },
@@ -211,7 +270,7 @@ export default {
     /* Mostrar los datos de la tabla*/
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.105:3001/consumibles");
+        const res = await fetch("http://192.168.1.31:3001/consumibles");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -235,7 +294,7 @@ export default {
 
     /* Enviar formulario de actividades */
     async submitForm() {
-      const res = await fetch("http://192.168.1.105:3001/insertarConsumibles", {
+      const res = await fetch("http://192.168.1.31:3001/insertarConsumibles", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -261,7 +320,7 @@ export default {
 
     /* Api que actualiza los datos  de la tabla */
     async actualizaracti() {
-      const res = await fetch("http://192.168.1.105:3001/actualizarconsu", {
+      const res = await fetch("http://192.168.1.31:3001/actualizarconsu", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -287,10 +346,10 @@ export default {
 
     limpiarFormulario() {
       this.formData.unidadmedida = "";
-      this.formData.enteros="";
-      this.formData.fracciones= "";
-      this.formData.tipo="";
-      this.formData.descripcion="";
+      this.formData.enteros = "";
+      this.formData.fracciones = "";
+      this.formData.tipo = "";
+      this.formData.descripcion = "";
     },
   },
 };

@@ -17,9 +17,10 @@ const _35847f64 = () => interopDefault(import('..\\pages\\activos\\ubicacion.vue
 const _590682d1 = () => interopDefault(import('..\\pages\\consumibles\\consumible.vue' /* webpackChunkName: "pages/consumibles/consumible" */))
 const _4961270a = () => interopDefault(import('..\\pages\\preguntaSeg\\formulario.vue' /* webpackChunkName: "pages/preguntaSeg/formulario" */))
 const _76579c6a = () => interopDefault(import('..\\pages\\preguntaSeg\\mostrarPreg.vue' /* webpackChunkName: "pages/preguntaSeg/mostrarPreg" */))
-const _ffe58dba = () => interopDefault(import('..\\pages\\SGI\\ejejmplo.vue' /* webpackChunkName: "pages/SGI/ejejmplo" */))
 const _3b104d80 = () => interopDefault(import('..\\pages\\SGI\\noconformidad.vue' /* webpackChunkName: "pages/SGI/noconformidad" */))
+const _fc00e0d8 = () => interopDefault(import('..\\pages\\socioscomerciales\\mostrarProv.vue' /* webpackChunkName: "pages/socioscomerciales/mostrarProv" */))
 const _3356acd7 = () => interopDefault(import('..\\pages\\socioscomerciales\\proveedores.vue' /* webpackChunkName: "pages/socioscomerciales/proveedores" */))
+const _0e7bf7f0 = () => interopDefault(import('..\\pages\\socioscomerciales\\provusuario.vue' /* webpackChunkName: "pages/socioscomerciales/provusuario" */))
 const _3935de50 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages/index" */))
 
 const emptyFn = () => {}
@@ -86,17 +87,21 @@ export const routerOptions = {
     component: _76579c6a,
     name: "preguntaSeg-mostrarPreg"
   }, {
-    path: "/SGI/ejejmplo",
-    component: _ffe58dba,
-    name: "SGI-ejejmplo"
-  }, {
     path: "/SGI/noconformidad",
     component: _3b104d80,
     name: "SGI-noconformidad"
   }, {
+    path: "/socioscomerciales/mostrarProv",
+    component: _fc00e0d8,
+    name: "socioscomerciales-mostrarProv"
+  }, {
     path: "/socioscomerciales/proveedores",
     component: _3356acd7,
     name: "socioscomerciales-proveedores"
+  }, {
+    path: "/socioscomerciales/provusuario",
+    component: _0e7bf7f0,
+    name: "socioscomerciales-provusuario"
   }, {
     path: "/",
     component: _3935de50,
