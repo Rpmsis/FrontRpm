@@ -8,6 +8,7 @@ const _e3df6410 = () => interopDefault(import('..\\pages\\ayuda.vue' /* webpackC
 const _74f9e757 = () => interopDefault(import('..\\pages\\inicio.vue' /* webpackChunkName: "pages/inicio" */))
 const _1ace9570 = () => interopDefault(import('..\\pages\\tabla.vue' /* webpackChunkName: "pages/tabla" */))
 const _024ce13a = () => interopDefault(import('..\\pages\\actividades\\actForaneas.vue' /* webpackChunkName: "pages/actividades/actForaneas" */))
+const _2c0b7c1e = () => interopDefault(import('..\\pages\\actividades\\asignacion.vue' /* webpackChunkName: "pages/actividades/asignacion" */))
 const _64883dae = () => interopDefault(import('..\\pages\\activos\\activosFijos.vue' /* webpackChunkName: "pages/activos/activosFijos" */))
 const _de6c314e = () => interopDefault(import('..\\pages\\activos\\insumos.vue' /* webpackChunkName: "pages/activos/insumos" */))
 const _4ea36e16 = () => interopDefault(import('..\\pages\\activos\\mantenimiento.vue' /* webpackChunkName: "pages/activos/mantenimiento" */))
@@ -50,6 +51,10 @@ export const routerOptions = {
     path: "/actividades/actForaneas",
     component: _024ce13a,
     name: "actividades-actForaneas"
+  }, {
+    path: "/actividades/asignacion",
+    component: _2c0b7c1e,
+    name: "actividades-asignacion"
   }, {
     path: "/activos/activosFijos",
     component: _64883dae,

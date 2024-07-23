@@ -67,7 +67,12 @@
             </v-card> -->
             <v-card class="v-sheet theme--dark">
               <a href="/actividades/actForaneas">
-                  <h4 class="modulo">Actividades foraneas</h4>
+                  <h4 class="modulo">Alta de actividades</h4>
+              </a>
+            </v-card>
+            <v-card class="v-sheet theme--dark">
+              <a href="/actividades/asignacion">
+                  <h4 class="modulo">Asignacion de actvidades</h4>
               </a>
             </v-card>
             <v-card class="v-sheet theme--dark">

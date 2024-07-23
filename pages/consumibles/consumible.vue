@@ -61,16 +61,17 @@
               <v-form class="mt-5" @submit.prevent="submitForm">
                 <!-- row 1: tipo, proveedor, folio OC -->
                 <v-row>
-                  <v-col cols="12" md="3">
+                  <v-col cols="12" md="2">
                     <v-select
                       v-model="formData.unidadmedida"
                       :items="unidadesmedida"
-                      label="UNIDAD DE MEDIDA"
+                      label="UNI - MEDIDA"
+                      @change="medidaP"
                       filled
                     ></v-select>
                   </v-col>
 
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="3">
                     <v-select
                       v-model="formData.tipo"
                       :items="tipoc"
@@ -79,7 +80,7 @@
                     ></v-select>
                   </v-col>
 
-                  <v-col cols="12" md="2">
+                  <v-col cols="12" md="2" v-show="kilomg">
                     <v-text-field
                       v-model="formData.enteros"
                       type="number"
@@ -89,13 +90,22 @@
                       filled
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="3">
+                  <v-col cols="12" md="3" v-show="kilomg">
                     <v-text-field
                       v-model="formData.fracciones"
                       type="number"
                       label="MILILITROS O GRAMOS"
                       min="1"
                       max="1000"
+                      filled
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="2" v-show="numpiezas">
+                    <v-text-field
+                      v-model="formData.canestandar"
+                      type="number"
+                      label="NUM. PIEZAS"
+                      min="1"
                       filled
                     ></v-text-field>
                   </v-col>
@@ -120,7 +130,7 @@
                   </v-col>
                   <v-col cols="12" md="4">
                     <v-text-field
-                      v-model="formData.unitario"
+                      v-model="formData.costo"
                       type="text"
                       prefix="$"
                       label="COSTO UNITARIO"
@@ -212,10 +222,12 @@ export default {
   data() {
     return {
       alerta: false,
+      numpiezas:false,
+      kilomg: false,
       Mensaje: "",
       Titulo: "",
       consumibles: [],
-      tipoc: ["PRODUCTOS DE LIMPIEZA", "PAPELERIA", "DE PRODUCCION", "GASOLINA", "GAS", "DISEL", "MANTENIMIENTO", "UNIFORME EPP"],
+      tipoc: ["PRODUCTOS DE LIMPIEZA", "PAPELERIA", "DE PRODUCCION", "GASOLINA", "GAS", "DISEL", "MANTENIMIENTO", "UNIFORME", "EQUIPO DE PROTECCIÓN PERSONAL"],
       unidadesmedida: ["PIEZAS", "LITROS", "KILOS"],
       prov: ["Ejemplo1", "Ejemplo2", "Ejemplo3"],
       search: "",
@@ -247,6 +259,10 @@ export default {
         fracciones: "",
         tipo: "",
         descripcion: "",
+        canestandar:"",
+        oc:"",
+        proveedor:"",
+        costo:""
       },
 
       formDataact: {
@@ -267,10 +283,26 @@ export default {
 
   computed: {},
   methods: {
+    async medidaP (){
+      const unidad= this.formData.unidadmedida;
+      if(unidad==="PIEZAS"){
+        this.numpiezas= true;
+        this.kilomg= false;
+        this.formData.enteros= "";
+        this.formData.fracciones= "";
+      }
+      else{
+        if(unidad==="LITROS" || unidad ==="KILOS"){
+          this.numpiezas= false;
+          this.formData.canestandar= "";
+          this.kilomg= true;
+        }
+      }
+    },
     /* Mostrar los datos de la tabla*/
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.31:3001/consumibles");
+        const res = await fetch("http://192.168.1.210:3001/consumibles");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -294,7 +326,7 @@ export default {
 
     /* Enviar formulario de actividades */
     async submitForm() {
-      const res = await fetch("http://192.168.1.31:3001/insertarConsumibles", {
+      const res = await fetch("http://192.168.1.210:3001/insertarConsumibles", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -320,7 +352,7 @@ export default {
 
     /* Api que actualiza los datos  de la tabla */
     async actualizaracti() {
-      const res = await fetch("http://192.168.1.31:3001/actualizarconsu", {
+      const res = await fetch("http://192.168.1.210:3001/actualizarconsu", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -350,6 +382,10 @@ export default {
       this.formData.fracciones = "";
       this.formData.tipo = "";
       this.formData.descripcion = "";
+      this.formData.proveedor = "";
+      this.formData.costo = "";
+      this.formData.oc = "";
+      this.formData.canestandar = "";
     },
   },
 };

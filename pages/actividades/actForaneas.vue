@@ -91,7 +91,7 @@
                 </v-row>
                 <!-- row 1: tipo, proveedor, folio OC -->
                 <v-row>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="6">
                     <v-select
                       v-model="formData.ubicacion"
                       :items="ubicaciones"
@@ -99,7 +99,7 @@
                       filled
                     ></v-select>
                   </v-col>
-                  <v-col cols="12" md="2">
+                  <v-col cols="12" md="3">
                     <v-text-field
                       v-model="formData.hora"
                       type="number"
@@ -108,7 +108,7 @@
                       max="24"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="2">
+                  <v-col cols="12" md="3">
                     <v-text-field
                       v-model="formData.minutos"
                       type="number"
@@ -116,14 +116,6 @@
                       min="1"
                       max="60"
                     ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-select
-                      v-model="formData.responsable"
-                      :items="responsable"
-                      label="RESPONSABLE"
-                      filled
-                    ></v-select>
                   </v-col>
                 </v-row>
                 <v-row v-show="medibles">
@@ -329,10 +321,8 @@ export default {
         "INOX 316",
         "INOX 400",
       ],
-      responsable:["Maria Eugenia Romero Velez", "Miguel de la Cruz Pueblita"],
       headers: [
         { text: "Id actividad", value: "idactividades" },
-        { text: "Responsable", value: "responsable" },
         { text: "Actividad", value: "actividad" },
         { text: "Fecha creación", value: "fecha" },
         { text: "Hora", value: "hora" },
@@ -344,7 +334,6 @@ export default {
       opcionSeleccionada: "",
       formData: {
         unidad: "",
-        responsable:"",
         familias: "",
         ubicacion: "",
         hora: "",
@@ -381,7 +370,7 @@ export default {
     /* Mostrar ubicación */
     async mostrarubi() {
       try {
-        const res = await fetch("http://192.168.1.31:3001/ubicacion");
+        const res = await fetch("http://192.168.1.210:3001/ubicacion");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -398,7 +387,7 @@ export default {
     /* Mostrar los datos de la tabla*/
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.31:3001/actividades");
+        const res = await fetch("http://192.168.1.210:3001/actividades");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -416,7 +405,7 @@ export default {
       const famil = this.formData.familias;
       //console.log(famil);
       try {
-        const res = await fetch( `http://192.168.1.31:3001/material`);
+        const res = await fetch( `http://192.168.1.210:3001/material`);
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -442,7 +431,7 @@ export default {
 
     /* Enviar formulario de actividades */
     async submitForm() {
-      const res = await fetch("http://192.168.1.31:3001/insertarActif", {
+      const res = await fetch("http://192.168.1.210:3001/insertarActif", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -468,7 +457,7 @@ export default {
 
     /* Enviar formulario de material */
     async submitFormAdd() {
-      const res = await fetch("http://192.168.1.31:3001/insertarMaterial", {
+      const res = await fetch("http://192.168.1.210:3001/insertarMaterial", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -494,7 +483,7 @@ export default {
     /* ------------------------------------------------------------ */
     /* Api que actualiza los datos  de la tabla */
     async actualizaracti() {
-      const res = await fetch("http://192.168.1.31:3001/actualizaractivi", {
+      const res = await fetch("http://192.168.1.210:3001/actualizaractivi", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

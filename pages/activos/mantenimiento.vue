@@ -239,7 +239,7 @@ export default {
   methods: {
     async mostrarubi(){
       try {
-        const res = await fetch("http://192.168.1.31:3001/ubicacion");
+        const res = await fetch("http://192.168.1.210:3001/ubicacion");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -300,7 +300,7 @@ export default {
     async submitForm() {
       this.datoNuevo.fabricacion = this.fecha;
       console.log(this.datoNuevo.tipoAct);
-      const res = await fetch("http://192.168.1.31:3001/insertarMante", {
+      const res = await fetch("http://192.168.1.210:3001/insertarMante", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
