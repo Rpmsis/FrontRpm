@@ -525,7 +525,7 @@ export default {
     /* Mostrar los datos de la tabla*/
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.82:3001/proveedores");
+        const res = await fetch("http://192.168.1.91:3001/proveedores");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -542,7 +542,7 @@ export default {
     async mostrarCP(cp) {
       console.log(cp);
       try {
-        const res = await fetch(`http://192.168.1.82:3001/codigo_postal?cp=${cp}`);
+        const res = await fetch(`http://192.168.1.91:3001/codigo_postal?cp=${cp}`);
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -568,7 +568,7 @@ export default {
     },
 
     async submitForm() {
-      const res = await fetch("http://192.168.1.82:3001/insertarUsuariprov", {
+      const res = await fetch("http://192.168.1.91:3001/insertarUsuariprov", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

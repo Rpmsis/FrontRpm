@@ -208,18 +208,18 @@
                     <v-col cols="12" md="12">
                         <v-textarea
                             clear-icon="mdi-close-circle"
-                            label="DESCRIPBE EL MOTIVO.."
+                            label="DESCRIBE EL MOTIVO.."
                             clearable
                             style="border: white"
                             v-model="datoNuevoActualizar.motivo"
                         ></v-textarea>
-                    </v-col>
-                </v-row>
-                <center>
+                        <center>
                   <v-btn block outlined color="error" class="btnEnviar" type="submit"
                     >Eliminar</v-btn
                   >
                 </center>
+                    </v-col>
+                </v-row>
               </v-form>
             </v-card>
           </v-dialog>
@@ -314,7 +314,7 @@ export default {
         const empre= this.datoNuevo.empresa;
         console.log(empre)
       try {
-        const res = await fetch("http://192.168.1.210:3001/actividades");
+        const res = await fetch("http://localhost:3001/actividades");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -334,7 +334,7 @@ export default {
     /* Mostrar ubicación */
     async mostrarubi() {
         try {
-        const res = await fetch("http://192.168.1.210:3001/ubicacion");
+        const res = await fetch("http://localhost:3001/ubicacion");
         const datos = await res.json();
         if (res.status == 404) {
             console.error("Error al obtener los datos:", error);
@@ -353,7 +353,7 @@ export default {
     /* Mostrar Asignación */
     async mostrarAsignacion() {
       try {
-        const res = await fetch("http://192.168.1.210:3001/asignacion",{
+        const res = await fetch("http://localhost:3001/asignacion",{
         method: "GET",
         headers: {
           token: localStorage.token
@@ -375,7 +375,7 @@ export default {
     async submitForm() {
       this.datoNuevo.fechainicio = this.fecha;
       console.log(this.datoNuevo.idactividad);
-      const res = await fetch("http://192.168.1.210:3001/insertarAsigactividad", {
+      const res = await fetch("http://localhost:3001/insertarAsigactividad", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",token: localStorage.token
@@ -421,7 +421,7 @@ export default {
 
     /* Api que actualiza los datos  de la tabla */
     async actualizaracti() {
-      const res = await fetch("http://192.168.1.210:3001/actualizarAsig", {
+      const res = await fetch("http://localhost:3001/actualizarAsig", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

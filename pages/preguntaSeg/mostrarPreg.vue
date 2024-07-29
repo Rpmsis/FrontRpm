@@ -87,7 +87,7 @@ export default {
   },
   async mounted() {
     try {
-      const res = await fetch("http://192.168.1.105:3001/preguntas");
+      const res = await fetch("http://192.168.1.91:3001/preguntas");
       const datos = await res.json();
       if (res.status == 404) {
         console.error("Error al obtener los datos:", error);
@@ -120,7 +120,7 @@ export default {
     /* Api que actualiza los datos  de la tabla */
     async submitForm() {
       console.log(this.formDatos);
-      const res = await fetch("http://192.168.1.105:3001/actualizarPreg", {
+      const res = await fetch("http://192.168.1.91:3001/actualizarPreg", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

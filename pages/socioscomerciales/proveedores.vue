@@ -945,7 +945,7 @@ export default {
     /* Mostrar los datos de la tabla*/
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.82:3001/Usuarioprov");
+        const res = await fetch("http://192.168.1.91:3001/Usuarioprov");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -962,7 +962,7 @@ export default {
     async mostrarCP(cp) {
       console.log(cp);
       try {
-        const res = await fetch(`http://192.168.1.82:3001/codigo_postal?cp=${cp}`);
+        const res = await fetch(`http://192.168.1.91:3001/codigo_postal?cp=${cp}`);
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -996,7 +996,7 @@ export default {
     },
     /* -------------------------------- */
     async submitForm() {
-      const res = await fetch("http://192.168.1.82:3001/insertarProveedor", {
+      const res = await fetch("http://192.168.1.91:3001/insertarProveedor", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -1025,7 +1025,7 @@ export default {
 
     /* Api que actualiza los datos  de la tabla */
     async actualizaracti() {
-      const res = await fetch("http://192.168.1.82:3001/insertarProveedor", {
+      const res = await fetch("http://192.168.1.91:3001/insertarProveedor", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

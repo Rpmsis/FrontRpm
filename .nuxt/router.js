@@ -15,7 +15,9 @@ const _4ea36e16 = () => interopDefault(import('..\\pages\\activos\\mantenimiento
 const _ec095468 = () => interopDefault(import('..\\pages\\activos\\mostActmantt.vue' /* webpackChunkName: "pages/activos/mostActmantt" */))
 const _13c93b66 = () => interopDefault(import('..\\pages\\activos\\mostmantt.vue' /* webpackChunkName: "pages/activos/mostmantt" */))
 const _35847f64 = () => interopDefault(import('..\\pages\\activos\\ubicacion.vue' /* webpackChunkName: "pages/activos/ubicacion" */))
+const _01ac8500 = () => interopDefault(import('..\\pages\\consumibles\\codigobarras.vue' /* webpackChunkName: "pages/consumibles/codigobarras" */))
 const _590682d1 = () => interopDefault(import('..\\pages\\consumibles\\consumible.vue' /* webpackChunkName: "pages/consumibles/consumible" */))
+const _396739e7 = () => interopDefault(import('..\\pages\\consumibles\\inventario.vue' /* webpackChunkName: "pages/consumibles/inventario" */))
 const _4961270a = () => interopDefault(import('..\\pages\\preguntaSeg\\formulario.vue' /* webpackChunkName: "pages/preguntaSeg/formulario" */))
 const _76579c6a = () => interopDefault(import('..\\pages\\preguntaSeg\\mostrarPreg.vue' /* webpackChunkName: "pages/preguntaSeg/mostrarPreg" */))
 const _3b104d80 = () => interopDefault(import('..\\pages\\SGI\\noconformidad.vue' /* webpackChunkName: "pages/SGI/noconformidad" */))
@@ -80,9 +82,17 @@ export const routerOptions = {
     component: _35847f64,
     name: "activos-ubicacion"
   }, {
+    path: "/consumibles/codigobarras",
+    component: _01ac8500,
+    name: "consumibles-codigobarras"
+  }, {
     path: "/consumibles/consumible",
     component: _590682d1,
     name: "consumibles-consumible"
+  }, {
+    path: "/consumibles/inventario",
+    component: _396739e7,
+    name: "consumibles-inventario"
   }, {
     path: "/preguntaSeg/formulario",
     component: _4961270a,

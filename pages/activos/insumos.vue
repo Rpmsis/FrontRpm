@@ -358,7 +358,7 @@ export default {
     /* Mostrar los datos de la tabla*/
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.210:3001/insumos");
+        const res = await fetch("http://localhost:3001/insumos");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -383,7 +383,7 @@ export default {
     async submitForm() {
       this.formData.falta = this.fechaAlta;
       this.formData.fadqui = this.fechaAdqui;
-      const res = await fetch("http://192.168.1.210:3001/insertarInsumos", {
+      const res = await fetch("http://localhost:3001/insertarInsumos", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -411,7 +411,7 @@ export default {
 
     /* Api que actualiza los datos  de la tabla */
     async actualizaracti() {
-      const res = await fetch("http://192.168.1.210:3001/actualizarInsumos", {
+      const res = await fetch("http://localhost:3001/actualizarInsumos", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

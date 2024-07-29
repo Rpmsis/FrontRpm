@@ -327,7 +327,7 @@ export default {
         { text: "Fecha creación", value: "fecha" },
         { text: "Hora", value: "hora" },
         { text: "Minutos", value: "minutos" },
-        { text: "Material", value: "producto" },
+        { text: "Producto", value: "producto" },
         { text: "Ubicación", value: "ubicacion" },
         { text: "Editar", value: "actions", sortable: false },
       ],
@@ -370,7 +370,7 @@ export default {
     /* Mostrar ubicación */
     async mostrarubi() {
       try {
-        const res = await fetch("http://192.168.1.210:3001/ubicacion");
+        const res = await fetch("http://localhost:3001/ubicacion");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -387,7 +387,7 @@ export default {
     /* Mostrar los datos de la tabla*/
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.210:3001/actividades");
+        const res = await fetch("http://localhost:3001/actividades");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -405,7 +405,7 @@ export default {
       const famil = this.formData.familias;
       //console.log(famil);
       try {
-        const res = await fetch( `http://192.168.1.210:3001/material`);
+        const res = await fetch( `http://localhost:3001/material`);
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -431,7 +431,7 @@ export default {
 
     /* Enviar formulario de actividades */
     async submitForm() {
-      const res = await fetch("http://192.168.1.210:3001/insertarActif", {
+      const res = await fetch("http://localhost:3001/insertarActif", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -446,7 +446,7 @@ export default {
         this.Mensaje = datos.mensaje;
       } else {
         this.alerta = true;
-        this.Titulo = "El ID del activo es: ";
+        this.Titulo = "ID de la actividad: ";
         this.Mensaje = datos.mensaje;
         this.limpiarFormulario();
         this.acti = false;
@@ -457,7 +457,7 @@ export default {
 
     /* Enviar formulario de material */
     async submitFormAdd() {
-      const res = await fetch("http://192.168.1.210:3001/insertarMaterial", {
+      const res = await fetch("http://localhost:3001/insertarMaterial", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -483,7 +483,7 @@ export default {
     /* ------------------------------------------------------------ */
     /* Api que actualiza los datos  de la tabla */
     async actualizaracti() {
-      const res = await fetch("http://192.168.1.210:3001/actualizaractivi", {
+      const res = await fetch("http://localhost:3001/actualizaractivi", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

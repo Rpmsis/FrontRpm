@@ -58,7 +58,7 @@ export default {
     /* Mostrar los datos de la tabla*/
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.31:3001/proveedores");
+        const res = await fetch("http://192.168.1.91:3001/proveedores");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);

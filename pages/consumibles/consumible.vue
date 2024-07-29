@@ -24,18 +24,18 @@
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-icon
-                color="white"
+                color="yellow"
                 dark
                 v-bind="attrs"
                 v-on="on"
-                @click="actualizar(item.idactividades)"
-                small
-                class="mr-2"
+                @click="compra(item.idconsumibles)"
+                medium
+                class="mr-4"
               >
-                mdi-eye
+                mdi-currency-usd
               </v-icon>
             </template>
-            <span>Visualizar</span>
+            <span>Compra</span>
           </v-tooltip>
         </template>
       </v-data-table>
@@ -46,7 +46,7 @@
       <!-- Formulario insertar -->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="consu" max-width="1200px">
+          <v-dialog v-model="consu" max-width="600px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -61,17 +61,7 @@
               <v-form class="mt-5" @submit.prevent="submitForm">
                 <!-- row 1: tipo, proveedor, folio OC -->
                 <v-row>
-                  <v-col cols="12" md="2">
-                    <v-select
-                      v-model="formData.unidadmedida"
-                      :items="unidadesmedida"
-                      label="UNI - MEDIDA"
-                      @change="medidaP"
-                      filled
-                    ></v-select>
-                  </v-col>
-
-                  <v-col cols="12" md="3">
+                  <v-col cols="12" md="6">
                     <v-select
                       v-model="formData.tipo"
                       :items="tipoc"
@@ -79,8 +69,28 @@
                       filled
                     ></v-select>
                   </v-col>
-
-                  <v-col cols="12" md="2" v-show="kilomg">
+                  <v-col cols="12" md="6">
+                    <v-select
+                      v-model="formData.unidadmedida"
+                      :items="unidadesmedida"
+                      label="UNIDAD DE MEDIDA"
+                      filled
+                    ></v-select>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="12">
+                    <v-text-field
+                      type="text"
+                      label="DESCRIPCIÓN GENERAL DEL CONSUMIBLE..."
+                      clearable
+                      v-model="formData.descripcion"
+                      filled
+                      @input="formData.descripcion = formData.descripcion.toUpperCase()"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <!-- <v-col cols="12" md="2" v-show="kilomg">
                     <v-text-field
                       v-model="formData.enteros"
                       type="number"
@@ -149,7 +159,7 @@
                       filled
                     ></v-textarea>
                   </v-col>
-                </v-row>
+                </v-row> -->
                 <center>
                   <v-btn block outlined class="btnEnviar" type="submit" color="success"
                     >Guardar</v-btn
@@ -161,14 +171,14 @@
         </div>
       </template>
 
-      <!-- Formulario actualizar-->
+      <!-- Formulario compra-->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="consuActualizar" max-width="1200px">
+          <v-dialog v-model="consucompra" max-width="1200px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn icon @click="consuActualizar = false">
+                <v-btn icon @click="(consucompra = false), limpiarFormularioCompra()">
                   <v-icon style="font-size: 30px"
                     >mdi-close theme--dark red--text</v-icon
                   ></v-btn
@@ -176,15 +186,94 @@
               </v-card-actions>
               <v-divider></v-divider>
               <v-divider></v-divider>
-              <v-form class="mt-5" @submit.prevent="actualizaracti">
-                <!-- row 1: tipo, proveedor, folio OC -->
+              <v-form class="mt-5" @submit.prevent="insertCompra">
+                <v-row>
+                  <v-col cols="12" md="8">
+                    <h2>ID del activo:</h2>
+                    <center>
+                      <h4 style="font-size: 35px; color: chocolate">
+                        {{ formDataact.folioActivo }}
+                      </h4>
+                    </center>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field
+                      type="text"
+                      label="CÓDIGO DE BARRAS"
+                      clearable
+                      v-model="formData.codigobarras"
+                       @input="formData.codigobarras = formData.codigobarras.toUpperCase()"
+                      filled
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="4">
+                    <v-select
+                      :items="prov"
+                      v-model="formData.proveedor"
+                      label="PROVEEDOR"
+                      filled
+                    >
+                    </v-select>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field
+                      v-model="formData.oc"
+                      type="text"
+                      label="ORDEN DE COMPRA"
+                      @input="formData.oc = formData.oc.toUpperCase()"
+                      filled
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="2">
+                    <v-text-field
+                      v-model="formData.cantidad"
+                      type="text"
+                      label="CANTIDAD"
+                      filled
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="2">
+                    <v-text-field
+                      v-model="formData.costo"
+                      type="text"
+                      prefix="$"
+                      label="PRECIO COMPRA"
+                      filled
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="12">
+                    <v-text-field
+                      v-model="formData.descrip"
+                      type="text"
+                      label="DESCRIPCIÓN DE LA COMPRA.."
+                      @input="formData.descrip = formData.descrip.toUpperCase()"
+                      filled
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
 
                 <center>
                   <v-btn block outlined color="orange" class="btnEnviar" type="submit"
-                    >Actualizar</v-btn
+                    >Registrar compra</v-btn
                   >
                 </center>
               </v-form>
+              <hr class="mt-7" />
+              <v-data-table
+                :headers="headers2"
+                :items="compras"
+                :footer-props="{
+                  'items-per-page-options': [5, 10, 20, 30, 40, 50],
+                }"
+                :items-per-page="5"
+                :sort-by="['idcompras']"
+                :sort-desc="true"
+              >
+              </v-data-table>
             </v-card>
           </v-dialog>
         </div>
@@ -222,58 +311,105 @@ export default {
   data() {
     return {
       alerta: false,
-      numpiezas:false,
+      numpiezas: false,
       kilomg: false,
       Mensaje: "",
       Titulo: "",
       consumibles: [],
-      tipoc: ["PRODUCTOS DE LIMPIEZA", "PAPELERIA", "DE PRODUCCION", "GASOLINA", "GAS", "DISEL", "MANTENIMIENTO", "UNIFORME", "EQUIPO DE PROTECCIÓN PERSONAL"],
+      todaslascompras: [],
+      compras: [],
+      tipoc: [
+        "PRODUCTOS DE LIMPIEZA",
+        "PAPELERIA",
+        "COSUMIBLE DE PRODUCCION",
+        "GASOLINA",
+        "GAS",
+        "DISEL",
+        "CONSUMIBLE DE MANTENIMIENTO",
+        "UNIFORME",
+        "EQUIPO DE PROTECCIÓN PERSONAL",
+        "PINTURAS Y SOLVENTES",
+        "FERRETERIA",
+        "SOLDADURA Y CORTE",
+        "ACEITES",
+      ],
       unidadesmedida: ["PIEZAS", "LITROS", "KILOS"],
       prov: ["Ejemplo1", "Ejemplo2", "Ejemplo3"],
       search: "",
       consu: false,
-      consuActualizar: false,
+      consucompra: false,
       headers: [
         { text: "Id del activo", value: "folioActivo" },
-        { text: "Unidad de medida", value: "unidadmedida" },
-        { text: "Tipo", value: "tipo" },
         {
-          text: "Kilos\no\nLitros",
-          value: "enteros",
-          align: "start", // Alineación del texto
-          class: "multi-line-header", // Clase CSS para el estilo
-        },
-        {
-          text: "Kilogramos o Mililitros",
-          value: "enteros",
-          align: "start", // Alineación del texto
-          class: "multi-line-header", // Clase CSS para el estilo
+          text: "Fecha\ncreación",
+          value: "fecha",
+          align: "star",
+          class: "multi-line-header",
         },
         { text: "Descripción", value: "descripcion" },
-        //{ text: "Editar", value: "actions", sortable: false },
+        { text: "Tipo", value: "tipo" },
+        {
+          text: "Unidad\nde\nmedida",
+          value: "unidadmedida",
+          align: "star",
+          class: "multi-line-header",
+        },
+        { text: "Cantidad", value: "cantidad" },
+        {
+          text: "Costo\nunitario\nactual",
+          value: "costo",
+          align: "star",
+          class: "multi-line-header",
+        },
+        {
+          text: "Registrar\ncompra",
+          value: "actions",
+          sortable: false,
+          align: "center",
+          class: "multi-line-header",
+        },
+      ],
+      headers2: [
+        { text: "Id del activo", value: "folioActivo" },
+        {
+          text: "Fecha\nde\ncompra",
+          value: "fecha",
+          align: "star",
+          class: "multi-line-header",
+        },
+        { text: "Proveedor", value: "proveedor" },
+        { text: "Orden de compra", value: "oc" },
+        { text: "Cantidad", value: "cantidad" },
+        { text: "Costo unitario", value: "costo" },
+        { text: "Descripción", value: "descrip" },
       ],
 
       formData: {
+        idconsumibles: "",
+        folioActivo: "",
         unidadmedida: "",
-        enteros: "",
-        fracciones: "",
         tipo: "",
         descripcion: "",
-        canestandar:"",
-        oc:"",
-        proveedor:"",
-        costo:""
+        cantidad: "",
+        oc: "",
+        proveedor: "",
+        costo: "",
+        codigobarras: "",
+        descrip: "",
       },
 
       formDataact: {
-        id: "",
-        enteros: "",
-        fracciones: "",
+        idconsumibles: "",
+        folioActivo: "",
+        unidadmedida: "",
         tipo: "",
         descripcion: "",
+        cantidad: "",
         oc: "",
         proveedor: "",
-        unitario:"",
+        costo: "",
+        codigobarras: "",
+        descrip: "",
       },
     };
   },
@@ -283,26 +419,10 @@ export default {
 
   computed: {},
   methods: {
-    async medidaP (){
-      const unidad= this.formData.unidadmedida;
-      if(unidad==="PIEZAS"){
-        this.numpiezas= true;
-        this.kilomg= false;
-        this.formData.enteros= "";
-        this.formData.fracciones= "";
-      }
-      else{
-        if(unidad==="LITROS" || unidad ==="KILOS"){
-          this.numpiezas= false;
-          this.formData.canestandar= "";
-          this.kilomg= true;
-        }
-      }
-    },
-    /* Mostrar los datos de la tabla*/
+    /* Mostrar los datos de la tabla consumibles*/
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.210:3001/consumibles");
+        const res = await fetch("http://localhost:3001/consumibles");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -315,18 +435,39 @@ export default {
       }
     },
 
-    /* Abre el formulario de actualizar */
-    async actualizar(item) {
-      const objeto = this.consumibles.find((filtro) => filtro.idconsumible === item);
+    /* Mostrar los datos de la tabla compras*/
+    async mostrarCompras(folio) {
+      try {
+        const res = await fetch(`http://localhost:3001/compras?compra=${folio}`);
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          this.compras = datos.respuesta.respuesta;
+          console.log(datos.respuesta.respuesta);
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
+
+    /* Abre el formulario de comprad */
+    async compra(item) {
+      console.log(item);
+      const objeto = this.consumibles.find((filtro) => filtro.idconsumibles === item);
       this.formDataact = objeto;
       console.log(this.formDataact);
-      this.consuActualizar = true;
+      this.consucompra = true;
+      this.formData.folioActivo = this.formDataact.folioActivo;
+      this.formData.idconsumibles = this.formDataact.idconsumibles;
+      this.formData.codigobarras = this.formDataact.codigobarras;
+      this.mostrarCompras(this.formDataact.folioActivo);
     },
     /* -------------------------------- */
 
     /* Enviar formulario de actividades */
     async submitForm() {
-      const res = await fetch("http://192.168.1.210:3001/insertarConsumibles", {
+      const res = await fetch("http://localhost:3001/insertarConsumibles", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -351,41 +492,44 @@ export default {
     /* ------------------------------------------------------------ */
 
     /* Api que actualiza los datos  de la tabla */
-    async actualizaracti() {
-      const res = await fetch("http://192.168.1.210:3001/actualizarconsu", {
-        method: "PUT",
+    async insertCompra() {
+      const res = await fetch("http://localhost:3001/insertarCompra", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(this.formDataact),
+        body: JSON.stringify(this.formData),
       });
       const datos = await res.json();
       if (res.status === 400) {
         this.alerta = true;
         this.Titulo = "¡Upss!";
-        this.Titulo = "¡Upss!";
         this.Mensaje = datos.mensaje;
       } else {
         this.alerta = true;
         //this.Titulo = "El ID del activo es: ";
-        this.Titulo = "Datos actualizados";
+        this.Titulo = "Compra registrada";
         this.Mensaje = " ";
-        this.consuActualizar = false;
+        this.limpiarFormularioCompra();
+        this.mostrarCompras(datos.mensaje);
         this.mostrar();
+        this.consucompra = false;
       }
     },
     /* ------------------------------------------ */
 
     limpiarFormulario() {
       this.formData.unidadmedida = "";
-      this.formData.enteros = "";
-      this.formData.fracciones = "";
       this.formData.tipo = "";
       this.formData.descripcion = "";
+    },
+    limpiarFormularioCompra() {
+      this.formData.codigobarras = "";
       this.formData.proveedor = "";
-      this.formData.costo = "";
       this.formData.oc = "";
-      this.formData.canestandar = "";
+      this.formData.cantidad = "";
+      this.formData.costo = "";
+      this.formData.descrip = "";
     },
   },
 };

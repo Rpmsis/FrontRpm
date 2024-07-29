@@ -113,7 +113,7 @@ export default {
   methods: {
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.105:3001/unidades");
+        const res = await fetch("http://192.168.1.91:3001/unidades");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:");
@@ -147,7 +147,7 @@ export default {
     async enviar() {
       console.log(this.FormDatos);
 
-      const res = await fetch("http://192.168.1.105:3001/insertarForms", {
+      const res = await fetch("http://192.168.1.91:3001/insertarForms", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
