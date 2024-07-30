@@ -86,6 +86,7 @@
                       v-model="formData.actividad"
                       type="text"
                       label="ACTIVIDAD"
+                      @input="formData.actividad = formData.actividad.toUpperCase()"
                     ></v-text-field>
                   </v-col>
                 </v-row>

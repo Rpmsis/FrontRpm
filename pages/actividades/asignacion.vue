@@ -365,7 +365,7 @@ export default {
         } else {
           //this.ubicaciones = datos.respuesta.respuesta;
           this.actividad = datos.respuesta.respuesta;
-          //console.log(this.actividad);
+          console.log(this.actividad);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -387,12 +387,12 @@ export default {
       if (res.status === 400) {
         this.alerta = true;
         this.Titulo = "¡Upss!";
-        this.Mensaje =
-          "Parece que existen campos vacíos, válida la información nuevamente";
+        this.Mensaje = datos.mensaje;
       } else {
         this.alerta = true;
         //this.Titulo = "El ID del activo es: ";
         this.Titulo = datos.mensaje;
+        this.Mensaje = "";
         this.limpiarFormulario();
         this.mostrarAsignacion();
       }

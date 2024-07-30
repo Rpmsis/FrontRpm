@@ -14,7 +14,7 @@
                   clearable
                   v-model="formData.codigobarras"
                   filled
-                  @change="mostrarExistencias(formData.codigobarras)"
+                  @input="mostrarExistencias(formData.codigobarras)"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -51,8 +51,9 @@
                     ></v-text-field>
                     <v-text-field
                       v-model="datosMovimiento.cantidad"
-                      type="text"
+                      type="number"
                       label="CANTIDAD"
+                      min="1"
                       filled
                     ></v-text-field>
                     <center>

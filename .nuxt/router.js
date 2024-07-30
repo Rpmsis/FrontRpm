@@ -9,6 +9,7 @@ const _74f9e757 = () => interopDefault(import('..\\pages\\inicio.vue' /* webpack
 const _1ace9570 = () => interopDefault(import('..\\pages\\tabla.vue' /* webpackChunkName: "pages/tabla" */))
 const _024ce13a = () => interopDefault(import('..\\pages\\actividades\\actForaneas.vue' /* webpackChunkName: "pages/actividades/actForaneas" */))
 const _2c0b7c1e = () => interopDefault(import('..\\pages\\actividades\\asignacion.vue' /* webpackChunkName: "pages/actividades/asignacion" */))
+const _9d1964f8 = () => interopDefault(import('..\\pages\\actividades\\control.vue' /* webpackChunkName: "pages/actividades/control" */))
 const _64883dae = () => interopDefault(import('..\\pages\\activos\\activosFijos.vue' /* webpackChunkName: "pages/activos/activosFijos" */))
 const _de6c314e = () => interopDefault(import('..\\pages\\activos\\insumos.vue' /* webpackChunkName: "pages/activos/insumos" */))
 const _4ea36e16 = () => interopDefault(import('..\\pages\\activos\\mantenimiento.vue' /* webpackChunkName: "pages/activos/mantenimiento" */))
@@ -57,6 +58,10 @@ export const routerOptions = {
     path: "/actividades/asignacion",
     component: _2c0b7c1e,
     name: "actividades-asignacion"
+  }, {
+    path: "/actividades/control",
+    component: _9d1964f8,
+    name: "actividades-control"
   }, {
     path: "/activos/activosFijos",
     component: _64883dae,

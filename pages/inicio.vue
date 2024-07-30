@@ -14,7 +14,12 @@
                 </v-card>
                 <v-card class="v-sheet theme--dark">
                   <a href="/actividades/asignacion">
-                    <h4 class="modulo">Asignacion de actvidades</h4>
+                    <h4 class="modulo">Asignacion de actividades</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/actividades/control">
+                    <h4 class="modulo">Control de actividades</h4>
                   </a>
                 </v-card>
               </v-card>

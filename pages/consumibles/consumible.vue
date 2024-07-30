@@ -83,7 +83,6 @@
                     <v-text-field
                       type="text"
                       label="DESCRIPCIÓN GENERAL DEL CONSUMIBLE..."
-                      clearable
                       v-model="formData.descripcion"
                       filled
                       @input="formData.descripcion = formData.descripcion.toUpperCase()"
@@ -381,6 +380,7 @@ export default {
         { text: "Orden de compra", value: "oc" },
         { text: "Cantidad", value: "cantidad" },
         { text: "Costo unitario", value: "costo" },
+        { text: "Costo total", value: "costototal" },
         { text: "Descripción", value: "descrip" },
       ],
 
