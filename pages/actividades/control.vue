@@ -3,10 +3,7 @@
       <v-container>
         <v-layout row wrap>
           <v-flex xs12>
-            <v-card>
-              <v-card-title style="padding: 50px"
-                >ACTIVIDADES DEL DÍA</v-card-title
-              >
+            <v-card class="mt-7">
               <v-form @submit.prevent="submitForm">
                 <v-row>
                   <v-col cols="12" md="6">
@@ -17,6 +14,7 @@
                       item-text="text"
                       label="RESPONSABLE"
                       filled
+                      :menu-props="{ top: true, offsetY: true, maxHeight: '150px', }"
                     ></v-select>
                   </v-col>
                   <v-col cols="12" md="6">
@@ -27,6 +25,7 @@
                       item-text="text" 
                       label="ACTIVIDAD"
                       filled
+                      :menu-props="{ top: true, offsetY: true,  maxHeight: '150px' }"
                       ></v-select>
                   </v-col>
                 </v-row>
@@ -59,31 +58,14 @@
                       <template v-slot:item.actions="{ item }">
                       <v-tooltip bottom>
                           <template v-slot:activator="{ on, attrs }">
-                          <!-- <v-icon
-                              color="white"
-                              dark
-                              v-bind="attrs"
-                              v-on="on"
-                              @click="actualizar(item.idasigactivi)"
-                              small
-                              class="mr-2"
-                          >
-                              mdi-eye
-                          </v-icon> -->
-                          <v-btn color="success" block
-                    >INICIAR</v-btn
-                  >
-                          <!-- <v-icon
-                              color="white"
-                              dark
-                              v-bind="attrs"
-                              v-on="on"
-                              @click="deletee(item.idasigactivi)"
-                              small
-                              class="mr-2"
-                          >
-                              mdi-trash-can
-                          </v-icon> -->
+                            <v-btn
+                              v-show="iniciar"
+                              :style="getButtonStyle(item.estatus)"
+                              block
+                              @click="acttiempo(item.idcontrolactivi, item.estatus)"
+                            >
+                              {{ item.estatus }}
+                            </v-btn>
                           </template>
                           <span>Visualizar</span>
                       </v-tooltip>
@@ -123,18 +105,28 @@
         Mensaje: "",
         Titulo: "",
         search: "",
+        msjbtn:"",
+        iniciar: true,
+        enproceso:false,
+        termiado:false,
+        pausa:false,
+        reanudar:false,
         controlactivi:[],
-        operadores:["RESPONSABLE 1","RESPONSABLE 2","RESPONSABLE 3"],
+        operadores:["RESPONSABLE 1","RESPONSABLE 2","RESPONSABLE 3","RESPONSABLE 4","RESPONSABLE 5","RESPONSABLE 6","RESPONSABLE 7","RESPONSABLE 8","RESPONSABLE 9","RESPONSABLE 10","RESPONSABLE 11","RESPONSABLE 12"],
         actividad:[],
         headers: [
           { text: "Id de asignación", value: "idcontrolactivi" },
           { text: "Responsable", value: "responsables" },
           { text: "Actividad", value: "actividad" },
+          { text: "Estatus", value: "estatus" },
           { text: "Estatus", value: "actions", sortable: false },
         ],
         datoNuevo: {
           responsables: "",
           idactividades: "",
+          idasigactivi: "",
+          idcontrolactivi: "",
+          status: "",
         },
       };
     },
@@ -147,7 +139,7 @@
 
     },
     methods: {
-      /* Mostrar Actividad */
+      /* Mostrar Actividades del select */
       async mostrarActividades() {
         try {
           const res = await fetch("http://localhost:3001/Controlactividades");
@@ -155,19 +147,20 @@
           if (res.status == 404) {
             console.error("Error al obtener los datos:", error);
           } else {
-            console.log(datos.respuesta.respuesta);
+            //console.log(datos.respuesta.respuesta);
             this.actividad = datos.respuesta.respuesta.map(filtro => ({
               id: filtro.idactividades,
               text: filtro.actividad,
               idasigactivi: filtro.idasigactivi
               })); 
+              console.log(this.actividad)
           }
         } catch (error) {
           console.error("Error al obtener los datos:", error);
         } 
       },
 
-      /* Mostrar Actividad */
+      /* Mostrar Tabla de control */
       async mostrarControl() {
         try {
           const res = await fetch("http://localhost:3001/Controlasignados");
@@ -177,36 +170,18 @@
           } else {
             console.log(datos.respuesta.respuesta);
             this.controlactivi = datos.respuesta.respuesta;
+            
           }
         } catch (error) {
           console.error("Error al obtener los datos:", error);
         } 
       },
-  
-  
-      /* Mostrar Asignación */
-      /* async mostrarAsignacion() {
-        try {
-          const res = await fetch("http://localhost:3001/asignacion",{
-          method: "GET",
-          headers: {
-            token: localStorage.token
-          },
-        });
-          const datos = await res.json();
-          if (res.status == 404) {
-            console.error("Error al obtener los datos:", error);
-          } else {
-            //this.ubicaciones = datos.respuesta.respuesta;
-            this.actividad = datos.respuesta.respuesta;
-            console.log(this.actividad);
-          }
-        } catch (error) {
-          console.error("Error al obtener los datos:", error);
-        }
-      }, */
-  
+
+      /* Insertar asignación */
       async submitForm() {
+        const idAsig = this.actividad.find((filtro) => filtro.id === this.datoNuevo.idactividades);
+        console.log(idAsig.idasigactivi);
+        this.datoNuevo.idasigactivi = idAsig.idasigactivi;
         const res = await fetch("http://localhost:3001/insertarControl", {
           method: "POST",
           headers: {
@@ -230,55 +205,61 @@
         }
         //console.log(datos.respuestaMante.mensaje);
       }, 
+
+      async acttiempo(item, estatus){
+        console.log(estatus);
+        this.msjbtn = estatus;
+        this.datoNuevo.idcontrolactivi = item;
+        this.datoNuevo.status = "EN PROCESO"
+        const res = await fetch("http://localhost:3001/insertarTiempo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",token: localStorage.token
+        },
+        body: JSON.stringify(this.datoNuevo),
+      });
+      const datos = await res.json();
+      console.log(datos);
+      if (res.status === 400) {
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje = datos.mensaje;
+      } else {
+        this.alerta = true;
+        //this.Titulo = "El ID del activo es: ";
+        this.Titulo = datos.mensaje;
+        this.Mensaje = "";
+        this.mostrarControl();
+
+      }
+      },
   
-      /* Abre el formulario de actualizar */
-      /* async actualizar(item) {
-        const objeto = this.actividad.find((filtro) => filtro.idasigactivi === item);
-        this.datoNuevoActualizar = objeto;
-        console.log(this.datoNuevoActualizar);
-        this.actiActualizar = true;
-        this.fecha2 = this.datoNuevoActualizar.fechainicio;
-      }, */
-      /* -------------------------------- */
-  
-      /* Desactivar la asignacion de la actvidad */
-      /* async deletee(item) {
-        const objeto = this.actividad.find((filtro) => filtro.idasigactivi === item);
-        this.datoNuevoActualizar = objeto;
-        console.log(this.datoNuevoActualizar);
-        this.datoNuevoActualizar.status = "NA";
-        this.eliminar = true;
-      }, */
-      /* -------------------------------- */
-  
-      /* Api que actualiza los datos  de la tabla */
-      /* async actualizaracti() {
-        const res = await fetch("http://localhost:3001/actualizarAsig", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(this.datoNuevoActualizar),
-        });
-        const datos = await res.json();
-        if (res.status === 400) {
-          this.alerta = true;
-          this.Titulo = "¡Upss!";
-          this.Mensaje = datos.mensaje;
-        } else {
-          this.alerta = true;
-          //this.Titulo = "El ID del activo es: ";
-          this.Titulo = "Datos actualizados";
-          this.Mensaje = " ";
-          this.actiActualizar = false;
-          this.mostrarAsignacion();
-          this.limpiarFormularioElim();
-        }
-      }, */
-      /* ------------------------------------------ */
+     
       limpiarFormulario() {
        this.datoNuevo.responsables= "",
        this.datoNuevo.idactividades= ""
+      },
+
+      getButtonStyle(estatus) {
+        console.log(estatus);
+        let backgroundColor;
+        let color = 'white'; // color del texto
+        
+        switch (estatus) {
+          case 'EN PROCESO':
+            backgroundColor = 'orange';
+            break;
+          case '':
+            backgroundColor = 'red';
+            break;
+          default:
+            backgroundColor = 'gray'; // color por defecto
+        }
+
+        return {
+          backgroundColor,
+          color
+        };
       },
     },
   };
@@ -293,13 +274,27 @@
     font-size: 30px !important;
     }
     .row {
-    padding: 0px 50px 0px 50px;
+    padding: 0px 10px 0px 10px;
     }
     .btnEnviar {
     margin-top: 30px;
     margin-bottom: 50px;
     width: 30%;
     font-size: 20px !important;
+    }
+    .btn-success {
+      background-color: green;
+      color: white;
+    }
+
+    .btn-warning {
+      background-color: orange;
+      color: white;
+    }
+
+    .btn-error {
+      background-color: red;
+      color: white;
     }
 </style>
   

@@ -38,7 +38,7 @@ export default {
       search: "",
       datosproveedores: [],
       headers: [
-        { text: "Id del activo ", value: "foliorpm" },
+        { text: "Id del proveedor ", value: "idproveedor" },
         { text: "Nombre completo", value: "nombre" },
         { text: "Email", value: "email" },
         { text: "Móvil", value: "movil" },
@@ -58,7 +58,7 @@ export default {
     /* Mostrar los datos de la tabla*/
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.91:3001/proveedores");
+        const res = await fetch("http://localhost:3001/proveedores");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);

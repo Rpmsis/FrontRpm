@@ -62,6 +62,8 @@
                       :items="ubicaciones"
                       :item-title="datos1.idubicacion"
                       v-model="datos1.idubicacion"
+                      item-value="text"  
+                      item-text="text"
                       label="*UBICACIÓN"
                       filled
                     ></v-select>
@@ -165,7 +167,10 @@ export default {
           console.error("Error al obtener los datos:", error);
         } else {
           //this.ubicaciones = datos.respuesta.respuesta;
-          this.ubicaciones = datos.respuesta.respuesta.map((ubi) => [ubi.descrip]);
+          this.ubicaciones = datos.respuesta.respuesta.map(filtro => ({
+            id: filtro.descrip,
+            text: filtro.descrip
+            }));
           console.log(datos.respuesta.respuesta);
         }
       } catch (error) {

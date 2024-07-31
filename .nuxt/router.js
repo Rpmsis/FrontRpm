@@ -7,6 +7,7 @@ import scrollBehavior from './router.scrollBehavior.js'
 const _e3df6410 = () => interopDefault(import('..\\pages\\ayuda.vue' /* webpackChunkName: "pages/ayuda" */))
 const _74f9e757 = () => interopDefault(import('..\\pages\\inicio.vue' /* webpackChunkName: "pages/inicio" */))
 const _1ace9570 = () => interopDefault(import('..\\pages\\tabla.vue' /* webpackChunkName: "pages/tabla" */))
+const _5e3a3608 = () => interopDefault(import('..\\pages\\actividades\\actdiarias.vue' /* webpackChunkName: "pages/actividades/actdiarias" */))
 const _024ce13a = () => interopDefault(import('..\\pages\\actividades\\actForaneas.vue' /* webpackChunkName: "pages/actividades/actForaneas" */))
 const _2c0b7c1e = () => interopDefault(import('..\\pages\\actividades\\asignacion.vue' /* webpackChunkName: "pages/actividades/asignacion" */))
 const _9d1964f8 = () => interopDefault(import('..\\pages\\actividades\\control.vue' /* webpackChunkName: "pages/actividades/control" */))
@@ -50,6 +51,10 @@ export const routerOptions = {
     path: "/tabla",
     component: _1ace9570,
     name: "tabla"
+  }, {
+    path: "/actividades/actdiarias",
+    component: _5e3a3608,
+    name: "actividades-actdiarias"
   }, {
     path: "/actividades/actForaneas",
     component: _024ce13a,

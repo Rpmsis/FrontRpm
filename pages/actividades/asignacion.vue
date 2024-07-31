@@ -72,7 +72,6 @@
                     single-line
                     hide-details
                 ></v-text-field>
-                </v-card-title>
                 <v-data-table
                     :headers="headers"
                     :items="actividad"
@@ -81,6 +80,7 @@
                     'items-per-page-options': [5, 10, 20, 30, 40, 50],
                     }"
                     :items-per-page="10"
+                    :sort-by="['fechainicio']"
                     :sort-desc="true"
                 >
                     <template v-slot:item.actions="{ item }">

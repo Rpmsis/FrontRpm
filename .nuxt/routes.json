@@ -21,6 +21,13 @@
     "_name": "_1ace9570"
   },
   {
+    "name": "actividades-actdiarias",
+    "path": "/actividades/actdiarias",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\actdiarias.vue",
+    "chunkName": "pages/actividades/actdiarias",
+    "_name": "_5e3a3608"
+  },
+  {
     "name": "actividades-actForaneas",
     "path": "/actividades/actForaneas",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\actForaneas.vue",
