@@ -15,9 +15,9 @@
         :items="actividad"
         :search="search"
         :footer-props="{
-          'items-per-page-options': [5, 10, 20, 30, 40, 50],
+          'items-per-page-options': [10, 20, 30, 40, 50],
         }"
-        :items-per-page="5"
+        :items-per-page="10"
         :sort-desc="true"
       >
         <template v-slot:item.actions="{ item }">
@@ -185,7 +185,7 @@
               <v-form class="mt-5" @submit.prevent="actualizaracti">
                 <!-- row 1: tipo, proveedor, folio OC -->
                 <v-row>
-                  <v-col cols="12" md="8">
+                  <v-col cols="12" md="6">
                     <v-text-field
                       v-model="formDataact.actividad"
                       type="text"
@@ -208,6 +208,13 @@
                       label="* MINUTOS"
                       min="1"
                       max="60"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="2">
+                    <v-text-field
+                      v-model="formDataact.kg"
+                      type="number"
+                      label="* KG"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -325,12 +332,13 @@ export default {
       headers: [
         { text: "Id actividad", value: "idactividades" },
         { text: "Actividad", value: "actividad" },
-        { text: "Fecha creación", value: "fecha" },
+        { text: "kilogramos", value: "kg" },
         { text: "Hora", value: "hora" },
         { text: "Minutos", value: "minutos" },
+        { text: "Tiempo estandar", value: "timestandar" },
         { text: "Producto", value: "producto" },
         { text: "Ubicación", value: "ubicacion" },
-        { text: "Editar", value: "actions", sortable: false },
+        { text: "Eficiencia", value: "" },
       ],
       opcionSeleccionada: "",
       formData: {

@@ -15,9 +15,9 @@
         :items="consumibles"
         :search="search"
         :footer-props="{
-          'items-per-page-options': [5, 10, 20, 30, 40, 50],
+          'items-per-page-options': [10, 20, 30, 40, 50],
         }"
-        :items-per-page="5"
+        :items-per-page="10"
         :sort-desc="true"
       >
         <template v-slot:item.actions="{ item }">
@@ -331,8 +331,9 @@ export default {
         "FERRETERIA",
         "SOLDADURA Y CORTE",
         "ACEITES",
+        "SERVICIOS"
       ],
-      unidadesmedida: ["PIEZAS", "LITROS", "KILOS"],
+      unidadesmedida: ["PIEZAS", "LITROS", "KILOS", "EVENTO"],
       prov: ["Ejemplo1", "Ejemplo2", "Ejemplo3"],
       search: "",
       consu: false,

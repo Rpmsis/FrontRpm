@@ -18,6 +18,11 @@
                   </a>
                 </v-card>
                 <v-card class="v-sheet theme--dark">
+                  <a href="/actividades/actdiarias">
+                    <h4 class="modulo">Actividades del día</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
                   <a href="/actividades/control">
                     <h4 class="modulo">Control de actividades</h4>
                   </a>
@@ -39,7 +44,7 @@
                 </v-card>
                 <v-card class="v-sheet theme--dark">
                   <a href="/consumibles/inventario">
-                    <h4 class="modulo">Consumo y asignación</h4>
+                    <h4 class="modulo">Consumo</h4>
                   </a>
                 </v-card>
               </v-card>
