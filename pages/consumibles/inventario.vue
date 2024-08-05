@@ -41,7 +41,7 @@
                     ></v-text-field>
                     <center>
                       <v-btn block outlined color="orange" class="btnEnviar" type="submit"
-                        >Registrar movimiento</v-btn
+                        >GUARDAR</v-btn
                       >
                     </center>
                   </v-col>
@@ -65,7 +65,7 @@
             <v-card class="mt-5" style="padding: 15px" v-show="movimiento" >
               <v-row>
                 <v-col cols="12" md="12">
-                  <h2 style="color: orange">HISTORIAL: </h2>
+                  <h3 style="color: orange">HISTORIAL: </h3>
                   <v-data-table
                       :headers="headersHistorial"
                       :items="historialcb"

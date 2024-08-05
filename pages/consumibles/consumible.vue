@@ -43,7 +43,7 @@
         <v-icon style="font-size: 50px">mdi-plus-circle theme--dark green--text</v-icon>
       </v-btn>
 
-      <!-- Formulario insertar -->
+      <!-- Formulario insertar CONSUMIBLE -->
       <template>
         <div class="pa-4 text-center">
           <v-dialog v-model="consu" max-width="600px">
@@ -466,7 +466,7 @@ export default {
     },
     /* -------------------------------- */
 
-    /* Enviar formulario de actividades */
+    /* Enviar formulario de consumibles */
     async submitForm() {
       const res = await fetch("http://localhost:3001/insertarConsumibles", {
         method: "POST",

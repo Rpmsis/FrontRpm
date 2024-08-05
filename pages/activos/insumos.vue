@@ -76,7 +76,16 @@
                       v-model="formData.proveedor"
                       label="Proveedor"
                       filled
+                      :menu-props="{ bottom: true, offsetY: true, }"
                     >
+                    <template v-slot:prepend-item>
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-text-field v-model="searchProv" placeholder="Search" @input="searchProvedor "></v-text-field>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-divider class="mt-2"></v-divider>
+                    </template>
                     </v-select>
                   </v-col>
                   <v-col cols="12" md="3">
@@ -289,10 +298,13 @@ export default {
       Mensaje: "",
       Titulo: "",
       search: "",
+      searchProv:"",
       datosinsumos: [],
       insumos: false,
       insumoActualizar: false,
-      proveedores: ["Ejemplo1", "Ejemplo2", "Ejemplo3"],
+      proveedores:[],
+      provedorFiltrado: [],
+      proveedoresFijos: ["Ejemplo1", "Ejemplo2", "Ejemplo3", "Ejemplo4", "Ejemplo5", "Ejemplo6", "Ejemplo7", "Ejemplo8", "Ejemplo9", "Ejemplo10", "Ejemplo11", "Ejemplo12", "Ejemplo13", "Ejemplo14", "Ejemplo15"],
       menuAlta: false,
       menuAdqui: false,
       fechaAlta: null,
@@ -342,6 +354,7 @@ export default {
     this.fechaAlta = this.fechaMinima;
     this.fechaAdqui = this.fechaMinima;
     this.mostrar();
+    this.proveedores = [...this.proveedoresFijos];
   },
 
   computed: {
@@ -355,6 +368,14 @@ export default {
     },
   },
   methods: {
+    async searchProvedor(){
+      if (!this.searchProv) {
+        this.proveedores = this.proveedoresFijos;
+      }
+      this.proveedores = this.proveedoresFijos.filter((provee) => {
+        return provee.toLowerCase().indexOf(this.searchProv.toLowerCase()) > -1;
+      });
+    },
     /* Mostrar los datos de la tabla*/
     async mostrar() {
       try {

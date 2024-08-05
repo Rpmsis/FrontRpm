@@ -46,7 +46,7 @@
       <!-- Formulario insertar -->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="acti" max-width="1200px">
+          <v-dialog v-model="acti" persistent max-width="1200px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -170,7 +170,7 @@
       <!-- Formulario actualizar-->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="actiActualizar" max-width="600px">
+          <v-dialog v-model="actiActualizar" persistent max-width="600px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -232,11 +232,11 @@
        <!-- Formulario material-->
        <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="addMaterial" max-width="600px">
+          <v-dialog v-model="addMaterial" persistent max-width="600px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn icon @click="addMaterial = false">
+                <v-btn icon @click="(addMaterial = false), limpiarFormularioAdd()">
                   <v-icon style="font-size: 30px"
                     >mdi-close theme--dark red--text</v-icon
                   ></v-btn
@@ -318,16 +318,17 @@ export default {
       tipoactividad: ["", "PRODUCTO 2", "PRODUCTO 3"],
       productos: [],
       familias: [
-        "CARTÓN",
-        "PLÁSTICO",
-        "MADERA",
-        "COBRE",
-        "BRONCE",
+        "ACERO",
         "ALUMINIO",
+        "ALEACIONES",
+        "BRONCE",
+        "CARTÓN",
+        "COBRE",
+        "CROMO",
         "FIERRO",
-        "INOX 304",
-        "INOX 316",
-        "INOX 400",
+        "MADERA",
+        "PLÁSTICO",
+        "TITANIO"
       ],
       headers: [
         { text: "Id actividad", value: "idactividades" },
@@ -338,7 +339,7 @@ export default {
         { text: "Tiempo estandar", value: "timestandar" },
         { text: "Producto", value: "producto" },
         { text: "Ubicación", value: "ubicacion" },
-        { text: "Eficiencia", value: "" },
+        { text: "Eficiencia", value: "eficiencia" },
       ],
       opcionSeleccionada: "",
       formData: {
@@ -478,8 +479,7 @@ export default {
         this.alerta = true;
         //this.Titulo = "Error";
         this.Titulo = "¡Upss!";
-        this.Mensaje =
-          "Parece que existen campos vacíos, válida la información nuevamente";
+        this.Mensaje = datos.mensaje;
       } else {
         this.alerta = true;
         this.Titulo = datos.mensaje;
