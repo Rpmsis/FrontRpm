@@ -83,6 +83,10 @@
                     :sort-by="['fechainicio']"
                     :sort-desc="true"
                 >
+
+                <template v-slot:item.tiempo="{ item }">
+                  {{ `${item.hora}:${item.minutos}` }}
+                </template>
                     <template v-slot:item.actions="{ item }">
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
@@ -118,7 +122,7 @@
           <!-- Formulario actualizar-->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="actiActualizar" max-width="1000px">
+          <v-dialog v-model="actiActualizar" persistent max-width="1000px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -191,7 +195,7 @@
       <!-- Formulario eliminar-->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="eliminar" max-width="600px">
+          <v-dialog v-model="eliminar" persistent max-width="600px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -269,12 +273,20 @@ export default {
       actividad:[],
       ubicaciones: [],
       headers: [
-        { text: "Id de asignación", value: "idasigactivi" },
+        { text: "Id de\nasignación", 
+          value: "idasigactivi",
+          align: "center",
+          class: "multi-line-header"},
+
         { text: "Fecha de inicio", value: "fechainicio" },
-        { text: "Empresa", value: "empresa" },
         { text: "Actividad", value: "actividad" },
-        { text: "Hora", value: "hora" },
-        { text: "Minutos", value: "minutos" },
+        { text: "Empresa", value: "empresa" },
+
+        { text: "Tiempo\nestimado", 
+          value: "tiempo" ,
+          align: "star",
+          class: "multi-line-header"},
+
         { text: "Editar", value: "actions", sortable: false },
       ],
       datoNuevo: {
@@ -473,5 +485,8 @@ export default {
   margin-bottom: 50px;
   width: 30%;
   font-size: 20px !important;
+}
+.multi-line-header {
+  white-space: pre-line;
 }
 </style>

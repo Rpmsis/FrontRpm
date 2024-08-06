@@ -20,6 +20,9 @@
         :items-per-page="10"
         :sort-desc="true"
       >
+      <template v-slot:item.concatenado="{ item }">
+        {{ `${item.hora}:${item.minutos}` }}
+      </template>
         <template v-slot:item.actions="{ item }">
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
@@ -333,12 +336,11 @@ export default {
       headers: [
         { text: "Id actividad", value: "idactividades" },
         { text: "Actividad", value: "actividad" },
-        { text: "kilogramos", value: "kg" },
-        { text: "Hora", value: "hora" },
-        { text: "Minutos", value: "minutos" },
-        { text: "Tiempo estandar", value: "timestandar" },
-        { text: "Producto", value: "producto" },
+        { text: "Tiempo", value: "concatenado" },
         { text: "Ubicación", value: "ubicacion" },
+        { text: "kilogramos", value: "kg" },
+        { text: "Producto", value: "producto" },
+        { text: "Tiempo estandar", value: "timestandar" },
         { text: "Eficiencia", value: "eficiencia" },
       ],
       opcionSeleccionada: "",

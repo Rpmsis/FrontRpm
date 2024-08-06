@@ -62,7 +62,7 @@
                             dark
                             v-bind="attrs"
                             v-on="on"
-                            @click="activi(item.idcontrolactivi)"
+                            @click="activi(item.idcontrolactivi, item.estatusC)"
                             small
                             class="mr-2"
                           >
@@ -91,26 +91,25 @@
                   <v-divider></v-divider>
                   <v-divider></v-divider>
                   <v-row style="margin-top: 5px">
-                    <v-col cols="12" md="12">
-                      <v-btn icon @click="(tiempoactivi = false), limpiarFormulario()">
-                      <v-icon style="font-size: 60px"
-                        >mdi-pause-circle theme--dark red--text</v-icon
-                      ></v-btn
-                    >
-                    </v-col>
-                  </v-row>
-                    <v-row>
-                      <v-col cols="12" md="12">
+                      <v-col cols="12" md="10">
                         <center>
                           <v-btn
                             block
                             style="margin-top: 10px; margin-bottom: 10px"
                             outlined
-                            color="green"
+                            :color= "btncolor"
                             elevation="16"
-                            >INICIAR</v-btn
+                             @click="acttiempo"
+                            >{{msjbtn}}</v-btn
                           >
                         </center>
+                      </v-col>
+                      <v-col cols="12" md="2">
+                        <v-btn icon >
+                        <v-icon style="font-size: 60px"
+                          >mdi-pause-circle theme--dark red--text</v-icon
+                        ></v-btn
+                      >
                       </v-col>
                     </v-row>
                 </v-card>
@@ -187,9 +186,10 @@
         Titulo: "",
         search: "",
         msjbtn:"",
+        btncolor:"",
         iniciar: true,
         enproceso:false,
-        termiado:false,
+        terminado:false,
         pausa:false,
         reanudar:false,
         tiempoactivi: false,
@@ -260,10 +260,24 @@
         } 
       },
 
-      async activi(item){
-        console.log(item);
+      async activi(item, estatus){
+        this.datoNuevo.idcontrolactivi = item;
+        console.log(item, estatus);
         this.tiempoactivi = true;
-
+        if(estatus === "INICIAR"){
+            this.msjbtn = 'INICIAR ACTIVIDAD';
+            this.btncolor = "green";
+        }else{
+          if(estatus === "EN PROCESO"){
+            this.msjbtn = 'TERMINAR ACTIVIDAD';
+            this.btncolor = "yellow";
+          }
+          else{
+            if(estatus === "EN PAUSA"){
+              this.tiempoactivi = false;
+            }
+          }
+        }
       },
       /* Insertar asignación */
       async submitForm() {
@@ -294,11 +308,8 @@
         //console.log(datos.respuestaMante.mensaje);
       }, 
 
-      async acttiempo(item, estatus){
-        console.log(estatus);
-        this.msjbtn = estatus;
-        this.datoNuevo.idcontrolactivi = item;
-        this.datoNuevo.status = "EN PROCESO"
+      async acttiempo(){
+        this.datoNuevo.status = "EN PROCESO";
         const res = await fetch("http://localhost:3001/insertarTiempo", {
         method: "POST",
         headers: {
@@ -318,8 +329,8 @@
         this.Titulo = datos.mensaje;
         this.Mensaje = "";
         this.mostrarControl();
-
-      }
+        this.tiempoactivi = false;
+      } 
       },
   
      
@@ -341,7 +352,7 @@
             backgroundColor = '#00e676';
             break;
           default:
-            backgroundColor = 'gray'; // color por defecto
+            backgroundColor = 'gray';
         }
 
         return {
