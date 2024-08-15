@@ -1,85 +1,85 @@
 <template>
-    <v-app>
-      <v-container>
-        <v-layout row wrap>
-          <v-flex xs12>
-            <v-card class="mt-7">
-              <v-form @submit.prevent="submitForm">
-                <v-row>
-                  <v-col cols="12" md="6">
-                    <v-select
-                      v-model="datoNuevo.responsables"
-                      :items="operadores"
-                      item-value="text"  
-                      item-text="text"
-                      label="RESPONSABLE"
-                      filled
-                      :menu-props="{ top: true, offsetY: true, maxHeight: '150px', }"
-                    ></v-select>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                      <v-select
-                      v-model="datoNuevo.idactividades"
-                      :items="actividad"
-                      item-value="id"  
-                      item-text="text" 
-                      label="ACTIVIDAD"
-                      filled
-                      :menu-props="{ top: true, offsetY: true,  maxHeight: '150px' }"
-                      ></v-select>
-                  </v-col>
-                </v-row>
-                <center>
-                  <v-btn class="btnEnviar" type="submit" color="success" block
-                    >Agendar</v-btn
-                  >
-                </center>
-              </v-form>
-            </v-card>
-            <v-card class="mt-5" style="padding:10px">
-              <v-text-field
-                  v-model="search"
-                  append-icon="mdi-magnify"
-                  label="Buscar"
-                  single-line
-                  hide-details
-              ></v-text-field>
-              <v-data-table
-                  :headers="headers"
-                  :items="controlactivi"
-                  :search="search"
-                  :footer-props="{
-                  'items-per-page-options': [5, 10, 20, 30, 40, 50],
-                  }"
-                  :items-per-page="10"
-                  :sort-desc="true"
-              >
-                  <template v-slot:item.actions="{ item }">
-                    <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-icon
-                            color="white"
-                            dark
-                            v-bind="attrs"
-                            v-on="on"
-                            @click="activi(item.idcontrolactivi, item.estatusC)"
-                            small
-                            class="mr-2"
-                          >
-                            mdi-eye
-                          </v-icon>
-                        </template>
-                        <span>Visualizar</span>
-                    </v-tooltip>
+  <v-app>
+    <v-container>
+      <v-layout row wrap>
+        <v-flex xs12>
+          <v-card class="mt-7">
+            <v-form @submit.prevent="submitForm">
+              <v-row>
+                <v-col cols="12" md="6">
+                  <v-select
+                    v-model="datoNuevo.responsables"
+                    :items="operadores"
+                    item-value="text"
+                    item-text="text"
+                    label="RESPONSABLE"
+                    filled
+                    :menu-props="{ top: true, offsetY: true, maxHeight: '150px' }"
+                  ></v-select>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-select
+                    v-model="datoNuevo.idactividades"
+                    :items="actividad"
+                    item-value="id"
+                    item-text="text"
+                    label="ACTIVIDAD"
+                    filled
+                    :menu-props="{ top: true, offsetY: true, maxHeight: '150px' }"
+                  ></v-select>
+                </v-col>
+              </v-row>
+              <center>
+                <v-btn class="btnEnviar" type="submit" color="success" block
+                  >Agendar</v-btn
+                >
+              </center>
+            </v-form>
+          </v-card>
+          <v-card class="mt-5" style="padding: 10px">
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Buscar"
+              single-line
+              hide-details
+            ></v-text-field>
+            <v-data-table
+              :headers="headers"
+              :items="controlactivi"
+              :search="search"
+              :footer-props="{
+                'items-per-page-options': [5, 10, 20, 30, 40, 50],
+              }"
+              :items-per-page="10"
+              :sort-desc="true"
+            >
+              <template v-slot:item.actions="{ item }">
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-icon
+                      color="white"
+                      dark
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="activi(item.idcontrolactivi, item.estatusC, item.idasigactivi, item.idactividades)"
+                      small
+                      class="mr-2"
+                    >
+                      mdi-eye
+                    </v-icon>
                   </template>
-              </v-data-table>
-            </v-card>
+                  <span>Visualizar</span>
+                </v-tooltip>
+              </template>
+            </v-data-table>
+          </v-card>
 
           <!-- Mostrar dialog con botones-->
           <template>
             <div class="pa-4 text-center">
-              <v-dialog v-model="tiempoactivi" max-width="600px">
-                <v-card style="padding: 15px; text-align: right;">
+              <v-dialog v-model="tiempoactivi" persistent max-width="600px">
+                <v-card style="padding: 15px; text-align: right">
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn icon @click="(tiempoactivi = false), limpiarFormulario()">
@@ -91,27 +91,43 @@
                   <v-divider></v-divider>
                   <v-divider></v-divider>
                   <v-row style="margin-top: 5px">
-                      <v-col cols="12" md="10">
-                        <center>
-                          <v-btn
-                            block
-                            style="margin-top: 10px; margin-bottom: 10px"
-                            outlined
-                            :color= "btncolor"
-                            elevation="16"
-                             @click="acttiempo"
-                            >{{msjbtn}}</v-btn
-                          >
-                        </center>
-                      </v-col>
-                      <v-col cols="12" md="2">
-                        <v-btn icon >
+                    <v-col cols="12" md="10">
+                      <center>
+                        <v-btn
+                          v-show="btniniciar"
+                          block
+                          style="margin-top: 10px; margin-bottom: 10px"
+                          outlined
+                          color="green"
+                          elevation="16"
+                          @click="acttiempo"
+                          >INICIAR ACTIVIDAD</v-btn
+                        >
+                        <v-btn
+                          v-show="btnterminar"
+                          block
+                          style="margin-top: 10px; margin-bottom: 10px"
+                          outlined
+                          color="yellow"
+                          elevation="16"
+                          @click="acttiempofinal"
+                          >TERMINAR ACTIVIDAD</v-btn
+                        >
+                      </center>
+                    </v-col>
+                    <v-col cols="12" md="2">
+                      <v-btn icon v-show="pausa" @click=" acttiempoReanudar">
                         <v-icon style="font-size: 60px"
-                          >mdi-pause-circle theme--dark red--text</v-icon
-                        ></v-btn
-                      >
-                      </v-col>
-                    </v-row>
+                          >mdi-motion-play theme--dark red--text</v-icon
+                        >
+                      </v-btn>
+                      <v-btn icon v-show="reanudar" @click=" pausareanudar">
+                        <v-icon style="font-size: 60px"
+                          >mdi-motion-pause-outline theme--dark red--text</v-icon
+                        >
+                      </v-btn>
+                    </v-col>
+                  </v-row>
                 </v-card>
               </v-dialog>
             </div>
@@ -120,11 +136,11 @@
           <!-- Formulario de pausa-->
           <template>
             <div class="pa-4 text-center">
-              <v-dialog v-model="formpausa" max-width="500px">
+              <v-dialog v-model="formpausa" persistent max-width="500px">
                 <v-card style="padding: 15px">
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn icon @click="(formpausa = false), limpiarFormulario()">
+                    <v-btn icon @click="(formpausa = false), limpiarFormularioPausa()">
                       <v-icon style="font-size: 30px"
                         >mdi-close theme--dark red--text</v-icon
                       ></v-btn
@@ -132,8 +148,25 @@
                   </v-card-actions>
                   <v-divider></v-divider>
                   <v-divider></v-divider>
-                  <v-form class="mt-5" @submit.prevent="">
+                  <v-form class="mt-5" @submit.prevent="acttiempoPausa">
                     <v-row>
+                      <v-col cols="12" md="12">
+                        <v-select
+                          v-model="datoNuevo2.motivoselec"
+                          :items="motivospausa"
+                          label="MOTIVO"
+                          filled
+                        ></v-select>
+                      </v-col>
+                      <v-col cols="12" md="12">
+                        <v-textarea
+                          v-model="datoNuevo2.motivodes"
+                          clear-icon="mdi-close-circle"
+                          label="DESCRIBE EL MOTIVO.."
+                          clearable
+                          style="border: white"
+                        ></v-textarea>
+                      </v-col>
                       <v-col cols="12" md="12">
                         <center>
                           <v-btn
@@ -143,7 +176,7 @@
                             color="green"
                             elevation="16"
                             type="submit"
-                            >Actualizar</v-btn
+                            >Guardar</v-btn
                           >
                         </center>
                       </v-col>
@@ -153,167 +186,186 @@
               </v-dialog>
             </div>
           </template>
-          </v-flex>
-          <v-dialog v-model="alerta" max-width="500">
-            <v-card>
-              <v-card-title class="text-h4">
-                {{ Titulo }}
-              </v-card-title>
-              <v-card-text class="text-h6 text-center">
-                {{ Mensaje }}
-              </v-card-text>
-              <v-divider></v-divider>
-  
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" text @click="alerta = false"> Cerrar </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-layout>
-      </v-container>
-    </v-app>
+        </v-flex>
+        <v-dialog v-model="alerta" max-width="500">
+          <v-card>
+            <v-card-title class="text-h4">
+              {{ Titulo }}
+            </v-card-title>
+            <v-card-text class="text-h6 text-center">
+              {{ Mensaje }}
+            </v-card-text>
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" text @click="alerta = false"> Cerrar </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-layout>
+    </v-container>
+  </v-app>
 </template>
-  
-  /* Fijoo */
+
+/* Fijoo */
 <script>
-  export default {
-    layout: "barra",
-    data() {
-      return {
-        alerta: false,
-        Mensaje: "",
-        Titulo: "",
-        search: "",
-        msjbtn:"",
-        btncolor:"",
-        iniciar: true,
-        enproceso:false,
-        terminado:false,
-        pausa:false,
-        reanudar:false,
-        tiempoactivi: false,
-        formpausa: false,
-        controlactivi:[],
-        operadores:["RESPONSABLE 1","RESPONSABLE 2","RESPONSABLE 3","RESPONSABLE 4","RESPONSABLE 5","RESPONSABLE 6","RESPONSABLE 7","RESPONSABLE 8","RESPONSABLE 9","RESPONSABLE 10","RESPONSABLE 11","RESPONSABLE 12"],
-        actividad:[],
-        headers: [
-          { text: "Id de asignación", value: "idcontrolactivi" },
-          { text: "Responsable", value: "responsables" },
-          { text: "Actividad", value: "actividad" },
-          { text: "Estatus", value: "estatusC" },
-          { text: "Estatus", value: "actions", sortable: false },
-        ],
-        datoNuevo: {
-          responsables: "",
-          idactividades: "",
-          idasigactivi: "",
-          idcontrolactivi: "",
-          status: "",
-        },
-      };
-    },
-    mounted() {
-      this.mostrarActividades();
-      this.mostrarControl();
-    },
-  
-    computed: {
-
-    },
-    methods: {
-      /* Mostrar Actividades del select */
-      async mostrarActividades() {
-        try {
-          const res = await fetch("http://localhost:3001/Controlactividades");
-          const datos = await res.json();
-          if (res.status == 404) {
-            console.error("Error al obtener los datos:", error);
-          } else {
-            //console.log(datos.respuesta.respuesta);
-            this.actividad = datos.respuesta.respuesta.map(filtro => ({
-              id: filtro.idactividades,
-              text: filtro.actividad,
-              idasigactivi: filtro.idasigactivi
-              })); 
-              console.log(this.actividad)
-          }
-        } catch (error) {
-          console.error("Error al obtener los datos:", error);
-        } 
+export default {
+  layout: "barra",
+  data() {
+    return {
+      alerta: false,
+      Mensaje: "",
+      Titulo: "",
+      search: "",
+      msjbtn: "",
+      btncolor: "",
+      btniniciar: false,
+      btnterminar: false,
+      pausa: false,
+      reanudar: false,
+      tiempoactivi: false,
+      formpausa: false,
+      controlactivi: [],
+      motivospausa: ["Consumo de alimentos", "Averia"],
+      operadores: [
+        "RESPONSABLE 1",
+        "RESPONSABLE 2",
+        "RESPONSABLE 3",
+        "RESPONSABLE 4",
+        "RESPONSABLE 5",
+        "RESPONSABLE 6",
+        "RESPONSABLE 7",
+        "RESPONSABLE 8",
+        "RESPONSABLE 9",
+        "RESPONSABLE 10",
+        "RESPONSABLE 11",
+        "RESPONSABLE 12",
+      ],
+      actividad: [],
+      headers: [
+        { text: "Id control", value: "idcontrolactivi" },
+        { text: "Responsable", value: "responsables" },
+        { text: "Actividad", value: "actividad" },
+        { text: "Estatus", value: "estatusC" },
+        { text: "Estatus", value: "actions", sortable: false },
+      ],
+      datoNuevo: {
+        responsables: "",
+        idactividades: "",
+        idasigactivi: "",
+        idcontrolactivi: "",
+        status: "",
+        motivoselec: "",
+        motivodes:"",
       },
 
-      /* Mostrar Tabla de control */
-      async mostrarControl() {
-        try {
-          const res = await fetch("http://localhost:3001/Controlasignados");
-          const datos = await res.json();
-          if (res.status == 404) {
-            console.error("Error al obtener los datos:", error);
-          } else {
-            console.log(datos.respuesta.respuesta);
-            this.controlactivi = datos.respuesta.respuesta;
-            
-          }
-        } catch (error) {
-          console.error("Error al obtener los datos:", error);
-        } 
+      datoNuevo2: {
+        responsables: "",
+        idactividades: "",
+        idasigactivi: "",
+        idcontrolactivi: "",
+        status: "",
+        motivoselec: "",
+        motivodes:"",
       },
+    };
+  },
+  mounted() {
+    this.mostrarActividades();
+    this.mostrarControl();
+  },
 
-      async activi(item, estatus){
-        this.datoNuevo.idcontrolactivi = item;
-        console.log(item, estatus);
-        this.tiempoactivi = true;
-        if(estatus === "INICIAR"){
-            this.msjbtn = 'INICIAR ACTIVIDAD';
-            this.btncolor = "green";
-        }else{
-          if(estatus === "EN PROCESO"){
-            this.msjbtn = 'TERMINAR ACTIVIDAD';
-            this.btncolor = "yellow";
-          }
-          else{
-            if(estatus === "EN PAUSA"){
-              this.tiempoactivi = false;
-            }
-          }
-        }
-      },
-      /* Insertar asignación */
-      async submitForm() {
-        const idAsig = this.actividad.find((filtro) => filtro.id === this.datoNuevo.idactividades);
-        console.log(idAsig.idasigactivi);
-        this.datoNuevo.idasigactivi = idAsig.idasigactivi;
-        const res = await fetch("http://localhost:3001/insertarControl", {
-          method: "POST",
+  computed: {},
+  methods: {
+    /* Mostrar Actividades del select */
+    async mostrarActividades() {
+      try {
+        const res = await fetch("http://localhost:3001/Controlactividades", {
+          method: "GET",
           headers: {
-            "Content-Type": "application/json"
+            token: localStorage.token,
           },
-          body: JSON.stringify(this.datoNuevo),
         });
         const datos = await res.json();
-        console.log(datos);
-        if (res.status === 400) {
-          this.alerta = true;
-          this.Titulo = "¡Upss!";
-          this.Mensaje = datos.mensaje;
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
         } else {
-          this.alerta = true;
-          //this.Titulo = "El ID del activo es: ";
-          this.Titulo = datos.mensaje;
-          this.Mensaje = "";
-          this.limpiarFormulario();
-          this.mostrarControl();
+          //console.log(datos.respuesta.respuesta);
+          this.actividad = datos.respuesta.respuesta.map((filtro) => ({
+            id: filtro.idactividades,
+            text: filtro.actividad,
+            idasigactivi: filtro.idasigactivi,
+          }));
+          //console.log(this.actividad);
         }
-        //console.log(datos.respuestaMante.mensaje);
-      }, 
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
 
-      async acttiempo(){
-        this.datoNuevo.status = "EN PROCESO";
-        const res = await fetch("http://localhost:3001/insertarTiempo", {
+    /* Mostrar Tabla de control */
+    async mostrarControl() {
+      try {
+        const res = await fetch("http://localhost:3001/Controlasignados");
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          //console.log(datos.result);
+          this.controlactivi = datos.result;
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
+
+    /* Mostrar los botones */
+    async activi(item, estatus, asignacion, actividades) {
+      this.datoNuevo2.idcontrolactivi = item;
+      this.datoNuevo2.idasigactivi = asignacion;
+      this.datoNuevo2.idactividades = actividades;
+      this.tiempoactivi = true;
+      console.log("idcontrolactivi: ", item, " Estatus controlactivi: ", estatus, "Idactividades: ", actividades, "idasigactivi: ", asignacion);
+      if (estatus === "INICIAR") {
+        this.btniniciar = true;
+        this.btnterminar = false;
+        this.pausa = false;
+        this.reanudar = false;
+      } else {
+        if (estatus === "EN PROCESO") {
+          this.btniniciar = false;
+          this.btnterminar = true;
+          this.pausa = false;
+          this.reanudar = true;
+        } else {
+          if (estatus === "EN PAUSA") {
+            this.pausa = true;
+            this.reanudar = false;
+            this.btniniciar = false;
+            this.btnterminar = false;
+          }
+        }
+      }
+    },
+
+    /* Mostrar formulario de pausas */
+    async pausareanudar() {
+      this.formpausa= true;
+      console.log(this.datoNuevo.idcontrolactivi);
+    },
+
+    /* Insertar asignación */
+    async submitForm() {
+      const idAsig = this.actividad.find(
+        (filtro) => filtro.id === this.datoNuevo.idactividades
+      );
+      console.log(idAsig.idasigactivi);
+      this.datoNuevo.idasigactivi = idAsig.idasigactivi;
+      const res = await fetch("http://localhost:3001/insertarControl", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",token: localStorage.token
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(this.datoNuevo),
       });
@@ -328,72 +380,157 @@
         //this.Titulo = "El ID del activo es: ";
         this.Titulo = datos.mensaje;
         this.Mensaje = "";
+        this.limpiarFormulario();
+        this.mostrarControl();
+      }
+      //console.log(datos.respuestaMante.mensaje);
+    },
+
+    /* Enviar estatus en proceso del botón iniciar actividad */
+    async acttiempo() {
+      this.datoNuevo2.status = "EN PROCESO";
+      const res = await fetch("http://localhost:3001/insertarTiempo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.datoNuevo2),
+      });
+      const datos = await res.json();
+      console.log(datos);
+      if (res.status === 400) {
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje = datos.mensaje;
+      } else {
+        this.alerta = true;
+        //this.Titulo = "El ID del activo es: ";
+        this.Titulo = datos.mensaje;
+        this.Mensaje = "";
         this.mostrarControl();
         this.tiempoactivi = false;
-      } 
-      },
-  
-     
-      limpiarFormulario() {
-       this.datoNuevo.responsables= "",
-       this.datoNuevo.idactividades= ""
-      },
-
-      getButtonStyle(estatus) {
-        console.log("Estatus define color: ",estatus);
-        let backgroundColor;
-        let color = 'white'; // color del texto
-        
-        switch (estatus) {
-          case 'EN PROCESO':
-            backgroundColor = 'orange';
-            break;
-          case 'INICIAR':
-            backgroundColor = '#00e676';
-            break;
-          default:
-            backgroundColor = 'gray';
-        }
-
-        return {
-          backgroundColor,
-          color
-        };
-      },
+      }
     },
-  };
+
+    /* Enviar estatus en proceso del botón Terminar actividad */
+    async acttiempofinal() {
+      //console.log(this.datoNuevo.motivo);
+      const res = await fetch("http://localhost:3001/actualizarTimefin", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.datoNuevo2),
+      });
+      const datos = await res.json();
+      console.log(datos);
+      if (res.status === 400) {
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje = datos.mensaje;
+      } else {
+        this.alerta = true;
+        this.Titulo = "¡Termino!";
+        this.Mensaje = datos.mensaje;
+        this.mostrarControl();
+        this.mostrarActividades();
+        this.tiempoactivi = false;
+      } 
+    },
+
+    async acttiempoPausa() {
+      //console.log(this.datoNuevo.motivo);
+      const res = await fetch("http://localhost:3001/actualizarTimepausa", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.datoNuevo2),
+      });
+      const datos = await res.json();
+      console.log(datos);
+      if (res.status === 400) {
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje = datos.mensaje;
+      } else {
+        this.alerta = true;
+        //this.Titulo = "El ID del activo es: ";
+        this.Titulo = datos.mensaje;
+        this.Mensaje = "";
+        this.limpiarFormularioPausa();
+        this.mostrarControl();
+        this.formpausa = false;
+        this.tiempoactivi = false;
+      } 
+    },
+
+    /* Enviar estatus en proceso del botón iniciar actividad */
+    async acttiempoReanudar() {
+      this.datoNuevo2.status = "EN PROCESO";
+      const res = await fetch("http://localhost:3001/insertarTiempo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.datoNuevo2),
+      });
+      const datos = await res.json();
+      console.log(datos);
+      if (res.status === 400) {
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje = datos.mensaje;
+      } else {
+        this.alerta = true;
+        //this.Titulo = "El ID del activo es: ";
+        this.Titulo = datos.mensaje;
+        this.Mensaje = "";
+        this.mostrarControl();
+        this.tiempoactivi = false;
+      }
+    },
+
+    /* Limpiar formulario de agendar */
+    limpiarFormulario() {
+      (this.datoNuevo.responsables = ""), (this.datoNuevo.idactividades = "");
+    },
+    limpiarFormularioPausa(){
+      this.datoNuevo2.motivodes= "", this.datoNuevo2.motivoselec=""
+    }
+  },
+};
 </script>
-  
+
 <style>
-    .layout.wrap {
-    justify-content: center;
-    }
-    .v-card__title {
-    justify-content: center !important;
-    font-size: 30px !important;
-    }
-    .row {
-    padding: 0px 10px 0px 10px;
-    }
-    .btnEnviar {
-    margin-top: 30px;
-    margin-bottom: 50px;
-    width: 30%;
-    font-size: 20px !important;
-    }
-    .btn-success {
-      background-color: green;
-      color: white;
-    }
+.layout.wrap {
+  justify-content: center;
+}
+.v-card__title {
+  justify-content: center !important;
+  font-size: 30px !important;
+}
+.row {
+  padding: 0px 10px 0px 10px;
+}
+.btnEnviar {
+  margin-top: 30px;
+  margin-bottom: 50px;
+  width: 30%;
+  font-size: 20px !important;
+}
+.btn-success {
+  background-color: green;
+  color: white;
+}
 
-    .btn-warning {
-      background-color: orange;
-      color: white;
-    }
+.btn-warning {
+  background-color: orange;
+  color: white;
+}
 
-    .btn-error {
-      background-color: red;
-      color: white;
-    }
+.btn-error {
+  background-color: red;
+  color: white;
+}
 </style>
-  

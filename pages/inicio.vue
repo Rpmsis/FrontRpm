@@ -27,6 +27,11 @@
                     <h4 class="modulo">Control de actividades</h4>
                   </a>
                 </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/actividades/editeficienciakg">
+                    <h4 class="modulo">Editar kilogramos</h4>
+                  </a>
+                </v-card>
               </v-card>
             </v-col>
             <v-col cols="12" md="6">
@@ -60,15 +65,15 @@
               <v-card>
                 <v-card-title>CONTABILIDAD</v-card-title>
                 <!-- <v-card class="v-sheet theme--dark">
-              <a href="/SGI/noconformidad">
-                  <h4 class="modulo">Tickets de no conformidad</h4>
-              </a>
-            </v-card> -->
+                  <a href="/SGI/noconformidad">
+                      <h4 class="modulo">Tickets de no conformidad</h4>
+                  </a>
+                </v-card> -->
                 <!-- <v-card class="v-sheet theme--dark">
-              <a href="/activos/ubicacion">
-                  <h4 class="modulo">Alta de ubicaciones</h4>
-              </a>
-            </v-card>  -->
+                  <a href="/activos/ubicacion">
+                      <h4 class="modulo">Alta de ubicaciones</h4>
+                  </a>
+                </v-card>  -->
                 <v-card class="v-sheet theme--dark">
                   <a href="/socioscomerciales/provusuario">
                     <h4 class="modulo">Usuario proveedor</h4>
@@ -110,20 +115,20 @@
                   </a>
                 </v-card>
                 <!--  <v-card class="v-sheet theme--dark">
-              <a href="/preguntaSeg/formulario">
-                  <h4 class="modulo">Generar preguntas</h4>
-              </a>
-            </v-card>
-            <v-card class="v-sheet theme--dark">
-              <a href="/preguntaSeg/mostrarPreg">
-                  <h4 class="modulo">Ver preguntas</h4>
-              </a>
-            </v-card>
-            <v-card class="v-sheet theme--dark">
-              <a href="ayuda">
-                  <h4 class="modulo">Ayuda</h4>
-              </a>
-            </v-card> -->
+                  <a href="/preguntaSeg/formulario">
+                      <h4 class="modulo">Generar preguntas</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/preguntaSeg/mostrarPreg">
+                      <h4 class="modulo">Ver preguntas</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="ayuda">
+                      <h4 class="modulo">Ayuda</h4>
+                  </a>
+                </v-card> -->
               </v-card>
             </v-col>
           </v-row>

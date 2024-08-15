@@ -4,9 +4,7 @@
       <v-layout row wrap>
         <v-flex xs12>
           <v-card>
-            <v-card-title style="padding: 50px"
-              >ASIGNACIÓN DE ACTIVIDADES</v-card-title
-            >
+            <v-card-title style="padding: 50px">ASIGNACIÓN DE ACTIVIDADES</v-card-title>
             <v-form @submit.prevent="submitForm">
               <v-row>
                 <v-col cols="12" md="4">
@@ -39,7 +37,7 @@
                   <v-select
                     v-model="datoNuevo.empresa"
                     :items="ubicaciones"
-                    item-value="text"  
+                    item-value="text"
                     item-text="text"
                     label="EMPRESA"
                     @change="mostrarActividades"
@@ -47,14 +45,14 @@
                   ></v-select>
                 </v-col>
                 <v-col cols="12" md="4">
-                    <v-select
+                  <v-select
                     v-model="datoNuevo.idactividad"
                     :items="actividades"
-                    item-value="id"  
-                    item-text="text" 
+                    item-value="id"
+                    item-text="text"
                     label="ACTIVIDAD"
                     filled
-                    ></v-select>
+                  ></v-select>
                 </v-col>
               </v-row>
               <center>
@@ -64,33 +62,32 @@
               </center>
             </v-form>
           </v-card>
-          <v-card class="mt-5" style="padding:10px">
-                <v-text-field
-                    v-model="search"
-                    append-icon="mdi-magnify"
-                    label="Buscar"
-                    single-line
-                    hide-details
-                ></v-text-field>
-                <v-data-table
-                    :headers="headers"
-                    :items="actividad"
-                    :search="search"
-                    :footer-props="{
-                    'items-per-page-options': [5, 10, 20, 30, 40, 50],
-                    }"
-                    :items-per-page="10"
-                    :sort-by="['fechainicio']"
-                    :sort-desc="true"
-                >
-
-                <template v-slot:item.tiempo="{ item }">
-                  {{ `${item.hora}:${item.minutos}` }}
-                </template>
-                    <template v-slot:item.actions="{ item }">
-                    <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                        <!-- <v-icon
+          <v-card class="mt-5" style="padding: 10px">
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Buscar"
+              single-line
+              hide-details
+            ></v-text-field>
+            <v-data-table
+              :headers="headers"
+              :items="actividad"
+              :search="search"
+              :footer-props="{
+                'items-per-page-options': [5, 10, 20, 30, 40, 50],
+              }"
+              :items-per-page="10"
+              :sort-by="['fechainicio']"
+              :sort-desc="true"
+            >
+              <template v-slot:item.tiempo="{ item }">
+                {{ `${item.hora}:${item.minutos}` }}
+              </template>
+              <template v-slot:item.actions="{ item }">
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <!-- <v-icon
                             color="white"
                             dark
                             v-bind="attrs"
@@ -101,134 +98,139 @@
                         >
                             mdi-eye
                         </v-icon> -->
-                        <v-icon
-                            color="white"
-                            dark
-                            v-bind="attrs"
-                            v-on="on"
-                            @click="deletee(item.idasigactivi)"
-                            small
-                            class="mr-2"
-                        >
-                            mdi-trash-can
-                        </v-icon>
-                        </template>
-                        <span>Visualizar</span>
-                    </v-tooltip>
-                    </template>
-                </v-data-table>
+                    <v-icon
+                      color="white"
+                      dark
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="deletee(item.idasigactivi)"
+                      small
+                      class="mr-2"
+                    >
+                      mdi-trash-can
+                    </v-icon>
+                  </template>
+                  <span>Visualizar</span>
+                </v-tooltip>
+              </template>
+            </v-data-table>
           </v-card>
 
           <!-- Formulario actualizar-->
-      <template>
-        <div class="pa-4 text-center">
-          <v-dialog v-model="actiActualizar" persistent max-width="1000px">
-            <v-card style="padding: 15px">
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn icon @click="actiActualizar = false">
-                  <v-icon style="font-size: 30px"
-                    >mdi-close theme--dark red--text</v-icon
-                  ></v-btn
-                >
-              </v-card-actions>
-              <v-divider></v-divider>
-              <v-divider></v-divider>
-              <v-form class="mt-5" @submit.prevent="actualizaracti">
-                <v-row>
-                    <v-col cols="12" md="4">
-                    <v-menu
-                        v-model="menu2"
-                        :close-on-content-click="false"
-                        :nudge-right="40"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="290px"
+          <template>
+            <div class="pa-4 text-center">
+              <v-dialog v-model="actiActualizar" persistent max-width="1000px">
+                <v-card style="padding: 15px">
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click="actiActualizar = false">
+                      <v-icon style="font-size: 30px"
+                        >mdi-close theme--dark red--text</v-icon
+                      ></v-btn
                     >
-                        <template v-slot:activator="{ on }">
-                        <v-text-field
-                            v-model="fecha2"
-                            label="FECHA DE INICIO"
-                            outlined
-                            readonly
-                            v-on="on"
-                        ></v-text-field>
-                        </template>
-                        <v-date-picker
-                        v-model="fecha2"
-                        :min="fechaMinima"
-                        @input="menu2 = false"
+                  </v-card-actions>
+                  <v-divider></v-divider>
+                  <v-divider></v-divider>
+                  <v-form class="mt-5" @submit.prevent="actualizaracti">
+                    <v-row>
+                      <v-col cols="12" md="4">
+                        <v-menu
+                          v-model="menu2"
+                          :close-on-content-click="false"
+                          :nudge-right="40"
+                          transition="scale-transition"
+                          offset-y
+                          min-width="290px"
                         >
-                        </v-date-picker>
-                    </v-menu>
-                    </v-col>
-                    <v-col cols="12" md="4">
-                    <v-select
-                        v-model="datoNuevoActualizar.empresa"
-                        :items="ubicaciones"
-                        label="EMPRESA"
-                        filled
-                    ></v-select>
-                    </v-col>
-                    <v-col cols="12" md="4">
+                          <template v-slot:activator="{ on }">
+                            <v-text-field
+                              v-model="fecha2"
+                              label="FECHA DE INICIO"
+                              outlined
+                              readonly
+                              v-on="on"
+                            ></v-text-field>
+                          </template>
+                          <v-date-picker
+                            v-model="fecha2"
+                            :min="fechaMinima"
+                            @input="menu2 = false"
+                          >
+                          </v-date-picker>
+                        </v-menu>
+                      </v-col>
+                      <v-col cols="12" md="4">
                         <v-select
-                        v-model="datoNuevoActualizar.idactividad"
-                        :items="actividades"
-                        item-value="id"  
-                        item-text="text" 
-                        label="ACTIVIDAD"
-                        filled
+                          v-model="datoNuevoActualizar.empresa"
+                          :items="ubicaciones"
+                          label="EMPRESA"
+                          filled
                         ></v-select>
-                    </v-col>
-                </v-row>
-                <center>
-                  <v-btn block outlined color="orange" class="btnEnviar" type="submit"
-                    >Actualizar</v-btn
-                  >
-                </center>
-              </v-form>
-            </v-card>
-          </v-dialog>
-        </div>
-      </template>
+                      </v-col>
+                      <v-col cols="12" md="4">
+                        <v-select
+                          v-model="datoNuevoActualizar.idactividad"
+                          :items="actividades"
+                          item-value="id"
+                          item-text="text"
+                          label="ACTIVIDAD"
+                          filled
+                        ></v-select>
+                      </v-col>
+                    </v-row>
+                    <center>
+                      <v-btn block outlined color="orange" class="btnEnviar" type="submit"
+                        >Actualizar</v-btn
+                      >
+                    </center>
+                  </v-form>
+                </v-card>
+              </v-dialog>
+            </div>
+          </template>
 
-      <!-- Formulario eliminar-->
-      <template>
-        <div class="pa-4 text-center">
-          <v-dialog v-model="eliminar" persistent max-width="600px">
-            <v-card style="padding: 15px">
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn icon @click="eliminar = false">
-                  <v-icon style="font-size: 30px"
-                    >mdi-close theme--dark red--text</v-icon
-                  ></v-btn
-                >
-              </v-card-actions>
-              <v-divider></v-divider>
-              <v-divider></v-divider>
-              <v-form class="mt-5" @submit.prevent="actualizaracti">
-                <v-row>
-                    <v-col cols="12" md="12">
+          <!-- Formulario eliminar-->
+          <template>
+            <div class="pa-4 text-center">
+              <v-dialog v-model="eliminar" persistent max-width="600px">
+                <v-card style="padding: 15px">
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click="eliminar = false">
+                      <v-icon style="font-size: 30px"
+                        >mdi-close theme--dark red--text</v-icon
+                      ></v-btn
+                    >
+                  </v-card-actions>
+                  <v-divider></v-divider>
+                  <v-divider></v-divider>
+                  <v-form class="mt-5" @submit.prevent="actualizaracti">
+                    <v-row>
+                      <v-col cols="12" md="12">
                         <v-textarea
-                            clear-icon="mdi-close-circle"
-                            label="DESCRIBE EL MOTIVO.."
-                            clearable
-                            style="border: white"
-                            v-model="datoNuevoActualizar.motivo"
+                          clear-icon="mdi-close-circle"
+                          label="DESCRIBE EL MOTIVO.."
+                          clearable
+                          style="border: white"
+                          v-model="datoNuevoActualizar.motivo"
                         ></v-textarea>
                         <center>
-                  <v-btn block outlined color="error" class="btnEnviar" type="submit"
-                    >Eliminar</v-btn
-                  >
-                </center>
-                    </v-col>
-                </v-row>
-              </v-form>
-            </v-card>
-          </v-dialog>
-        </div>
-      </template>
+                          <v-btn
+                            block
+                            outlined
+                            color="error"
+                            class="btnEnviar"
+                            type="submit"
+                            >Eliminar</v-btn
+                          >
+                        </center>
+                      </v-col>
+                    </v-row>
+                  </v-form>
+                </v-card>
+              </v-dialog>
+            </div>
+          </template>
         </v-flex>
 
         <v-dialog v-model="alerta" max-width="500">
@@ -262,30 +264,34 @@ export default {
       Mensaje: "",
       Titulo: "",
       search: "",
-      menu:"",
-      fecha:"",
-      menu2:"",
-      fecha2:"",
+      menu: "",
+      fecha: "",
+      menu2: "",
+      fecha2: "",
       actiActualizar: false,
       eliminar: false,
-      actividades:[],
-      empresas:[],
-      actividad:[],
+      actividades: [],
+      empresas: [],
+      actividad: [],
       ubicaciones: [],
       headers: [
-        { text: "Id de\nasignación", 
+        {
+          text: "Id de\nasignación",
           value: "idasigactivi",
           align: "center",
-          class: "multi-line-header"},
+          class: "multi-line-header",
+        },
 
         { text: "Fecha de inicio", value: "fechainicio" },
         { text: "Actividad", value: "actividad" },
         { text: "Empresa", value: "empresa" },
 
-        { text: "Tiempo\nestimado", 
-          value: "tiempo" ,
+        {
+          text: "Tiempo\nestimado",
+          value: "tiempo",
           align: "star",
-          class: "multi-line-header"},
+          class: "multi-line-header",
+        },
 
         { text: "Editar", value: "actions", sortable: false },
       ],
@@ -295,11 +301,11 @@ export default {
         idactividad: "",
       },
       datoNuevoActualizar: {
-        idasigactivi:"",
+        idasigactivi: "",
         fechainicio: "",
         empresa: "",
         idactividad: "",
-        status:"",
+        status: "",
         motivo: "",
       },
     };
@@ -323,60 +329,63 @@ export default {
   methods: {
     /* Mostrar Actividad */
     async mostrarActividades() {
-        const empre= this.datoNuevo.empresa;
-        console.log(empre)
+      const empre = this.datoNuevo.empresa;
+      console.log(empre);
       try {
         const res = await fetch("http://localhost:3001/actividades");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          const datosA = datos.respuesta.respuesta.filter((filtro)=> filtro.ubicacion === empre);
+          const datosA = datos.respuesta.respuesta.filter(
+            (filtro) => filtro.ubicacion === empre
+          );
           //console.log(datosA);
-          this.actividades = datosA.map(filtro => ({
+          this.actividades = datosA.map((filtro) => ({
             id: filtro.idactividades,
-            text: filtro.actividad
-            })); 
+            text: filtro.actividad,
+          }));
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
-      } 
+      }
     },
 
     /* Mostrar ubicación */
     async mostrarubi() {
-        try {
+      try {
         const res = await fetch("http://localhost:3001/ubicacion");
         const datos = await res.json();
         if (res.status == 404) {
-            console.error("Error al obtener los datos:", error);
+          console.error("Error al obtener los datos:", error);
         } else {
-            //console.log(datos.respuesta.respuesta);
-            this.ubicaciones = datos.respuesta.respuesta.map(filtro => ({
+          //console.log(datos.respuesta.respuesta);
+          this.ubicaciones = datos.respuesta.respuesta.map((filtro) => ({
             id: filtro.idubicacion,
-            text: filtro.descrip
-            }));
+            text: filtro.descrip,
+          }));
         }
-        } catch (error) {
+      } catch (error) {
         console.error("Error al obtener los datos:", error);
-        }
+      }
     },
 
     /* Mostrar Asignación */
     async mostrarAsignacion() {
       try {
-        const res = await fetch("http://localhost:3001/asignacion",{
-        method: "GET",
-        headers: {
-          token: localStorage.token
-        },
-      });
+        const res = await fetch("http://localhost:3001/asignacion", {
+          method: "GET",
+          headers: {
+            token: localStorage.token,
+          },
+        });
         const datos = await res.json();
+        console.log(datos);
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
           //this.ubicaciones = datos.respuesta.respuesta;
-          this.actividad = datos.respuesta.respuesta;
+          this.actividad = datos.nuevarespuesta;
           console.log(this.actividad);
         }
       } catch (error) {
@@ -390,7 +399,8 @@ export default {
       const res = await fetch("http://localhost:3001/insertarAsigactividad", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",token: localStorage.token
+          "Content-Type": "application/json",
+          token: localStorage.token,
         },
         body: JSON.stringify(this.datoNuevo),
       });

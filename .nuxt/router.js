@@ -11,6 +11,7 @@ const _5e3a3608 = () => interopDefault(import('..\\pages\\actividades\\actdiaria
 const _024ce13a = () => interopDefault(import('..\\pages\\actividades\\actForaneas.vue' /* webpackChunkName: "pages/actividades/actForaneas" */))
 const _2c0b7c1e = () => interopDefault(import('..\\pages\\actividades\\asignacion.vue' /* webpackChunkName: "pages/actividades/asignacion" */))
 const _9d1964f8 = () => interopDefault(import('..\\pages\\actividades\\control.vue' /* webpackChunkName: "pages/actividades/control" */))
+const _2afd93b3 = () => interopDefault(import('..\\pages\\actividades\\editeficienciakg.vue' /* webpackChunkName: "pages/actividades/editeficienciakg" */))
 const _64883dae = () => interopDefault(import('..\\pages\\activos\\activosFijos.vue' /* webpackChunkName: "pages/activos/activosFijos" */))
 const _de6c314e = () => interopDefault(import('..\\pages\\activos\\insumos.vue' /* webpackChunkName: "pages/activos/insumos" */))
 const _4ea36e16 = () => interopDefault(import('..\\pages\\activos\\mantenimiento.vue' /* webpackChunkName: "pages/activos/mantenimiento" */))
@@ -68,6 +69,10 @@ export const routerOptions = {
     path: "/actividades/control",
     component: _9d1964f8,
     name: "actividades-control"
+  }, {
+    path: "/actividades/editeficienciakg",
+    component: _2afd93b3,
+    name: "actividades-editeficienciakg"
   }, {
     path: "/activos/activosFijos",
     component: _64883dae,

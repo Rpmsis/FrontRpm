@@ -42,6 +42,12 @@
     "chunkName": "pages/actividades/control"
   },
   {
+    "name": "actividades-editeficienciakg",
+    "path": "/actividades/editeficienciakg",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\editeficienciakg.vue",
+    "chunkName": "pages/actividades/editeficienciakg"
+  },
+  {
     "name": "activos-activosFijos",
     "path": "/activos/activosFijos",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\activos\\\\activosFijos.vue",
