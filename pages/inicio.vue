@@ -4,6 +4,118 @@
       <v-layout row wrap style="padding: 20px">
         <v-flex>
           <v-row>
+            <v-col cols="12" md="12">
+              <v-card
+                style="
+                  background: linear-gradient(white, 95%, orange);
+                  border-radius: 15px;
+                "
+              >
+                <a style="text-decoration: none !important" href="/menusemana/Semanamenu">
+                  <v-row>
+                    <v-col cols="12" md="2">
+                      <img class="responsive-gif" :src="imageSrc" />
+                    </v-col>
+                    <v-col cols="12" md="5">
+                      <h4 style="color: chocolate">
+                        <v-icon color="black" dark large class="mr-2">
+                          mdi-noodles
+                        </v-icon>
+                        Sopa:
+                      </h4>
+                      <h3 class="csstxtmenu">{{ platoentrada }}</h3>
+                      <h4 style="color: chocolate">
+                        <v-icon color="black" dark large class="mr-2">
+                          mdi-food-turkey
+                        </v-icon>
+                        Plato fuerte A:
+                      </h4>
+                      <h3 class="csstxtmenu">{{ platofuerteA }}</h3>
+                    </v-col>
+                    <v-col cols="12" md="5">
+                      <h4 style="color: chocolate">
+                        <v-icon color="black" dark large class="mr-2">
+                          mdi-beer-outline
+                        </v-icon>
+                        Bebida:
+                      </h4>
+                      <h3 class="csstxtmenu">{{ bebida }}</h3>
+                      <h4 style="color: chocolate">
+                        <v-icon color="black" dark large class="mr-2">
+                          mdi-food-turkey
+                        </v-icon>
+                        Plato fuerte B:
+                      </h4>
+                      <h3 class="csstxtmenu">{{ platofuerteB }}</h3>
+                    </v-col>
+                  </v-row>
+                </a>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" md="12">
+              <v-card
+                style="
+                  background: linear-gradient(to bottom right, white, 70%, orange);
+                  border-radius: 15px;
+                "
+              >
+                <a style="text-decoration: none !important" href="/menusemana/Semanamenu">
+                  <v-row style="padding: 15px">
+                    <v-col cols="12" md="2">
+                      <img class="responsive-gif" :src="gifSrc" />
+                    </v-col>
+                    <v-col cols="12" md="5">
+                      <h4 style="color: chocolate">
+                        <v-icon color="black" dark large class="mr-2">
+                          mdi-noodles
+                        </v-icon>
+                        Sopa:
+                      </h4>
+                      <h3 class="csstxtmenu">{{ platoentrada }}</h3>
+                      <h4 style="color: chocolate">
+                        <v-icon color="black" dark large class="mr-2">
+                          mdi-food-turkey
+                        </v-icon>
+                        Plato fuerte A:
+                      </h4>
+                      <h3 class="csstxtmenu">{{ platofuerteA }}</h3>
+                    </v-col>
+                    <v-col cols="12" md="5">
+                      <h4 style="color: chocolate">
+                        <v-icon color="black" dark large class="mr-2">
+                          mdi-beer-outline
+                        </v-icon>
+                        Bebida:
+                      </h4>
+                      <h3 class="csstxtmenu">{{ bebida }}</h3>
+                      <h4 style="color: chocolate">
+                        <v-icon color="black" dark large class="mr-2">
+                          mdi-food-turkey
+                        </v-icon>
+                        Plato fuerte B:
+                      </h4>
+                      <h3 class="csstxtmenu">{{ platofuerteB }}</h3>
+                    </v-col>
+                  </v-row>
+                </a>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-card>
+                <v-card-title>MENÚ DE LA SEMANA</v-card-title>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/menusemana/formenu">
+                    <h4 class="modulo">Agregar comida</h4>
+                  </a>
+                </v-card>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row>
             <v-col class="12" md="6">
               <v-card>
                 <v-card-title>MONITOREO DE ACTIVIDADES</v-card-title>
@@ -148,6 +260,13 @@ export default {
   layout: "barra",
   data() {
     return {
+      gifSrc: "/logo.gif",
+      imageSrc: "/logoimg.jpg",
+      menudeldia: {},
+      platoentrada: "",
+      platofuerteA: "",
+      platofuerteB: "",
+      bebida: "",
       enviar: null,
       headers: [
         { text: "Nombre", align: "start", value: "name" },
@@ -161,6 +280,29 @@ export default {
         { id: 4, name: "Ana", age: 35, email: "ana@example.com" },
       ],
     };
+  },
+  mounted() {
+    this.mostrar();
+  },
+  methods: {
+    async mostrar() {
+      try {
+        const res = await fetch("http://localhost:3001/Menudeldia");
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          this.menudeldia = datos.respuesta.respuesta;
+          this.platoentrada = datos.respuesta.respuesta[0].platoentrada;
+          this.platofuerteA = datos.respuesta.respuesta[0].platofuerteA;
+          this.platofuerteB = datos.respuesta.respuesta[0].platofuerteB;
+          this.bebida = datos.respuesta.respuesta[0].bebida;
+          console.log(datos.respuesta.respuesta);
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
   },
 };
 </script>
@@ -179,5 +321,16 @@ export default {
 }
 .v-sheet.v-card {
   margin-bottom: 30px;
+}
+.responsive-gif {
+  width: 150px;
+  height: auto; /* Mantiene la proporción del GIF */
+  border-radius: 150px;
+  object-fit: cover; /* Asegura que el GIF cubra el área del contenedor */
+}
+.csstxtmenu {
+  color: #050505;
+  font-family: cursive;
+  font-size: 30px;
 }
 </style>

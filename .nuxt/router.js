@@ -22,6 +22,9 @@ const _01ac8500 = () => interopDefault(import('..\\pages\\consumibles\\codigobar
 const _590682d1 = () => interopDefault(import('..\\pages\\consumibles\\consumible.vue' /* webpackChunkName: "pages/consumibles/consumible" */))
 const _301e4f84 = () => interopDefault(import('..\\pages\\consumibles\\devolucion.vue' /* webpackChunkName: "pages/consumibles/devolucion" */))
 const _396739e7 = () => interopDefault(import('..\\pages\\consumibles\\inventario.vue' /* webpackChunkName: "pages/consumibles/inventario" */))
+const _26c168ee = () => interopDefault(import('..\\pages\\menusemana\\form.vue' /* webpackChunkName: "pages/menusemana/form" */))
+const _550a876e = () => interopDefault(import('..\\pages\\menusemana\\formenu.vue' /* webpackChunkName: "pages/menusemana/formenu" */))
+const _3e4bf542 = () => interopDefault(import('..\\pages\\menusemana\\Semanamenu.vue' /* webpackChunkName: "pages/menusemana/Semanamenu" */))
 const _4961270a = () => interopDefault(import('..\\pages\\preguntaSeg\\formulario.vue' /* webpackChunkName: "pages/preguntaSeg/formulario" */))
 const _76579c6a = () => interopDefault(import('..\\pages\\preguntaSeg\\mostrarPreg.vue' /* webpackChunkName: "pages/preguntaSeg/mostrarPreg" */))
 const _3b104d80 = () => interopDefault(import('..\\pages\\SGI\\noconformidad.vue' /* webpackChunkName: "pages/SGI/noconformidad" */))
@@ -113,6 +116,18 @@ export const routerOptions = {
     path: "/consumibles/inventario",
     component: _396739e7,
     name: "consumibles-inventario"
+  }, {
+    path: "/menusemana/form",
+    component: _26c168ee,
+    name: "menusemana-form"
+  }, {
+    path: "/menusemana/formenu",
+    component: _550a876e,
+    name: "menusemana-formenu"
+  }, {
+    path: "/menusemana/Semanamenu",
+    component: _3e4bf542,
+    name: "menusemana-Semanamenu"
   }, {
     path: "/preguntaSeg/formulario",
     component: _4961270a,

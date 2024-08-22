@@ -28,7 +28,7 @@
                 dark
                 v-bind="attrs"
                 v-on="on"
-                @click="actubi(item.idMantenimiento,item.idubicacion)"
+                @click="actubi(item.idMantenimiento, item.idubicacion)"
                 small
                 class="mr-2"
               >
@@ -43,7 +43,7 @@
       <!-- Formulario-->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="ubi" max-width="500px">
+          <v-dialog v-model="ubi" max-width="800px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -55,32 +55,96 @@
               </v-card-actions>
               <v-divider></v-divider>
               <v-divider></v-divider>
-              <v-form class="mt-5" @submit.prevent="actualiarDes">
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-select
-                      :items="ubicaciones"
-                      :item-title="datos1.idubicacion"
-                      v-model="datos1.idubicacion"
-                      item-value="text"  
-                      item-text="text"
-                      label="*UBICACIÓN"
-                      filled
-                    ></v-select>
-                  </v-col>
-                </v-row>
-                <center>
-                  <v-btn
-                    block
-                    style="margin-top: 10px; margin-bottom: 10px"
-                    outlined
-                    color="green"
-                    elevation="16"
-                    type="submit"
-                    >Actualizar</v-btn
-                  >
-                </center>
-              </v-form>
+              <v-row>
+                <v-col cols="12" md="3">
+                  <div class="caja">
+                    <h4 class="titulos">Id del activo:</h4>
+                    <h1 class="txtactivos">{{ unactivo.folioMant }}</h1>
+                  </div>
+                </v-col>
+                <v-col cols="12" md="3">
+                  <div class="caja">
+                    <h4 class="titulos">Clasificación:</h4>
+                    <h1 class="txtactivos">{{ unactivo.clasificacion }}</h1>
+                  </div>
+                </v-col>
+                <v-col cols="12" md="3">
+                  <div class="caja">
+                    <h4 class="titulos">Especificaciones:</h4>
+                    <h1 class="txtactivos">{{ unactivo.especificacion }}</h1>
+                  </div>
+                </v-col>
+                <v-col cols="12" md="3">
+                  <div class="caja">
+                    <h4 class="titulos">Capacidad:</h4>
+                    <h1 class="txtactivos">{{ unactivo.capacidad }}</h1>
+                  </div>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="4" filled>
+                  <div class="caja">
+                    <h4 class="titulos">Marca:</h4>
+                    <h2 class="txtactivos">{{ unactivo.marca }}</h2>
+                  </div>
+                </v-col>
+                <v-col cols="12" md="4">
+                  <div class="caja">
+                    <h4 class="titulos">Tipo adicional:</h4>
+                    <h2 class="txtactivos">{{ unactivo.tipocontmate }}</h2>
+                  </div>
+                </v-col>
+                <v-col cols="12" md="4">
+                  <div class="caja">
+                    <h4 class="titulos">Número de motor:</h4>
+                    <h2 class="txtactivos">{{ unactivo.nmotor }}</h2>
+                  </div>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="6">
+                  <div class="caja">
+                    <h4 class="titulos">Descripción adicional:</h4>
+                    <h2 class="txtactivos">{{ unactivo.descripadi }}</h2>
+                  </div>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <div class="caja">
+                    <h4 class="titulos">Modelo:</h4>
+                    <h2 class="txtactivos">{{ unactivo.modelo }}</h2>
+                  </div>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="12" class="mt-5">
+                  <v-form @submit.prevent="actualiarDes">
+                    <v-row>
+                      <v-col cols="12" md="12">
+                        <v-select
+                          :items="ubicaciones"
+                          :item-title="datos1.idubicacion"
+                          v-model="datos1.idubicacion"
+                          item-value="text"
+                          item-text="text"
+                          label="*UBICACIÓN"
+                          filled
+                        ></v-select>
+                      </v-col>
+                    </v-row>
+                    <center>
+                      <v-btn
+                        block
+                        style="margin-top: 10px; margin-bottom: 10px"
+                        outlined
+                        color="green"
+                        elevation="16"
+                        type="submit"
+                        >Actualizar</v-btn
+                      >
+                    </center>
+                  </v-form>
+                </v-col>
+              </v-row>
             </v-card>
           </v-dialog>
         </div>
@@ -116,25 +180,27 @@ export default {
       Titulo: "",
       mantt: [],
       search: "",
-      demo:"",
+      demo: "",
       ubi: false,
       ubicaciones: [],
       headers: [
         {
-          text: "Folio",
+          text: "Id del activo",
           align: "start",
           filterable: true,
           value: "folioMant",
         },
+        { text: "Descripción general", value: "descripgen" },
+        { text: "Fabricación", value: "fabricacion" },
         { text: "Tipo de activo", value: "tipoAct" },
-        { text: "Fecha creación", value: "falta" },
         { text: "Ubicación", value: "idubicacion" },
         { text: "Acciones", value: "actions" },
       ],
       datos1: {
-        id:"",
+        id: "",
         idubicacion: "",
       },
+      unactivo: [],
     };
   },
   mounted() {
@@ -151,7 +217,7 @@ export default {
           console.error("Error al obtener los datos:", error);
         } else {
           this.mantt = datos.respuesta.respuesta;
-          console.log(datos.respuesta.respuesta);
+          //console.log(datos.respuesta.respuesta);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -167,11 +233,11 @@ export default {
           console.error("Error al obtener los datos:", error);
         } else {
           //this.ubicaciones = datos.respuesta.respuesta;
-          this.ubicaciones = datos.respuesta.respuesta.map(filtro => ({
+          this.ubicaciones = datos.respuesta.respuesta.map((filtro) => ({
             id: filtro.descrip,
-            text: filtro.descrip
-            }));
-          console.log(datos.respuesta.respuesta);
+            text: filtro.descrip,
+          }));
+          //console.log(datos.respuesta.respuesta);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -179,9 +245,12 @@ export default {
     },
 
     /* Mostrar formulario de actualizar */
-    async actubi(id,ubicacion) {
-      console.log(ubicacion,id);
+    async actubi(id, ubicacion) {
+      //console.log(id);
       this.datos1.id = id;
+      const datosnuevos = this.mantt.find((filtro) => filtro.idMantenimiento === id);
+      //console.log(datosnuevos);
+      this.unactivo = datosnuevos;
       this.datos1.idubicacion = ubicacion;
       this.ubi = true;
     },
@@ -218,3 +287,17 @@ export default {
   },
 };
 </script>
+<style>
+.txtactivos {
+  color: #ffffff;
+  align-items: center;
+  text-align: center;
+}
+.titulos{
+  color: rgb(179, 211, 179);
+}
+.caja {
+  background-color: rgb(141 131 129 / 24%);
+  padding: 5px;
+}
+</style>
