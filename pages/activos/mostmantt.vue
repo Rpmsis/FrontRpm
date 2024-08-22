@@ -294,7 +294,7 @@ export default {
   text-align: center;
 }
 .titulos{
-  color: rgb(179, 211, 179);
+  color: rgb(11, 248, 11);
 }
 .caja {
   background-color: rgb(141 131 129 / 24%);
