@@ -59,25 +59,25 @@
                 <v-col cols="12" md="3">
                   <div class="caja">
                     <h4 class="titulos">Id del activo:</h4>
-                    <h1 class="txtactivos">{{ unactivo.folioMant }}</h1>
+                    <h2 class="txtactivos">{{ unactivo.folioMant }}</h2>
                   </div>
                 </v-col>
                 <v-col cols="12" md="3">
                   <div class="caja">
                     <h4 class="titulos">Clasificación:</h4>
-                    <h1 class="txtactivos">{{ unactivo.clasificacion }}</h1>
+                    <h2 class="txtactivos">{{ unactivo.clasificacion }}</h2>
                   </div>
                 </v-col>
                 <v-col cols="12" md="3">
                   <div class="caja">
                     <h4 class="titulos">Especificaciones:</h4>
-                    <h1 class="txtactivos">{{ unactivo.especificacion }}</h1>
+                    <h2 class="txtactivos">{{ unactivo.especificacion }}</h2>
                   </div>
                 </v-col>
                 <v-col cols="12" md="3">
                   <div class="caja">
                     <h4 class="titulos">Capacidad:</h4>
-                    <h1 class="txtactivos">{{ unactivo.capacidad }}</h1>
+                    <h2 class="txtactivos">{{ unactivo.capacidad }}</h2>
                   </div>
                 </v-col>
               </v-row>
