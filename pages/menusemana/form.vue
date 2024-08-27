@@ -44,6 +44,7 @@ export default {
   },
   methods: {
     updateImagePreview() {
+      console.log(this.Solicitud.archivo);
       const file = this.Solicitud.archivo;
       if (file && file instanceof File) {
         const reader = new FileReader();
@@ -58,7 +59,7 @@ export default {
       }
     },
     async submitForm() {
-      this.Solicitud.nombre= this.Solicitud.archivo.nombre;
+      this.Solicitud.nombre= this.Solicitud.archivo.name;
       if (!this.Solicitud.archivoBase64) {
         alert("Por favor, selecciona un archivo.");
         return;
@@ -79,6 +80,10 @@ export default {
           this.Mensaje = datos.mensaje; */
         } else {
           console.log(datos.mensaje)
+          this.Solicitud.archivo="";
+          this.archivo= null;
+          this.archivoBase64= null;
+          this.imagePreview= null;
           /* this.alerta = true;
           this.Titulo = datos.mensaje;
           this.Mensaje = " ";
