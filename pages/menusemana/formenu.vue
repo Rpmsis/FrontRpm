@@ -87,7 +87,7 @@
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       type="text"
                       label="Sopa: "
@@ -98,7 +98,7 @@
                       "
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       type="text"
                       label="Bebida: "
@@ -109,7 +109,51 @@
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" sm="6" md="6">
+                    <center>
+                      <img
+                        v-if="imagePreview1"
+                        :width="100"
+                        :height="100"
+                        aspect-ratio="16/9"
+                        cover
+                        :src="imagePreview1"
+                        alt="Imagen de la sopa"
+                      />
+                    </center>
+                    <v-file-input
+                      counter
+                      show-size
+                      prepend-icon="mdi-camera-plus"
+                      label="Imagen de la sopa"
+                      v-model="Solicitud.archivo"
+                      @change="updateImagePreview"
+                    ></v-file-input>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <center>
+                      <img
+                        v-if="imagePreview2"
+                        :width="100"
+                        :height="100"
+                        aspect-ratio="16/9"
+                        cover
+                        :src="imagePreview2"
+                        alt="Imagen de la bebida"
+                      />
+                    </center>
+                    <v-file-input
+                      counter
+                      show-size
+                      label="Imagen de la bebida"
+                      prepend-icon="mdi-camera-plus"
+                      v-model="Solicitud.archivo2"
+                      @change="updateImagePreview2"
+                    ></v-file-input>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       type="text"
                       label="Plato fuerte A: "
@@ -120,7 +164,7 @@
                       "
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       type="text"
                       label="Plato fuerte B: "
@@ -132,6 +176,51 @@
                     ></v-text-field>
                   </v-col>
                 </v-row>
+                <v-row>
+                  <v-col cols="12" sm="6" md="6">
+                    <center>
+                      <img
+                        v-if="imagePreview3"
+                        :width="100"
+                        :height="100"
+                        aspect-ratio="16/9"
+                        cover
+                        :src="imagePreview3"
+                        alt="Imagen del plato fuerte A"
+                      />
+                    </center>
+                    <v-file-input
+                      counter
+                      show-size
+                      label="Imagen del plato fuerte A"
+                      prepend-icon="mdi-camera-plus"
+                      v-model="Solicitud.archivo3"
+                      @change="updateImagePreview3"
+                    ></v-file-input>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <center>
+                      <img
+                        v-if="imagePreview4"
+                        :width="100"
+                        :height="100"
+                        aspect-ratio="16/9"
+                        cover
+                        :src="imagePreview4"
+                        alt="Imagen del plato fuerte B"
+                      />
+                    </center>
+                    <v-file-input
+                      counter
+                      show-size
+                      label="Imagen del plato fuerte B"
+                      v-model="Solicitud.archivo4"
+                      prepend-icon="mdi-camera-plus"
+                      @change="updateImagePreview4"
+                    ></v-file-input>
+                  </v-col>
+                </v-row>
+
                 <center>
                   <v-btn block outlined class="btnEnviar" type="submit" color="yellow"
                     >Guardar</v-btn
@@ -210,6 +299,50 @@
                   </v-col>
                 </v-row>
                 <v-row>
+                  <v-col cols="12" sm="6" md="6">
+                    <center>
+                      <img
+                        v-if="imageAct1"
+                        :width="100"
+                        :height="100"
+                        aspect-ratio="16/9"
+                        cover
+                        :src="imageAct1"
+                        alt="Imagen de la sopa"
+                      />
+                    </center>
+                    <v-file-input
+                      counter
+                      show-size
+                      prepend-icon="mdi-camera-plus"
+                      label="Imagen de la sopa"
+                      v-model="actualizarDatos.archivo"
+                      @change="updateImage"
+                    ></v-file-input>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <center>
+                      <img
+                        v-if="imageAct2"
+                        :width="100"
+                        :height="100"
+                        aspect-ratio="16/9"
+                        cover
+                        :src="imageAct2"
+                        alt="Imagen de la bebida"
+                      />
+                    </center>
+                    <v-file-input
+                      counter
+                      show-size
+                      label="Imagen de la bebida"
+                      prepend-icon="mdi-camera-plus"
+                      v-model="actualizarDatos.archivo2"
+                      @change="updateImage2"
+                    ></v-file-input>
+                  </v-col>
+                </v-row>
+                <v-row>
                   <v-col cols="12" md="6">
                     <v-text-field
                       type="text"
@@ -231,6 +364,50 @@
                         actualizarDatos.platofuerteB = actualizarDatos.platofuerteB.toUpperCase()
                       "
                     ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" sm="6" md="6">
+                    <center>
+                      <img
+                        v-if="imageAct3"
+                        :width="100"
+                        :height="100"
+                        aspect-ratio="16/9"
+                        cover
+                        :src="imageAct3"
+                        alt="Imagen del plato fuerte A"
+                      />
+                    </center>
+                    <v-file-input
+                      counter
+                      show-size
+                      label="Imagen del plato fuerte A"
+                      prepend-icon="mdi-camera-plus"
+                      v-model="actualizarDatos.archivo3"
+                      @change="updateImage3"
+                    ></v-file-input>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <center>
+                      <img
+                        v-if="imageAct4"
+                        :width="100"
+                        :height="100"
+                        aspect-ratio="16/9"
+                        cover
+                        :src="imageAct4"
+                        alt="Imagen del plato fuerte B"
+                      />
+                    </center>
+                    <v-file-input
+                      counter
+                      show-size
+                      label="Imagen del plato fuerte B"
+                      v-model="actualizarDatos.archivo4"
+                      prepend-icon="mdi-camera-plus"
+                      @change="updateImage4"
+                    ></v-file-input>
                   </v-col>
                 </v-row>
                 <center>
@@ -287,7 +464,15 @@ export default {
       fecha2: null,
       formcomidas: false,
       actComida: false,
-      imgt1: null,
+      imagePreview1: null,
+      imagePreview2: null,
+      imagePreview3: null,
+      imagePreview4: null,
+      imageAct1: null,
+      imageAct2: null,
+      imageAct3: null,
+      imageAct4: null,
+
       headers: [
         { text: "Id comida", value: "idmenusemana" },
         { text: "Día de la semana", value: "diasemana" },
@@ -318,9 +503,16 @@ export default {
         platofuerteA: "",
         platofuerteB: "",
         bebida: "",
+        archivo: null,
+        archivo2: null,
+        archivo3: null,
+        archivo4: null,
       },
       Solicitud: {
         archivo: null,
+        archivo2: null,
+        archivo3: null,
+        archivo4: null,
       },
     };
   },
@@ -330,15 +522,111 @@ export default {
 
   computed: {},
   methods: {
-    /* Convertir imagen*/
-    /* getBase64Image(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-        });
-    }, */
+    updateImagePreview() {
+      //console.log(this.Solicitud.archivo);
+      const file = this.Solicitud.archivo;
+      if (file && file instanceof File) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.imagePreview1 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        this.imagePreview1 = null;
+      }
+    },
+    updateImagePreview2() {
+      //console.log(this.Solicitud.archivo);
+      const file = this.Solicitud.archivo2;
+      if (file && file instanceof File) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.imagePreview2 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        this.imagePreview2 = null;
+      }
+    },
+    updateImagePreview3() {
+      //console.log(this.Solicitud.archivo);
+      const file = this.Solicitud.archivo3;
+      if (file && file instanceof File) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.imagePreview3 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        this.imagePreview3 = null;
+      }
+    },
+    updateImagePreview4() {
+      //console.log(this.Solicitud.archivo);
+      const file = this.Solicitud.archivo4;
+      if (file && file instanceof File) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.imagePreview4 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        this.imagePreview4 = null;
+      }
+    },
+
+    updateImage() {
+      //console.log(this.Solicitud.archivo);
+      const file = this.actualizarDatos.archivo;
+      if (file && file instanceof File) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.imageAct1 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        this.imageAct1 = null;
+      }
+    },
+    updateImage2() {
+      //console.log(this.Solicitud.archivo);
+      const file = this.actualizarDatos.archivo2;
+      if (file && file instanceof File) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.imageAct2 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        this.imageAct2 = null;
+      }
+    },
+    updateImage3() {
+      //console.log(this.Solicitud.archivo);
+      const file = this.actualizarDatos.archivo3;
+      if (file && file instanceof File) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.imageAct3 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        this.imageAct3 = null;
+      }
+    },
+    updateImage4() {
+      //console.log(this.Solicitud.archivo);
+      const file = this.actualizarDatos.archivo4;
+      if (file && file instanceof File) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.imageAct4 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        this.imageAct4 = null;
+      }
+    },
     async mostrar() {
       try {
         const res = await fetch("http://localhost:3001/Menusemana");
@@ -366,13 +654,22 @@ export default {
 
     async submitForm() {
       console.log(this.enviarDatos);
-      this.enviarDatos.fechainicio = this.fecha;
+      const formulario = new FormData();
+      formulario.append("fechainicio", this.fecha);
+      formulario.append("platoentrada", this.enviarDatos.platoentrada);
+      formulario.append("platofuerteA", this.enviarDatos.platofuerteA);
+      formulario.append("platofuerteB", this.enviarDatos.platofuerteB);
+      formulario.append("bebida", this.enviarDatos.bebida);
+      formulario.append("archivo", this.Solicitud.archivo);
+      formulario.append("archivo2", this.Solicitud.archivo2);
+      formulario.append("archivo3", this.Solicitud.archivo3);
+      formulario.append("archivo4", this.Solicitud.archivo4);
       const res = await fetch("http://localhost:3001/insertarMenu", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          token: localStorage.token,
         },
-        body: JSON.stringify(this.enviarDatos),
+        body: formulario,
       });
       const datos = await res.json();
       if (res.status === 400) {
@@ -395,13 +692,23 @@ export default {
     /* ------------------------------------------------------------ */
     /* Api que actualiza los datos  de la tabla */
     async actualizaracti() {
-      this.actualizarDatos.fechainicio = this.fecha2;
+      const formulario = new FormData();
+      formulario.append("idmenusemana", this.actualizarDatos.idmenusemana);
+      formulario.append("fechainicio", this.fecha2);
+      formulario.append("platoentrada", this.actualizarDatos.platoentrada);
+      formulario.append("platofuerteA", this.actualizarDatos.platofuerteA);
+      formulario.append("platofuerteB", this.actualizarDatos.platofuerteB);
+      formulario.append("bebida", this.actualizarDatos.bebida);
+      formulario.append("archivo", this.actualizarDatos.archivo);
+      formulario.append("archivo2", this.actualizarDatos.archivo2);
+      formulario.append("archivo3", this.actualizarDatos.archivo3);
+      formulario.append("archivo4", this.actualizarDatos.archivo4);
       const res = await fetch("http://localhost:3001/actualizarMenusemana", {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
+          token: localStorage.token,
         },
-        body: JSON.stringify(this.actualizarDatos),
+        body: formulario,
       });
       const datos = await res.json();
       if (res.status === 400) {
@@ -414,6 +721,10 @@ export default {
         this.Titulo = "Datos actualizados";
         this.Mensaje = " ";
         this.actComida = false;
+        this.imagePreview1 = null,
+        this.imagePreview2 = null,
+        this.imagePreview3 = null,
+        this.imagePreview4 = null,
         this.mostrar();
       }
     },
@@ -426,6 +737,14 @@ export default {
       this.enviarDatos.platofuerteB = "";
       this.enviarDatos.bebida = "";
       this.fecha = "";
+      this.Solicitud.archivo = null;
+      this.imagePreview1 = null;
+      this.Solicitud.archivo2 = null;
+      this.imagePreview2 = null;
+      this.Solicitud.archivo3 = null;
+      this.imagePreview3 = null;
+      this.Solicitud.archivo4 = null;
+      this.imagePreview4 = null;
     },
   },
 };

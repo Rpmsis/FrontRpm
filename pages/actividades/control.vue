@@ -10,7 +10,7 @@
                   <v-select
                     v-model="datoNuevo.responsables"
                     :items="operadores"
-                    item-value="text"
+                    item-value="id"
                     item-text="text"
                     label="RESPONSABLE"
                     filled
@@ -54,138 +54,8 @@
               :items-per-page="10"
               :sort-desc="true"
             >
-              <template v-slot:item.actions="{ item }">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-icon
-                      color="white"
-                      dark
-                      v-bind="attrs"
-                      v-on="on"
-                      @click="activi(item.idcontrolactivi, item.estatusC, item.idasigactivi, item.idactividades)"
-                      small
-                      class="mr-2"
-                    >
-                      mdi-eye
-                    </v-icon>
-                  </template>
-                  <span>Visualizar</span>
-                </v-tooltip>
-              </template>
             </v-data-table>
           </v-card>
-
-          <!-- Mostrar dialog con botones-->
-          <template>
-            <div class="pa-4 text-center">
-              <v-dialog v-model="tiempoactivi" persistent max-width="600px">
-                <v-card style="padding: 15px; text-align: right">
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn icon @click="(tiempoactivi = false), limpiarFormulario()">
-                      <v-icon style="font-size: 30px"
-                        >mdi-close theme--dark red--text</v-icon
-                      ></v-btn
-                    >
-                  </v-card-actions>
-                  <v-divider></v-divider>
-                  <v-divider></v-divider>
-                  <v-row style="margin-top: 5px">
-                    <v-col cols="12" md="10">
-                      <center>
-                        <v-btn
-                          v-show="btniniciar"
-                          block
-                          style="margin-top: 10px; margin-bottom: 10px"
-                          outlined
-                          color="green"
-                          elevation="16"
-                          @click="acttiempo"
-                          >INICIAR ACTIVIDAD</v-btn
-                        >
-                        <v-btn
-                          v-show="btnterminar"
-                          block
-                          style="margin-top: 10px; margin-bottom: 10px"
-                          outlined
-                          color="yellow"
-                          elevation="16"
-                          @click="acttiempofinal"
-                          >TERMINAR ACTIVIDAD</v-btn
-                        >
-                      </center>
-                    </v-col>
-                    <v-col cols="12" md="2">
-                      <v-btn icon v-show="pausa" @click=" acttiempoReanudar">
-                        <v-icon style="font-size: 60px"
-                          >mdi-motion-play theme--dark red--text</v-icon
-                        >
-                      </v-btn>
-                      <v-btn icon v-show="reanudar" @click=" pausareanudar">
-                        <v-icon style="font-size: 60px"
-                          >mdi-motion-pause-outline theme--dark red--text</v-icon
-                        >
-                      </v-btn>
-                    </v-col>
-                  </v-row>
-                </v-card>
-              </v-dialog>
-            </div>
-          </template>
-
-          <!-- Formulario de pausa-->
-          <template>
-            <div class="pa-4 text-center">
-              <v-dialog v-model="formpausa" persistent max-width="500px">
-                <v-card style="padding: 15px">
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn icon @click="(formpausa = false), limpiarFormularioPausa()">
-                      <v-icon style="font-size: 30px"
-                        >mdi-close theme--dark red--text</v-icon
-                      ></v-btn
-                    >
-                  </v-card-actions>
-                  <v-divider></v-divider>
-                  <v-divider></v-divider>
-                  <v-form class="mt-5" @submit.prevent="acttiempoPausa">
-                    <v-row>
-                      <v-col cols="12" md="12">
-                        <v-select
-                          v-model="datoNuevo2.motivoselec"
-                          :items="motivospausa"
-                          label="MOTIVO"
-                          filled
-                        ></v-select>
-                      </v-col>
-                      <v-col cols="12" md="12">
-                        <v-textarea
-                          v-model="datoNuevo2.motivodes"
-                          clear-icon="mdi-close-circle"
-                          label="DESCRIBE EL MOTIVO.."
-                          clearable
-                          style="border: white"
-                        ></v-textarea>
-                      </v-col>
-                      <v-col cols="12" md="12">
-                        <center>
-                          <v-btn
-                            block
-                            style="margin-top: 10px; margin-bottom: 10px"
-                            outlined
-                            color="green"
-                            elevation="16"
-                            type="submit"
-                            >Guardar</v-btn
-                          >
-                        </center>
-                      </v-col>
-                    </v-row>
-                  </v-form>
-                </v-card>
-              </v-dialog>
-            </div>
-          </template>
         </v-flex>
         <v-dialog v-model="alerta" max-width="500">
           <v-card>
@@ -218,37 +88,14 @@ export default {
       Mensaje: "",
       Titulo: "",
       search: "",
-      msjbtn: "",
-      btncolor: "",
-      btniniciar: false,
-      btnterminar: false,
-      pausa: false,
-      reanudar: false,
-      tiempoactivi: false,
-      formpausa: false,
-      controlactivi: [],
-      motivospausa: ["Consumo de alimentos", "Averia"],
-      operadores: [
-        "RESPONSABLE 1",
-        "RESPONSABLE 2",
-        "RESPONSABLE 3",
-        "RESPONSABLE 4",
-        "RESPONSABLE 5",
-        "RESPONSABLE 6",
-        "RESPONSABLE 7",
-        "RESPONSABLE 8",
-        "RESPONSABLE 9",
-        "RESPONSABLE 10",
-        "RESPONSABLE 11",
-        "RESPONSABLE 12",
-      ],
+      operadores: [],
       actividad: [],
+      controlactivi: [],
       headers: [
         { text: "Id control", value: "idcontrolactivi" },
         { text: "Responsable", value: "responsables" },
         { text: "Actividad", value: "actividad" },
         { text: "Estatus", value: "estatusC" },
-        { text: "Estatus", value: "actions", sortable: false },
       ],
       datoNuevo: {
         responsables: "",
@@ -257,22 +104,13 @@ export default {
         idcontrolactivi: "",
         status: "",
         motivoselec: "",
-        motivodes:"",
-      },
-
-      datoNuevo2: {
-        responsables: "",
-        idactividades: "",
-        idasigactivi: "",
-        idcontrolactivi: "",
-        status: "",
-        motivoselec: "",
-        motivodes:"",
+        motivodes: "",
       },
     };
   },
   mounted() {
     this.mostrarActividades();
+    this.mostrarUsuarios();
     this.mostrarControl();
   },
 
@@ -304,6 +142,31 @@ export default {
       }
     },
 
+    /* Mostrar Responsables del select */
+    async mostrarUsuarios() {
+      try {
+        const res = await fetch("http://localhost:3001/Idusuario", {
+          method: "GET",
+          headers: {
+            token: localStorage.token,
+          },
+        });
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          //console.log(datos.respuesta.respuesta);
+          this.operadores = datos.respuesta.respuesta.map((filtro) => ({
+            id: filtro.idCheck,
+            text: filtro.NombreCompleto,
+          }));
+          //console.log(this.actividad);
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
+
     /* Mostrar Tabla de control */
     async mostrarControl() {
       try {
@@ -318,41 +181,6 @@ export default {
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
-    },
-
-    /* Mostrar los botones */
-    async activi(item, estatus, asignacion, actividades) {
-      this.datoNuevo2.idcontrolactivi = item;
-      this.datoNuevo2.idasigactivi = asignacion;
-      this.datoNuevo2.idactividades = actividades;
-      this.tiempoactivi = true;
-      console.log("idcontrolactivi: ", item, " Estatus controlactivi: ", estatus, "Idactividades: ", actividades, "idasigactivi: ", asignacion);
-      if (estatus === "INICIAR") {
-        this.btniniciar = true;
-        this.btnterminar = false;
-        this.pausa = false;
-        this.reanudar = false;
-      } else {
-        if (estatus === "EN PROCESO") {
-          this.btniniciar = false;
-          this.btnterminar = true;
-          this.pausa = false;
-          this.reanudar = true;
-        } else {
-          if (estatus === "EN PAUSA") {
-            this.pausa = true;
-            this.reanudar = false;
-            this.btniniciar = false;
-            this.btnterminar = false;
-          }
-        }
-      }
-    },
-
-    /* Mostrar formulario de pausas */
-    async pausareanudar() {
-      this.formpausa= true;
-      console.log(this.datoNuevo.idcontrolactivi);
     },
 
     /* Insertar asignación */
@@ -386,118 +214,10 @@ export default {
       //console.log(datos.respuestaMante.mensaje);
     },
 
-    /* Enviar estatus en proceso del botón iniciar actividad */
-    async acttiempo() {
-      this.datoNuevo2.status = "EN PROCESO";
-      const res = await fetch("http://localhost:3001/insertarTiempo", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this.datoNuevo2),
-      });
-      const datos = await res.json();
-      console.log(datos);
-      if (res.status === 400) {
-        this.alerta = true;
-        this.Titulo = "¡Upss!";
-        this.Mensaje = datos.mensaje;
-      } else {
-        this.alerta = true;
-        //this.Titulo = "El ID del activo es: ";
-        this.Titulo = datos.mensaje;
-        this.Mensaje = "";
-        this.mostrarControl();
-        this.tiempoactivi = false;
-      }
-    },
-
-    /* Enviar estatus en proceso del botón Terminar actividad */
-    async acttiempofinal() {
-      //console.log(this.datoNuevo.motivo);
-      const res = await fetch("http://localhost:3001/actualizarTimefin", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this.datoNuevo2),
-      });
-      const datos = await res.json();
-      console.log(datos);
-      if (res.status === 400) {
-        this.alerta = true;
-        this.Titulo = "¡Upss!";
-        this.Mensaje = datos.mensaje;
-      } else {
-        this.alerta = true;
-        this.Titulo = "¡Termino!";
-        this.Mensaje = datos.mensaje;
-        this.mostrarControl();
-        this.mostrarActividades();
-        this.tiempoactivi = false;
-      } 
-    },
-
-    async acttiempoPausa() {
-      //console.log(this.datoNuevo.motivo);
-      const res = await fetch("http://localhost:3001/actualizarTimepausa", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this.datoNuevo2),
-      });
-      const datos = await res.json();
-      console.log(datos);
-      if (res.status === 400) {
-        this.alerta = true;
-        this.Titulo = "¡Upss!";
-        this.Mensaje = datos.mensaje;
-      } else {
-        this.alerta = true;
-        //this.Titulo = "El ID del activo es: ";
-        this.Titulo = datos.mensaje;
-        this.Mensaje = "";
-        this.limpiarFormularioPausa();
-        this.mostrarControl();
-        this.formpausa = false;
-        this.tiempoactivi = false;
-      } 
-    },
-
-    /* Enviar estatus en proceso del botón iniciar actividad */
-    async acttiempoReanudar() {
-      this.datoNuevo2.status = "EN PROCESO";
-      const res = await fetch("http://localhost:3001/insertarTiempo", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this.datoNuevo2),
-      });
-      const datos = await res.json();
-      console.log(datos);
-      if (res.status === 400) {
-        this.alerta = true;
-        this.Titulo = "¡Upss!";
-        this.Mensaje = datos.mensaje;
-      } else {
-        this.alerta = true;
-        //this.Titulo = "El ID del activo es: ";
-        this.Titulo = datos.mensaje;
-        this.Mensaje = "";
-        this.mostrarControl();
-        this.tiempoactivi = false;
-      }
-    },
-
     /* Limpiar formulario de agendar */
     limpiarFormulario() {
       (this.datoNuevo.responsables = ""), (this.datoNuevo.idactividades = "");
     },
-    limpiarFormularioPausa(){
-      this.datoNuevo2.motivodes= "", this.datoNuevo2.motivoselec=""
-    }
   },
 };
 </script>

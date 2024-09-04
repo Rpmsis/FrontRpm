@@ -4,9 +4,21 @@
       <v-layout row wrap>
         <v-flex xs12>
           <v-card>
-            <v-card-title>Preguntas</v-card-title>
-            <br />
-            <v-data-table :headers="headers" :items="preguntas" class="elevation-1">
+            <v-card-title>
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Buscar"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-card-title>
+            <v-data-table
+              :headers="headers"
+              :items="preguntas"
+              :search="search"
+              class="elevation-1"
+            >
               <template v-slot:[`item.actions`]="item">
                 <v-btn icon @click="(dialog2 = true), actualizar(item.item.idForms)">
                   <v-icon style="font-size: 16px">mdi-eye purple--text</v-icon>
@@ -21,7 +33,11 @@
                   <v-card>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="error" @click="dialog2 = false">X</v-btn>
+                      <v-btn icon @click="dialog2 = false">
+                        <v-icon style="font-size: 30px"
+                          >mdi-close theme--dark red--text</v-icon
+                        ></v-btn
+                      >
                     </v-card-actions>
                     <v-divider></v-divider>
                     <v-divider></v-divider>
@@ -43,13 +59,19 @@
                               label="Activos"
                               filled
                             ></v-select>
+                            <center>
+                              <v-btn
+                                block
+                                outlined
+                                color="orange"
+                                class="btnEnviar"
+                                type="submit"
+                                >Actualizar</v-btn
+                              >
+                            </center>
                           </v-col>
                         </v-row>
                       </v-container>
-                      <br />
-                      <center>
-                        <v-btn type="submit" color="primary">Actualizar</v-btn>
-                      </center>
                     </v-form>
                     <br />
                   </v-card>
@@ -72,6 +94,7 @@ export default {
     return {
       status: ["Activo", "Inactivo"],
       dialog2: false,
+      search: "",
       preguntas: [],
       headers: [
         { text: "Pregunta", value: "preguntas" },
@@ -87,7 +110,7 @@ export default {
   },
   async mounted() {
     try {
-      const res = await fetch("http://192.168.1.91:3001/preguntas");
+      const res = await fetch("http://localhost:3001/preguntas");
       const datos = await res.json();
       if (res.status == 404) {
         console.error("Error al obtener los datos:", error);

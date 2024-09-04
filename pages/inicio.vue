@@ -7,56 +7,6 @@
             <v-col cols="12" md="12">
               <v-card
                 style="
-                  background: linear-gradient(white, 95%, orange);
-                  border-radius: 15px;
-                "
-              >
-                <a style="text-decoration: none !important" href="/menusemana/Semanamenu">
-                  <v-row>
-                    <v-col cols="12" md="2">
-                      <img class="responsive-gif" :src="imageSrc" />
-                    </v-col>
-                    <v-col cols="12" md="5">
-                      <h4 style="color: chocolate">
-                        <v-icon color="black" dark large class="mr-2">
-                          mdi-noodles
-                        </v-icon>
-                        Sopa:
-                      </h4>
-                      <h3 class="csstxtmenu">{{ platoentrada }}</h3>
-                      <h4 style="color: chocolate">
-                        <v-icon color="black" dark large class="mr-2">
-                          mdi-food-turkey
-                        </v-icon>
-                        Plato fuerte A:
-                      </h4>
-                      <h3 class="csstxtmenu">{{ platofuerteA }}</h3>
-                    </v-col>
-                    <v-col cols="12" md="5">
-                      <h4 style="color: chocolate">
-                        <v-icon color="black" dark large class="mr-2">
-                          mdi-beer-outline
-                        </v-icon>
-                        Bebida:
-                      </h4>
-                      <h3 class="csstxtmenu">{{ bebida }}</h3>
-                      <h4 style="color: chocolate">
-                        <v-icon color="black" dark large class="mr-2">
-                          mdi-food-turkey
-                        </v-icon>
-                        Plato fuerte B:
-                      </h4>
-                      <h3 class="csstxtmenu">{{ platofuerteB }}</h3>
-                    </v-col>
-                  </v-row>
-                </a>
-              </v-card>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" md="12">
-              <v-card
-                style="
                   background: linear-gradient(to bottom right, white, 70%, orange);
                   border-radius: 15px;
                 "
@@ -64,9 +14,9 @@
                 <a style="text-decoration: none !important" href="/menusemana/Semanamenu">
                   <v-row style="padding: 15px">
                     <v-col cols="12" md="2">
-                      <img class="responsive-gif" :src="gifSrc" />
+                      <img class="responsive-gif" :src="imgplatoentrada" />
                     </v-col>
-                    <v-col cols="12" md="5">
+                    <v-col cols="12" md="4">
                       <h4 style="color: chocolate">
                         <v-icon color="black" dark large class="mr-2">
                           mdi-noodles
@@ -74,6 +24,25 @@
                         Sopa:
                       </h4>
                       <h3 class="csstxtmenu">{{ platoentrada }}</h3>
+                    </v-col>
+                    <v-col cols="12" md="2">
+                      <img class="responsive-gif" :src="imgbebida" />
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <h4 style="color: chocolate">
+                        <v-icon color="black" dark large class="mr-2">
+                          mdi-beer-outline
+                        </v-icon>
+                        Bebida:
+                      </h4>
+                      <h3 class="csstxtmenu">{{ bebida }}</h3>
+                    </v-col>
+                  </v-row>
+                  <v-row style="padding: 5px">
+                    <v-col cols="12" md="2">
+                      <img class="responsive-gif" :src="imgplatoA" />
+                    </v-col>
+                    <v-col cols="12" md="4">
                       <h4 style="color: chocolate">
                         <v-icon color="black" dark large class="mr-2">
                           mdi-food-turkey
@@ -82,14 +51,10 @@
                       </h4>
                       <h3 class="csstxtmenu">{{ platofuerteA }}</h3>
                     </v-col>
-                    <v-col cols="12" md="5">
-                      <h4 style="color: chocolate">
-                        <v-icon color="black" dark large class="mr-2">
-                          mdi-beer-outline
-                        </v-icon>
-                        Bebida:
-                      </h4>
-                      <h3 class="csstxtmenu">{{ bebida }}</h3>
+                    <v-col cols="12" md="2">
+                      <img class="responsive-gif" :src="imgplatoB" />
+                    </v-col>
+                    <v-col cols="12" md="4">
                       <h4 style="color: chocolate">
                         <v-icon color="black" dark large class="mr-2">
                           mdi-food-turkey
@@ -110,6 +75,16 @@
                 <v-card class="v-sheet theme--dark">
                   <a href="/menusemana/formenu">
                     <h4 class="modulo">Agregar comida</h4>
+                  </a>
+                </v-card>
+              </v-card>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-card>
+                <v-card-title>Lista de id usuario</v-card-title>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/idusuarios/idusuarios">
+                    <h4 class="modulo">Id usuarios</h4>
                   </a>
                 </v-card>
               </v-card>
@@ -142,6 +117,11 @@
                 <v-card class="v-sheet theme--dark">
                   <a href="/actividades/editeficienciakg">
                     <h4 class="modulo">Editar kilogramos</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/actividades/porusuario">
+                    <h4 class="modulo">Mostrar actividades por usuario</h4>
                   </a>
                 </v-card>
               </v-card>
@@ -226,7 +206,7 @@
                     <h4 class="modulo">Mostrar activos de mantenimiento</h4>
                   </a>
                 </v-card>
-                <!--  <v-card class="v-sheet theme--dark">
+               <v-card class="v-sheet theme--dark">
                   <a href="/preguntaSeg/formulario">
                       <h4 class="modulo">Generar preguntas</h4>
                   </a>
@@ -236,7 +216,7 @@
                       <h4 class="modulo">Ver preguntas</h4>
                   </a>
                 </v-card>
-                <v-card class="v-sheet theme--dark">
+                 <!--  <v-card class="v-sheet theme--dark">
                   <a href="ayuda">
                       <h4 class="modulo">Ayuda</h4>
                   </a>
@@ -260,13 +240,18 @@ export default {
   layout: "barra",
   data() {
     return {
-      gifSrc: "/logo.gif",
+      gifSrc: "http://localhost:3001/uploads/1724950497597-SPAGUETTI-CON-PIMIENTOS.jpg",
       imageSrc: "/logoimg.jpg",
       menudeldia: {},
       platoentrada: "",
       platofuerteA: "",
       platofuerteB: "",
       bebida: "",
+      imagenesNombre:[],
+      imgplatoentrada:"",
+      imgbebida:"",
+      imgplatoA:"",
+      imgplatoB:"",
       enviar: null,
       headers: [
         { text: "Nombre", align: "start", value: "name" },
@@ -297,7 +282,11 @@ export default {
           this.platofuerteA = datos.respuesta.respuesta[0].platofuerteA;
           this.platofuerteB = datos.respuesta.respuesta[0].platofuerteB;
           this.bebida = datos.respuesta.respuesta[0].bebida;
-          console.log(datos.respuesta.respuesta);
+          this.imgplatoentrada = `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen1}`;
+          this.imgbebida = `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen2}`;
+          this.imgplatoA = `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen3}`;
+          this.imgplatoB = `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen4}`;
+          //console.log(this.imgplatoentrada);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -324,8 +313,8 @@ export default {
 }
 .responsive-gif {
   width: 150px;
-  height: auto; /* Mantiene la proporción del GIF */
-  border-radius: 150px;
+  height: 150px; /* Mantiene la proporción del GIF */
+  border-radius: 20px;
   object-fit: cover; /* Asegura que el GIF cubra el área del contenedor */
 }
 .csstxtmenu {

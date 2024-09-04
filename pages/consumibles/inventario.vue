@@ -208,12 +208,12 @@ export default {
       }
     },
 
-    /* Mostrar el hostorial des responsable */
+    /* Mostrar el hostorial del responsable */
     async historialresponsable(){
-      /* @change="historialresponsable" */
+      /* @input="historialresponsable" */
       const respon = this.datosMovimiento.responsable;
       if(respon){
-        const nuevohistorial = this.historialfijo.filter((filtro) => filtro.responsable === respon);
+        const nuevohistorial = this.historialfijo.filter((filtro) => filtro.idcheck === respon);
         this.historialcb = nuevohistorial;
         console.log("Historial repsonsable ", nuevohistorial);
       }

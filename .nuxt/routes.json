@@ -56,6 +56,13 @@
     "_name": "_2afd93b3"
   },
   {
+    "name": "actividades-porusuario",
+    "path": "/actividades/porusuario",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\porusuario.vue",
+    "chunkName": "pages/actividades/porusuario",
+    "_name": "_329c3024"
+  },
+  {
     "name": "activos-activosFijos",
     "path": "/activos/activosFijos",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\activos\\\\activosFijos.vue",
@@ -124,6 +131,20 @@
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\consumibles\\\\inventario.vue",
     "chunkName": "pages/consumibles/inventario",
     "_name": "_396739e7"
+  },
+  {
+    "name": "idusuarios-idusuarios",
+    "path": "/idusuarios/idusuarios",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\idusuarios\\\\idusuarios.vue",
+    "chunkName": "pages/idusuarios/idusuarios",
+    "_name": "_0865f59c"
+  },
+  {
+    "name": "menusemana-Cargarimagen",
+    "path": "/menusemana/Cargarimagen",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\menusemana\\\\Cargarimagen.vue",
+    "chunkName": "pages/menusemana/Cargarimagen",
+    "_name": "_452a8a7e"
   },
   {
     "name": "menusemana-form",

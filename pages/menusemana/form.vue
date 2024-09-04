@@ -74,22 +74,12 @@ export default {
         const datos = await res.json();
         if (res.status === 500) {
           console.log(datos.mensaje)
-          /* this.alerta = true;
-          //this.Titulo = "Error";
-          this.Titulo = "¡Upss!";
-          this.Mensaje = datos.mensaje; */
         } else {
           console.log(datos.mensaje)
           this.Solicitud.archivo="";
           this.archivo= null;
           this.archivoBase64= null;
           this.imagePreview= null;
-          /* this.alerta = true;
-          this.Titulo = datos.mensaje;
-          this.Mensaje = " ";
-          this.limpiarFormulario();
-          this.formcomidas = false;
-          this.mostrar(); */
         }
       }
     },

@@ -356,7 +356,7 @@ export default {
         },
         { text: "Cantidad", value: "cantidad" },
         {
-          text: "Costo\nunitario\nactual",
+          text: "Valor\ninventario\nactual",
           value: "costo",
           align: "star",
           class: "multi-line-header",
@@ -380,8 +380,9 @@ export default {
         { text: "Proveedor", value: "proveedor" },
         { text: "Orden de compra", value: "oc" },
         { text: "Cantidad", value: "cantidad" },
-        { text: "Costo unitario", value: "costo" },
+        { text: "Precio unitario", value: "preciounitario" },
         { text: "Costo total", value: "costototal" },
+        { text: "Valor inventario", value: "valorinventario" },
         { text: "Descripción", value: "descrip" },
       ],
 

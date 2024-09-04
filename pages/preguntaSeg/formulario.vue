@@ -6,7 +6,7 @@
           <v-card>
             <v-card-title><h1>CREAR PREGUNTAS</h1></v-card-title>
             <br />
-            <v-form @submit.prevent="enviarFormulario">
+            <v-form @submit.prevent="enviar">
               <v-row>
                 <v-col cols="12" md="8">
                   <h4 style="color: chocolate">
@@ -64,11 +64,27 @@
               </v-row>
               <br />            
               <center>
-                <v-btn class="btnEnviar" type="submit" color="success">Enviar</v-btn>
+                <v-btn block class="btnEnviar" type="submit" color="success">Enviar</v-btn>
               </center>
             </v-form>
           </v-card>
         </v-flex>
+        <v-dialog v-model="alerta" max-width="500">
+          <v-card>
+            <v-card-title class="text-h4">
+              {{ Titulo }}
+            </v-card-title>
+            <v-card-text class="text-h6 text-center">
+              {{ Mensaje }}
+            </v-card-text>
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" text @click="alerta = false"> Cerrar </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-layout>
     </v-container>
   </v-app>
@@ -79,6 +95,9 @@ export default {
   layout: "barra",
   data() {
     return {
+      alerta: false,
+      Mensaje: "",
+      Titulo: "",
       nombre: this.$store.state.nombre,
       text1: true,
       text2: true,
@@ -89,11 +108,25 @@ export default {
       periodo: ["Diario", "Semanal", "Quincenal", "Mensual", "Anual"],
       activos: [],
       ticketMal: [
-        "Tecnologías de la información",
-        "Mantenimiento industrial",
-        "Sistemas de gestión de calidad",
-        "Logística interna",
-        "Compras de insumos y servicios",
+        "TECNOLOGÍAS DE LA INFORMACIÓN",
+        "SISTEMAS DE GESTIÓN DE LA CALIDAD",
+        "AUDITORÍA INTERNA Y ACTOS IRREGULARES",
+        "PROCESAMIENTO DE MATERIALES",
+        "CONTROL DE INVENTARIOS",
+        "SEGURIDAD, SALUD Y MEDIO AMBIENTE",
+        "SISTEMA DE RECOLECCIÓN",
+        "LOGÍSTICA INTERNA",
+        "CAPITAL HUMANO",
+        "COMPRAS DE INSUMOS Y SERVICIOS",
+        "LOGÍSTICA INTERNACIONAL (EXPORTACIÓN)",
+        "CUENTA EMPRESAS",
+        "COMPRAS NO INDUSTRIALES",
+        "VENTAS INTERNACIONALES",
+        "VENTAS NACIONALES COMERCIALES",
+        "PROSPECCIÓN DE COMPRAS EMPRESARIALES",
+        "ATENCIÓN A PROVEEDORES",
+        "MENTENIMIENTO INDUSTRIAL",
+        "CONTABILIDAD"
       ],
 
       FormDatos: {
@@ -113,7 +146,7 @@ export default {
   methods: {
     async mostrar() {
       try {
-        const res = await fetch("http://192.168.1.91:3001/unidades");
+        const res = await fetch("http://localhost:3001/unidades");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:");
@@ -128,42 +161,29 @@ export default {
         console.error("Error al obtener los datos:", error);
       }
     },
-    enviarFormulario() {
-      // Verifica si todos los campos están llenos
-      if (
-        this.FormDatos.pregunta &&
-        this.FormDatos.estatus &&
-        this.FormDatos.periodo &&
-        this.FormDatos.inconformidad
-      ) {
-        // Todos los campos están llenos, puedes enviar el formulario
-        this.enviar(); // Llama a la función que maneja el envío del formulario
-      } else {
-        // Faltan campos por llenar, muestra un mensaje de error o haz lo que necesites
-        console.log("Faltan datos");
-      }
-    },
     
     async enviar() {
-      console.log(this.FormDatos);
-
-      const res = await fetch("http://192.168.1.91:3001/insertarForms", {
+      //console.log(this.FormDatos);
+      const res = await fetch("http://localhost:3001/insertarForms", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          token: localStorage.token,
         },
         body: JSON.stringify(this.FormDatos),
       })
-        .then((res) => res.json())
-        .then((datos) => {
-          console.log(datos); // Muestra los datos recibidos desde el servidor
-          // Limpia el formulario
-          this.limpiarFormulario();
-        })
-        .catch((error) => {
-          console.error("Error al insertar los datos:", error);
-          // Muestra una alerta de error
-        });
+      const datos = await res.json();
+      if (res.status === 400) {
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje = datos.mensaje;
+      } else {
+        this.alerta = true;
+        //this.Titulo = "El ID del activo es: ";
+        this.Titulo = datos.mensaje;
+        this.Mensaje = "";
+        this.limpiarFormulario();
+      }
     },
     // Método para limpiar el formulario
     limpiarFormulario() {

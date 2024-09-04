@@ -12,6 +12,7 @@ const _024ce13a = () => interopDefault(import('..\\pages\\actividades\\actForane
 const _2c0b7c1e = () => interopDefault(import('..\\pages\\actividades\\asignacion.vue' /* webpackChunkName: "pages/actividades/asignacion" */))
 const _9d1964f8 = () => interopDefault(import('..\\pages\\actividades\\control.vue' /* webpackChunkName: "pages/actividades/control" */))
 const _2afd93b3 = () => interopDefault(import('..\\pages\\actividades\\editeficienciakg.vue' /* webpackChunkName: "pages/actividades/editeficienciakg" */))
+const _329c3024 = () => interopDefault(import('..\\pages\\actividades\\porusuario.vue' /* webpackChunkName: "pages/actividades/porusuario" */))
 const _64883dae = () => interopDefault(import('..\\pages\\activos\\activosFijos.vue' /* webpackChunkName: "pages/activos/activosFijos" */))
 const _de6c314e = () => interopDefault(import('..\\pages\\activos\\insumos.vue' /* webpackChunkName: "pages/activos/insumos" */))
 const _4ea36e16 = () => interopDefault(import('..\\pages\\activos\\mantenimiento.vue' /* webpackChunkName: "pages/activos/mantenimiento" */))
@@ -22,6 +23,8 @@ const _01ac8500 = () => interopDefault(import('..\\pages\\consumibles\\codigobar
 const _590682d1 = () => interopDefault(import('..\\pages\\consumibles\\consumible.vue' /* webpackChunkName: "pages/consumibles/consumible" */))
 const _301e4f84 = () => interopDefault(import('..\\pages\\consumibles\\devolucion.vue' /* webpackChunkName: "pages/consumibles/devolucion" */))
 const _396739e7 = () => interopDefault(import('..\\pages\\consumibles\\inventario.vue' /* webpackChunkName: "pages/consumibles/inventario" */))
+const _0865f59c = () => interopDefault(import('..\\pages\\idusuarios\\idusuarios.vue' /* webpackChunkName: "pages/idusuarios/idusuarios" */))
+const _452a8a7e = () => interopDefault(import('..\\pages\\menusemana\\Cargarimagen.vue' /* webpackChunkName: "pages/menusemana/Cargarimagen" */))
 const _26c168ee = () => interopDefault(import('..\\pages\\menusemana\\form.vue' /* webpackChunkName: "pages/menusemana/form" */))
 const _550a876e = () => interopDefault(import('..\\pages\\menusemana\\formenu.vue' /* webpackChunkName: "pages/menusemana/formenu" */))
 const _3e4bf542 = () => interopDefault(import('..\\pages\\menusemana\\Semanamenu.vue' /* webpackChunkName: "pages/menusemana/Semanamenu" */))
@@ -77,6 +80,10 @@ export const routerOptions = {
     component: _2afd93b3,
     name: "actividades-editeficienciakg"
   }, {
+    path: "/actividades/porusuario",
+    component: _329c3024,
+    name: "actividades-porusuario"
+  }, {
     path: "/activos/activosFijos",
     component: _64883dae,
     name: "activos-activosFijos"
@@ -116,6 +123,14 @@ export const routerOptions = {
     path: "/consumibles/inventario",
     component: _396739e7,
     name: "consumibles-inventario"
+  }, {
+    path: "/idusuarios/idusuarios",
+    component: _0865f59c,
+    name: "idusuarios-idusuarios"
+  }, {
+    path: "/menusemana/Cargarimagen",
+    component: _452a8a7e,
+    name: "menusemana-Cargarimagen"
   }, {
     path: "/menusemana/form",
     component: _26c168ee,
