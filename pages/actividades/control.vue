@@ -95,6 +95,7 @@ export default {
         { text: "Id control", value: "idcontrolactivi" },
         { text: "Responsable", value: "responsables" },
         { text: "Actividad", value: "actividad" },
+        { text: "ID DE USUARIO", value: "idcheck" },
         { text: "Estatus", value: "estatusC" },
       ],
       datoNuevo: {

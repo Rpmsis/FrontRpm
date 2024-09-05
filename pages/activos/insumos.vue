@@ -314,7 +314,8 @@ export default {
       insumoActualizar: false,
       proveedores:[],
       provedorFiltrado: [],
-      proveedoresFijos: ["Ejemplo1", "Ejemplo2", "Ejemplo3", "Ejemplo4", "Ejemplo5", "Ejemplo6", "Ejemplo7", "Ejemplo8", "Ejemplo9", "Ejemplo10", "Ejemplo11", "Ejemplo12", "Ejemplo13", "Ejemplo14", "Ejemplo15"],
+      proveedoresFijos: [],
+      /* proveedoresFijos: ["Ejemplo1", "Ejemplo2", "Ejemplo3", "Ejemplo4", "Ejemplo5", "Ejemplo6", "Ejemplo7", "Ejemplo8", "Ejemplo9", "Ejemplo10", "Ejemplo11", "Ejemplo12", "Ejemplo13", "Ejemplo14", "Ejemplo15"], */
       menuAlta: false,
       menuAdqui: false,
       fechaAlta: null,
@@ -364,7 +365,8 @@ export default {
     this.fechaAlta = this.fechaMinima;
     this.fechaAdqui = this.fechaMinima;
     this.mostrar();
-    this.proveedores = [...this.proveedoresFijos];
+    this.mostrarProveedores();
+    
   },
 
   computed: {
@@ -378,6 +380,23 @@ export default {
     },
   },
   methods: {
+    async mostrarProveedores() {
+      try {
+        const res = await fetch("http://localhost:3001/proveedores");
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          //this.proveedoresFijos = datos.respuesta.respuesta;
+          console.log(datos.respuesta.respuesta);
+          this.proveedoresFijos= datos.respuesta.respuesta.map((filtro) => filtro.nombre);
+          console.log(this.proveedoresFijos);
+          this.proveedores = [...this.proveedoresFijos];
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
     async searchProvedorInsert(){
       if (!this.searchProvInsert) {
         this.proveedores = this.proveedoresFijos;
