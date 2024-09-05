@@ -46,7 +46,7 @@
       <!-- Formulario insertar -->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="insumos" max-width="1200px">
+          <v-dialog v-model="insumos" persistent max-width="1200px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -81,7 +81,7 @@
                     <template v-slot:prepend-item>
                       <v-list-item>
                         <v-list-item-content>
-                          <v-text-field v-model="searchProv" placeholder="Search" @input="searchProvedor "></v-text-field>
+                          <v-text-field v-model="searchProvInsert" placeholder="Search" @input="searchProvedorInsert "></v-text-field>
                         </v-list-item-content>
                       </v-list-item>
                       <v-divider class="mt-2"></v-divider>
@@ -199,11 +199,11 @@
       <!-- Formulario actualizar-->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="insumoActualizar" max-width="800px">
+          <v-dialog v-model="insumoActualizar" persistent max-width="800px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn icon @click="insumoActualizar = false">
+                <v-btn icon @click="(insumoActualizar = false), limpiarFormulario(), mostrar()">
                   <v-icon style="font-size: 30px"
                     >mdi-close theme--dark red--text</v-icon
                   ></v-btn
@@ -220,7 +220,16 @@
                       v-model="formDataact.proveedor"
                       label="Proveedor"
                       filled
+                      :menu-props="{ bottom: true, offsetY: true, }"
                     >
+                    <template v-slot:prepend-item>
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-text-field v-model="searchProvUpdate" placeholder="Search" @input="searchProvedorUpdate "></v-text-field>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-divider class="mt-2"></v-divider>
+                    </template>
                     </v-select>
                   </v-col>
                 </v-row>
@@ -298,7 +307,8 @@ export default {
       Mensaje: "",
       Titulo: "",
       search: "",
-      searchProv:"",
+      searchProvInsert:"",
+      searchProvUpdate:"",
       datosinsumos: [],
       insumos: false,
       insumoActualizar: false,
@@ -368,12 +378,20 @@ export default {
     },
   },
   methods: {
-    async searchProvedor(){
-      if (!this.searchProv) {
+    async searchProvedorInsert(){
+      if (!this.searchProvInsert) {
         this.proveedores = this.proveedoresFijos;
       }
       this.proveedores = this.proveedoresFijos.filter((provee) => {
-        return provee.toLowerCase().indexOf(this.searchProv.toLowerCase()) > -1;
+        return provee.toLowerCase().indexOf(this.searchProvInsert.toLowerCase()) > -1;
+      });
+    },
+    async searchProvedorUpdate(){
+      if (!this.searchProvUpdate) {
+        this.proveedores = this.proveedoresFijos;
+      }
+      this.proveedores = this.proveedoresFijos.filter((provee) => {
+        return provee.toLowerCase().indexOf(this.searchProvUpdate.toLowerCase()) > -1;
       });
     },
     /* Mostrar los datos de la tabla*/
@@ -464,6 +482,8 @@ export default {
       this.formData.monto = "";
       this.formData.descrip = "";
       this.formData.tipoAct = "";
+      this.searchProvInsert = "";
+      this.proveedores = this.proveedoresFijos;
     },
   },
 };
