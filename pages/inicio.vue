@@ -4,6 +4,26 @@
       <v-layout row wrap style="padding: 20px">
         <v-flex>
           <v-row>
+            <v-col cols="12" md="4">
+              <v-card
+                style="
+                  background: linear-gradient(to bottom right, white, 20%, pink);
+                  border-radius: 15px;
+                "
+              >
+                <center>
+                  <a
+                    style="text-decoration: none !important"
+                    @click="fotodeperfil = true"
+                  >
+                    <img class="fotoperfil" :src="foto" />
+                  </a>
+                </center>
+              </v-card>
+            </v-col>
+          </v-row>
+
+          <v-row>
             <v-col cols="12" md="12">
               <v-card
                 style="
@@ -206,17 +226,17 @@
                     <h4 class="modulo">Mostrar activos de mantenimiento</h4>
                   </a>
                 </v-card>
-               <v-card class="v-sheet theme--dark">
+                <v-card class="v-sheet theme--dark">
                   <a href="/preguntaSeg/formulario">
-                      <h4 class="modulo">Generar preguntas</h4>
+                    <h4 class="modulo">Generar preguntas</h4>
                   </a>
                 </v-card>
                 <v-card class="v-sheet theme--dark">
                   <a href="/preguntaSeg/mostrarPreg">
-                      <h4 class="modulo">Ver preguntas</h4>
+                    <h4 class="modulo">Ver preguntas</h4>
                   </a>
                 </v-card>
-                 <!--  <v-card class="v-sheet theme--dark">
+                <!--  <v-card class="v-sheet theme--dark">
                   <a href="ayuda">
                       <h4 class="modulo">Ayuda</h4>
                   </a>
@@ -224,8 +244,75 @@
               </v-card>
             </v-col>
           </v-row>
+
+          <!-- Cambiar foto de perfil -->
+          <template>
+            <div class="pa-4 text-center">
+              <v-dialog v-model="fotodeperfil" persistent max-width="400px">
+                <v-card style="padding: 15px">
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click="(fotodeperfil = false), limpiarFormulario()">
+                      <v-icon style="font-size: 30px"
+                        >mdi-close theme--dark red--text</v-icon
+                      ></v-btn
+                    >
+                  </v-card-actions>
+                  <v-divider></v-divider>
+                  <v-divider></v-divider>
+                  <v-form class="mt-5" @submit.prevent="actualizaracti">
+                    <v-row>
+                      <v-col cols="12" sm="12" md="12">
+                        <center>
+                          <img
+                            v-if="imagePreview1"
+                            :width="250"
+                            :height="250"
+                            aspect-ratio="16/9"
+                            cover
+                            :src="imagePreview1"
+                            alt="Imagen de la sopa"
+                          />
+                          <v-file-input
+                            counter
+                            show-size
+                            prepend-icon="mdi-camera-plus"
+                            label="Imagen de la sopa"
+                            v-model="Solicitud.archivo"
+                            @change="updateImagePreview"
+                          ></v-file-input>
+                        </center>
+                      </v-col>
+                    </v-row>
+                    <center>
+                      <v-btn block outlined class="btnEnviar" type="submit" color="pink"
+                        >Guardar</v-btn
+                      >
+                    </center>
+                  </v-form>
+                </v-card>
+              </v-dialog>
+            </div>
+          </template>
         </v-flex>
       </v-layout>
+      <!-- Ventana emergente -->
+    <v-dialog v-model="alerta" max-width="500">
+      <v-card>
+        <v-card-title class="text-h4">
+          {{ Titulo }}
+        </v-card-title>
+        <v-card-text class="text-h6 text-center">
+          {{ Mensaje }}
+        </v-card-text>
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="alerta = false"> Cerrar </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     </v-container>
   </v-app>
 </template>
@@ -240,6 +327,9 @@ export default {
   layout: "barra",
   data() {
     return {
+      alerta: false,
+      Mensaje: "",
+      Titulo: "",
       gifSrc: "http://localhost:3001/uploads/1724950497597-SPAGUETTI-CON-PIMIENTOS.jpg",
       imageSrc: "/logoimg.jpg",
       menudeldia: {},
@@ -247,12 +337,15 @@ export default {
       platofuerteA: "",
       platofuerteB: "",
       bebida: "",
-      imagenesNombre:[],
-      imgplatoentrada:"",
-      imgbebida:"",
-      imgplatoA:"",
-      imgplatoB:"",
+      imagenesNombre: [],
+      imgplatoentrada: "",
+      imgbebida: "",
+      imgplatoA: "",
+      imgplatoB: "",
       enviar: null,
+      foto: "",
+      fotodeperfil: false,
+      imagePreview1: null,
       headers: [
         { text: "Nombre", align: "start", value: "name" },
         { text: "Edad", value: "age" },
@@ -264,10 +357,14 @@ export default {
         { id: 3, name: "Pedro", age: 40, email: "pedro@example.com" },
         { id: 4, name: "Ana", age: 35, email: "ana@example.com" },
       ],
+      Solicitud: {
+        archivo: null,
+      },
     };
   },
   mounted() {
     this.mostrar();
+    this.mostrarFotoperfil();
   },
   methods: {
     async mostrar() {
@@ -292,6 +389,69 @@ export default {
         console.error("Error al obtener los datos:", error);
       }
     },
+    async mostrarFotoperfil() {
+      try {
+        const res = await fetch("http://localhost:3001/foto", {
+        method: "GET",
+        headers: {
+          token: localStorage.token,
+        },
+      });
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          this.foto = `http://localhost:3001/fotoperfil/${datos.respuesta.respuesta[0].foto}`;
+          //console.log(datos.respuesta.respuesta);
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
+    updateImagePreview() {
+      //console.log(this.Solicitud.archivo);
+      const file = this.Solicitud.archivo;
+      if (file && file instanceof File) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.imagePreview1 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        this.imagePreview1 = null;
+      }
+    },
+    async actualizaracti() {
+      const formulario = new FormData();
+      formulario.append("archivo", this.Solicitud.archivo);
+      const res = await fetch("http://localhost:3001/actualizarFotoperfil", {
+        method: "PUT",
+        headers: {
+          token: localStorage.token,
+        },
+        body: formulario,
+      });
+      const datos = await res.json();
+      if (res.status === 400) {
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje = datos.mensaje;
+      } 
+      else {
+        this.alerta = true;
+        //this.Titulo = "El ID del activo es: ";
+        this.Titulo = "Datos actualizados";
+        this.Mensaje = " ";
+        this.limpiarFormulario();
+        this.mostrarFotoperfil();
+        this.fotodeperfil= false;
+      }
+    },
+    limpiarFormulario(){
+      this.Solicitud.archivo= null,
+      this.imagePreview1= null
+
+    }
   },
 };
 </script>
@@ -321,5 +481,11 @@ export default {
   color: #050505;
   font-family: cursive;
   font-size: 30px;
+}
+.fotoperfil {
+  width: 150px;
+  height: 150px; /* Mantiene la proporción del GIF */
+  border-radius: 100%;
+  object-fit: cover; /* Asegura que el GIF cubra el área del contenedor */
 }
 </style>

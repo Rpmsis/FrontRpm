@@ -21,7 +21,7 @@
         :sort-desc="true"
       >
         <template v-slot:item.actions="{ item }">
-          <barcode :value="item.idCheck" />
+          <barcode :value="item.idCheck" class="codigobarras"/>
         </template>
       </v-data-table>
     </v-card>
@@ -104,5 +104,14 @@ export default {
 }
 .multi-line-header {
   white-space: pre-line;
+}
+/* .codigobarras{
+  width: 50px !important;
+  height: 50px !important;
+} */
+
+.vue-barcode-element{
+  
+  max-height: 100px !important;
 }
 </style>
