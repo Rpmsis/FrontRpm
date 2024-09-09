@@ -218,7 +218,7 @@ export default {
       //console.log(this.editprestamo.folioActivo);
       this.datosDevolucion.folioActivo = this.editprestamo.folioActivo;
       this.datosDevolucion.idprestamo = this.editprestamo.idprestamo;
-      this.datosDevolucion.responsable = this.editprestamo.responsable;
+      this.datosDevolucion.responsable = this.formData.responsable;
       console.log(this.datosDevolucion);
       const res = await fetch("http://localhost:3001/actualizarPrestamo", {
         method: "PUT",
