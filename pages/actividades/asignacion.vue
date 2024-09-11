@@ -189,7 +189,7 @@
             </div>
           </template>
 
-          <!-- Formulario eliminar-->
+          <!-- Formulario eliminar la asignacion de la actividad-->
           <template>
             <div class="pa-4 text-center">
               <v-dialog v-model="eliminar" persistent max-width="600px">
@@ -327,7 +327,7 @@ export default {
     },
   },
   methods: {
-    /* Mostrar Actividad */
+    /* Mostrar la lista de actividades que ya cargaron el actForaneas */
     async mostrarActividades() {
       const empre = this.datoNuevo.empresa;
       console.log(empre);
@@ -351,7 +351,7 @@ export default {
       }
     },
 
-    /* Mostrar ubicación */
+    /* Mostrar ubicaciónes  */
     async mostrarubi() {
       try {
         const res = await fetch("http://localhost:3001/ubicacion");
@@ -393,6 +393,7 @@ export default {
       }
     },
 
+    /* Guardar acitividad asignada */
     async submitForm() {
       this.datoNuevo.fechainicio = this.fecha;
       console.log(this.datoNuevo.idactividad);
@@ -431,7 +432,7 @@ export default {
     },
     /* -------------------------------- */
 
-    /* Desactivar la asignacion de la actvidad */
+    /* Abre el formulario para desactivar la asignacion de la actvidad */
     async deletee(item) {
       const objeto = this.actividad.find((filtro) => filtro.idasigactivi === item);
       this.datoNuevoActualizar = objeto;
@@ -441,7 +442,7 @@ export default {
     },
     /* -------------------------------- */
 
-    /* Api que actualiza los datos  de la tabla */
+    /* Desactiva la actividad asignada */
     async actualizaracti() {
       const res = await fetch("http://localhost:3001/actualizarAsig", {
         method: "PUT",

@@ -184,7 +184,7 @@ export default {
       }
     },
 
-    /* Insertar asignación */
+    /* Insertar actividad a la tabla de controlactivi con el resposable correspondiente */
     async submitForm() {
       const idAsig = this.actividad.find(
         (filtro) => filtro.id === this.datoNuevo.idactividades

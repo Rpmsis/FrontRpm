@@ -98,8 +98,9 @@ export default {
         { text: "Empresa", value: "empresa" },
         { text: "Actividad", value: "actividad" },
         { text: "Tiempo\ntranscurrido", value: "timeControl", align:"start",  class: "multi-line-header" },
+        { text: "Estatus", value: "status" },
         {
-          text: "Estatus",
+          text: "Detalles\ndel\nestatus",
           value: "actions",
           sortable: false,
           align: "center",
@@ -135,7 +136,7 @@ export default {
           console.error("Error al obtener los datos:", error);
         } else {
           this.actividades = datos.respuesta.respuesta;
-          //console.log(this.actividades);
+          console.log(this.actividades);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);

@@ -51,7 +51,8 @@
                             item.idcontrolactivi,
                             item.estatusC,
                             item.idasigactivi,
-                            item.idactividades
+                            item.idactividades,
+                            item.estatusA
                           )
                         "
                         small
@@ -300,10 +301,11 @@ export default {
     },
 
     /* Mostrar los botones */
-    async activi(item, estatus, asignacion, actividades) {
+    async activi(item, estatus, asignacion, actividades, statusAsignacion) {
       this.datoNuevo2.idcontrolactivi = item;
       this.datoNuevo2.idasigactivi = asignacion;
       this.datoNuevo2.idactividades = actividades;
+      this.datoNuevo2.status = statusAsignacion
       this.tiempoactivi = true;
       console.log(
         "idcontrolactivi: ",
@@ -341,37 +343,6 @@ export default {
     async pausareanudar() {
       this.formpausa = true;
       console.log(this.datoNuevo.idcontrolactivi);
-    },
-
-    /* Insertar asignación */
-    async submitForm() {
-      const idAsig = this.actividad.find(
-        (filtro) => filtro.id === this.datoNuevo.idactividades
-      );
-      console.log(idAsig.idasigactivi);
-      this.datoNuevo.idasigactivi = idAsig.idasigactivi;
-      const res = await fetch("http://localhost:3001/insertarControl", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this.datoNuevo),
-      });
-      const datos = await res.json();
-      console.log(datos);
-      if (res.status === 400) {
-        this.alerta = true;
-        this.Titulo = "¡Upss!";
-        this.Mensaje = datos.mensaje;
-      } else {
-        this.alerta = true;
-        //this.Titulo = "El ID del activo es: ";
-        this.Titulo = datos.mensaje;
-        this.Mensaje = "";
-        this.limpiarFormulario();
-        this.mostrarExistencias(this.formData.usuario);
-      }
-      //console.log(datos.respuestaMante.mensaje);
     },
 
     /* Enviar estatus en proceso del botón iniciar actividad */
@@ -452,7 +423,7 @@ export default {
       }
     },
 
-    /* Enviar estatus en proceso del botón iniciar actividad */
+    /* Enviar estatus en proceso del botón reanudar actividad */
     async acttiempoReanudar() {
       this.datoNuevo2.status = "EN PROCESO";
       const res = await fetch("http://localhost:3001/insertarTiempo", {
