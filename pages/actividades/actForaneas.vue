@@ -381,6 +381,8 @@ export default {
       this.mostrarubi();
       this.mostrar();
     }); 
+    this.mostrarubi();
+      this.mostrar();
   },
 
   computed: {},
