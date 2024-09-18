@@ -332,15 +332,21 @@ export default {
       const empre = this.datoNuevo.empresa;
       console.log(empre);
       try {
-        const res = await fetch("http://localhost:3001/actividades");
+        const res = await fetch("http://localhost:3001/actividades",{
+          method: "GET",
+          headers: {
+            token: localStorage.token,
+          },
+        });
         const datos = await res.json();
+        console.log(datos);
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
           const datosA = datos.respuesta.respuesta.filter(
             (filtro) => filtro.ubicacion === empre
           );
-          //console.log(datosA);
+          console.log(datosA);
           this.actividades = datosA.map((filtro) => ({
             id: filtro.idactividades,
             text: filtro.actividad,
@@ -354,13 +360,19 @@ export default {
     /* Mostrar ubicaciónes  */
     async mostrarubi() {
       try {
-        const res = await fetch("http://localhost:3001/ubicacion");
+        const res = await fetch("http://localhost:3001/ubicacion",{
+          method: "GET",
+          headers: {
+            token: localStorage.token,
+          },
+        });
         const datos = await res.json();
+        //console.log(datos);
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          //console.log(datos.respuesta.respuesta);
-          this.ubicaciones = datos.respuesta.respuesta.map((filtro) => ({
+          console.log(datos.ubicacionesPDM);
+          this.ubicaciones = datos.ubicacionesPDM.map((filtro) => ({
             id: filtro.idubicacion,
             text: filtro.descrip,
           }));

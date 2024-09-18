@@ -80,6 +80,8 @@
 
 /* Fijoo */
 <script>
+import io from "socket.io-client";
+
 export default {
   layout: "barra",
   data() {
@@ -117,6 +119,11 @@ export default {
     };
   },
   mounted() {
+    this.socket = io("http://192.168.1.180:3003");
+    this.socket.on("escuchando", (datos) => {
+      console.log(datos);
+      this.mostrar();
+    }); 
     this.mostrar();
   },
 

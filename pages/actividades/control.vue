@@ -3,7 +3,22 @@
     <v-container>
       <v-layout row wrap>
         <v-flex xs12>
-          <v-card class="mt-7">
+          <v-card class="mt-7"
+            ><v-row>
+              <v-col cols="12" sm="12" md="12">
+                <v-card-title>
+                  <v-text-field
+                    v-model="Nombre"
+                    type="password"
+                    append-icon="mdi-magnify"
+                    label="Buscar supervisor"
+                    @input="Buscar"
+                  ></v-text-field>
+                </v-card-title>
+              </v-col>
+            </v-row>
+          </v-card>
+          <v-card class="mt-7" v-if="datos === true">
             <v-form @submit.prevent="submitForm">
               <v-row>
                 <v-col cols="12" md="6">
@@ -36,7 +51,7 @@
               </center>
             </v-form>
           </v-card>
-          <v-card class="mt-5" style="padding: 10px">
+          <v-card class="mt-5" style="padding: 10px" v-if="datos === true">
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
@@ -80,10 +95,13 @@
 
 /* Fijoo */
 <script>
+import io from "socket.io-client";
+
 export default {
   layout: "barra",
   data() {
     return {
+      alerta2: false,
       alerta: false,
       Mensaje: "",
       Titulo: "",
@@ -91,6 +109,8 @@ export default {
       operadores: [],
       actividad: [],
       controlactivi: [],
+      Nombre: "",
+      datos: false,
       headers: [
         { text: "Id control", value: "idcontrolactivi" },
         { text: "Responsable", value: "responsables" },
@@ -106,18 +126,22 @@ export default {
         status: "",
         motivoselec: "",
         motivodes: "",
+        idchecksupervisor: "",
       },
     };
   },
   mounted() {
-    this.mostrarActividades();
-    this.mostrarUsuarios();
-    this.mostrarControl();
+    this.socket = io("http://192.168.1.180:3003");
+    this.socket.on("escuchando", (datos) => {
+      console.log(datos);
+      this.Buscar();
+      this.mostrarControl();
+    }); 
   },
 
   computed: {},
   methods: {
-    /* Mostrar Actividades del select */
+    /* /* Mostrar Actividades del select 
     async mostrarActividades() {
       try {
         const res = await fetch("http://localhost:3001/Controlactividades", {
@@ -143,7 +167,7 @@ export default {
       }
     },
 
-    /* Mostrar Responsables del select */
+    /* Mostrar Responsables del select 
     async mostrarUsuarios() {
       try {
         const res = await fetch("http://localhost:3001/Idusuario", {
@@ -158,20 +182,25 @@ export default {
         } else {
           //console.log(datos.respuesta.respuesta);
           this.operadores = datos.respuesta.respuesta.map((filtro) => ({
-            id: filtro.idCheck,
-            text: filtro.NombreCompleto,
+            id: filtro.idPMD,
+            text: filtro.Nombre,
           }));
           //console.log(this.actividad);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
-    },
+    }, */
 
     /* Mostrar Tabla de control */
     async mostrarControl() {
       try {
-        const res = await fetch("http://localhost:3001/Controlasignados");
+        const res = await fetch("http://localhost:3001/Controlasignados/"+ this.Nombre,{
+            headers: {
+              "Content-Type": "application/json",
+              token: localStorage.token,
+            },
+          });
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -186,6 +215,7 @@ export default {
 
     /* Insertar actividad a la tabla de controlactivi con el resposable correspondiente */
     async submitForm() {
+      this.datoNuevo.idchecksupervisor= this.Nombre;
       const idAsig = this.actividad.find(
         (filtro) => filtro.id === this.datoNuevo.idactividades
       );
@@ -213,6 +243,45 @@ export default {
         this.mostrarControl();
       }
       //console.log(datos.respuestaMante.mensaje);
+    },
+
+    async Buscar() {
+      if (this.Nombre === "") {
+        return false;
+      } else {
+        const res = await fetch(
+          "http://localhost:3001/buscar_Supervisor/" + this.Nombre,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              token: localStorage.token,
+            },
+          }
+        );
+        const dato = await res.json();
+        console.log(dato.mensaje);
+        if (res.status === 400) {
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje =dato.mensaje;
+        this.datos = false;
+      } else {
+        this.datos = true;
+        console.log("Actividades: ",dato.actividades.respuesta);
+        this.actividad = dato.actividades.respuesta.map((filtro) => ({
+            id: filtro.idactividades,
+            text: filtro.actividad,
+            idasigactivi: filtro.idasigactivi,
+          }));
+        console.log("Responsables",dato.responsables.respuesta);
+        this.operadores = dato.responsables.respuesta.map((filtro) => ({
+            id: filtro.idPMD,
+            text: filtro.Nombre,
+          })); 
+          this.mostrarControl();
+      }
+        //console.log(dato.results3)
+      }
     },
 
     /* Limpiar formulario de agendar */

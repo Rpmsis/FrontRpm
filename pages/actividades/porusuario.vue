@@ -6,15 +6,16 @@
           <v-card class="mt-7">
             <v-row>
               <v-col cols="12" md="12">
-                <h2 style="color: orange">Codigo de barras del usuario:</h2>
-                <v-text-field
-                  type="text"
-                  label="CÓDIGO DE BARRAS"
-                  clearable
+                <v-card-title>
+                  <v-text-field
                   v-model="formData.usuario"
-                  filled
+                  type="password"
+                  append-icon="mdi-magnify"
+                  label="Buscar usuario"
                   @input="mostrarExistencias(formData.usuario)"
+                  clearable
                 ></v-text-field>
+                </v-card-title>
               </v-col>
             </v-row>
           </v-card>
@@ -210,7 +211,7 @@
 
 /* Fijoo */
 <script>
-import codigobarrasVue from "../consumibles/codigobarras.vue";
+
 export default {
   layout: "barra",
   data() {
@@ -492,3 +493,5 @@ export default {
   color: white;
 }
 </style>
+
+
