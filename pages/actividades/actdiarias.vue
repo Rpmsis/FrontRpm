@@ -124,7 +124,6 @@ export default {
       console.log(datos);
       this.mostrar();
     }); 
-    this.mostrar();
   },
 
   computed: {},

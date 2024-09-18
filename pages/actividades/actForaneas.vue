@@ -300,6 +300,8 @@
 
 /* Fijoo */
 <script>
+import io from "socket.io-client";
+
 import ImageZoom from "~/components/ImageZoom.vue";
 export default {
   components: {
@@ -373,8 +375,12 @@ export default {
     };
   },
   mounted() {
-    this.mostrarubi();
-    this.mostrar();
+    this.socket = io("http://192.168.1.180:3003");
+    this.socket.on("escuchando", (datos) => {
+      console.log(datos);
+      this.mostrarubi();
+      this.mostrar();
+    }); 
   },
 
   computed: {},
