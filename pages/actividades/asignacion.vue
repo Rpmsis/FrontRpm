@@ -256,6 +256,8 @@
 
 /* Fijoo */
 <script>
+import io from "socket.io-client";
+
 export default {
   layout: "barra",
   data() {
@@ -312,6 +314,12 @@ export default {
   },
   mounted() {
     this.fecha = this.fechaMinima;
+    this.socket = io("http://192.168.1.180:3003");
+    this.socket.on("escuchando", (datos) => {
+      //console.log(datos);
+      this.mostrarubi();
+      this.mostrarActividades();
+    });
     this.mostrarubi();
     this.mostrarAsignacion();
   },
@@ -330,7 +338,7 @@ export default {
     /* Mostrar la lista de actividades que ya cargaron el actForaneas */
     async mostrarActividades() {
       const empre = this.datoNuevo.empresa;
-      console.log(empre);
+      //console.log(empre);
       try {
         const res = await fetch("http://localhost:3001/actividades",{
           method: "GET",
@@ -339,14 +347,14 @@ export default {
           },
         });
         const datos = await res.json();
-        console.log(datos);
+        //console.log(datos);
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
           const datosA = datos.respuesta.respuesta.filter(
             (filtro) => filtro.ubicacion === empre
           );
-          console.log(datosA);
+          //console.log(datosA);
           this.actividades = datosA.map((filtro) => ({
             id: filtro.idactividades,
             text: filtro.actividad,
@@ -371,7 +379,7 @@ export default {
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          console.log(datos.ubicacionesPDM);
+          //console.log(datos.ubicacionesPDM);
           this.ubicaciones = datos.ubicacionesPDM.map((filtro) => ({
             id: filtro.idubicacion,
             text: filtro.descrip,
@@ -392,13 +400,13 @@ export default {
           },
         });
         const datos = await res.json();
-        console.log(datos);
+        //console.log(datos);
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
           //this.ubicaciones = datos.respuesta.respuesta;
           this.actividad = datos.nuevarespuesta;
-          console.log(this.actividad);
+          //console.log(this.actividad);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -408,7 +416,7 @@ export default {
     /* Guardar acitividad asignada */
     async submitForm() {
       this.datoNuevo.fechainicio = this.fecha;
-      console.log(this.datoNuevo.idactividad);
+      //console.log(this.datoNuevo.idactividad);
       const res = await fetch("http://localhost:3001/insertarAsigactividad", {
         method: "POST",
         headers: {
@@ -418,7 +426,7 @@ export default {
         body: JSON.stringify(this.datoNuevo),
       });
       const datos = await res.json();
-      console.log(datos);
+      //console.log(datos);
       if (res.status === 400) {
         this.alerta = true;
         this.Titulo = "¡Upss!";
@@ -438,7 +446,7 @@ export default {
     async actualizar(item) {
       const objeto = this.actividad.find((filtro) => filtro.idasigactivi === item);
       this.datoNuevoActualizar = objeto;
-      console.log(this.datoNuevoActualizar);
+      //console.log(this.datoNuevoActualizar);
       this.actiActualizar = true;
       this.fecha2 = this.datoNuevoActualizar.fechainicio;
     },
@@ -448,7 +456,7 @@ export default {
     async deletee(item) {
       const objeto = this.actividad.find((filtro) => filtro.idasigactivi === item);
       this.datoNuevoActualizar = objeto;
-      console.log(this.datoNuevoActualizar);
+      //console.log(this.datoNuevoActualizar);
       this.datoNuevoActualizar.status = "NA";
       this.eliminar = true;
     },

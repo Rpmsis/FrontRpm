@@ -377,10 +377,12 @@ export default {
   mounted() {
     this.socket = io("http://192.168.1.180:3003");
     this.socket.on("escuchando", (datos) => {
-      console.log(datos);
+      //console.log(datos);
       this.mostrarubi();
       this.mostrar();
     }); 
+    this.mostrarubi();
+      this.mostrar();
   },
 
   computed: {},
@@ -388,15 +390,20 @@ export default {
     /* Mostrar ubicación */
     async mostrarubi() {
       try {
-        const res = await fetch("http://localhost:3001/ubicacion");
+        const res = await fetch("http://localhost:3001/ubicacion",{
+          method: "GET",
+          headers: {
+            token: localStorage.token,
+          },
+        });
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          //this.ubicaciones = datos.respuesta.respuesta;
-          this.ubicaciones = datos.respuesta.respuesta.map((ubi) => [ubi.descrip]);
-          //console.log(datos.respuesta.respuesta);
-        }
+          //this.ubicaciones = datos.ubicacionesPDM;
+          this.ubicaciones = datos.ubicacionesPDM.map((ubi) => [ubi.descrip]);
+          //console.log(datos.ubicacionesPDM);
+        } 
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
@@ -442,7 +449,7 @@ export default {
     async actualizar(item) {
       const objeto = this.actividad.find((filtro) => filtro.idactividades === item);
       this.formDataact = objeto;
-      console.log(this.formDataact);
+      //console.log(this.formDataact);
       this.actiActualizar = true;
     },
     /* -------------------------------- */

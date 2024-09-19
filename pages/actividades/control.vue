@@ -133,7 +133,7 @@ export default {
   mounted() {
     this.socket = io("http://192.168.1.180:3003");
     this.socket.on("escuchando", (datos) => {
-      console.log(datos);
+      //console.log(datos);
       this.Buscar();
       this.mostrarControl();
     }); 
@@ -141,56 +141,6 @@ export default {
 
   computed: {},
   methods: {
-    /* /* Mostrar Actividades del select 
-    async mostrarActividades() {
-      try {
-        const res = await fetch("http://localhost:3001/Controlactividades", {
-          method: "GET",
-          headers: {
-            token: localStorage.token,
-          },
-        });
-        const datos = await res.json();
-        if (res.status == 404) {
-          console.error("Error al obtener los datos:", error);
-        } else {
-          //console.log(datos.respuesta.respuesta);
-          this.actividad = datos.respuesta.respuesta.map((filtro) => ({
-            id: filtro.idactividades,
-            text: filtro.actividad,
-            idasigactivi: filtro.idasigactivi,
-          }));
-          //console.log(this.actividad);
-        }
-      } catch (error) {
-        console.error("Error al obtener los datos:", error);
-      }
-    },
-
-    /* Mostrar Responsables del select 
-    async mostrarUsuarios() {
-      try {
-        const res = await fetch("http://localhost:3001/Idusuario", {
-          method: "GET",
-          headers: {
-            token: localStorage.token,
-          },
-        });
-        const datos = await res.json();
-        if (res.status == 404) {
-          console.error("Error al obtener los datos:", error);
-        } else {
-          //console.log(datos.respuesta.respuesta);
-          this.operadores = datos.respuesta.respuesta.map((filtro) => ({
-            id: filtro.idPMD,
-            text: filtro.Nombre,
-          }));
-          //console.log(this.actividad);
-        }
-      } catch (error) {
-        console.error("Error al obtener los datos:", error);
-      }
-    }, */
 
     /* Mostrar Tabla de control */
     async mostrarControl() {
@@ -219,7 +169,7 @@ export default {
       const idAsig = this.actividad.find(
         (filtro) => filtro.id === this.datoNuevo.idactividades
       );
-      console.log(idAsig.idasigactivi);
+      //console.log(idAsig.idasigactivi);
       this.datoNuevo.idasigactivi = idAsig.idasigactivi;
       const res = await fetch("http://localhost:3001/insertarControl", {
         method: "POST",
@@ -229,7 +179,7 @@ export default {
         body: JSON.stringify(this.datoNuevo),
       });
       const datos = await res.json();
-      console.log(datos);
+      //console.log(datos);
       if (res.status === 400) {
         this.alerta = true;
         this.Titulo = "¡Upss!";
@@ -259,7 +209,7 @@ export default {
           }
         );
         const dato = await res.json();
-        console.log(dato.mensaje);
+        //console.log(dato.mensaje);
         if (res.status === 400) {
         this.alerta = true;
         this.Titulo = "¡Upss!";
@@ -267,13 +217,13 @@ export default {
         this.datos = false;
       } else {
         this.datos = true;
-        console.log("Actividades: ",dato.actividades.respuesta);
+        //console.log("Actividades: ",dato.actividades.respuesta);
         this.actividad = dato.actividades.respuesta.map((filtro) => ({
             id: filtro.idactividades,
             text: filtro.actividad,
             idasigactivi: filtro.idasigactivi,
           }));
-        console.log("Responsables",dato.responsables.respuesta);
+        //console.log("Responsables",dato.responsables.respuesta);
         this.operadores = dato.responsables.respuesta.map((filtro) => ({
             id: filtro.idPMD,
             text: filtro.Nombre,

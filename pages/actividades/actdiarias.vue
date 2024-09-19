@@ -121,9 +121,10 @@ export default {
   mounted() {
     this.socket = io("http://192.168.1.180:3003");
     this.socket.on("escuchando", (datos) => {
-      console.log(datos);
+      //console.log(datos);
       this.mostrar();
     }); 
+    this.mostrar();
   },
 
   computed: {},
@@ -142,7 +143,7 @@ export default {
           console.error("Error al obtener los datos:", error);
         } else {
           this.actividades = datos.respuesta.respuesta;
-          console.log(this.actividades);
+          //console.log(this.actividades);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);

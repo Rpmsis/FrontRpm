@@ -115,6 +115,8 @@
 
 /* Fijoo */
 <script>
+import io from "socket.io-client";
+
 export default {
   layout: "barra",
   data() {
@@ -148,6 +150,11 @@ export default {
     };
   },
   mounted() {
+    this.socket = io("http://192.168.1.180:3003");
+    this.socket.on("escuchando", (datos) => {
+      //console.log(datos);
+      this.mostrar();
+    }); 
     this.mostrar();
   },
 
@@ -162,7 +169,7 @@ export default {
           console.error("Error al obtener los datos:", error);
         } else {
           this.actividades = datos.respuesta.respuesta;
-          console.log(this.actividades);
+          //console.log(this.actividades);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -171,7 +178,7 @@ export default {
 
     /* Mostrar el formulario de kg*/
     async actualizar(idasigactivi) {
-      console.log("idasigactivi: ", idasigactivi);
+      //console.log("idasigactivi: ", idasigactivi);
       this.datoNuevo.idasigactivi= idasigactivi;
       this.formkg = true;
     },
