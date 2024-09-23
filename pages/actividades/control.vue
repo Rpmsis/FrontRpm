@@ -12,7 +12,7 @@
                     type="password"
                     append-icon="mdi-magnify"
                     label="Buscar supervisor"
-                    @input="Buscar"
+                    @change="Buscar"
                   ></v-text-field>
                 </v-card-title>
               </v-col>
@@ -217,13 +217,13 @@ export default {
         this.datos = false;
       } else {
         this.datos = true;
-        //console.log("Actividades: ",dato.actividades.respuesta);
+        console.log("Actividades: ",dato.actividades.respuesta);
         this.actividad = dato.actividades.respuesta.map((filtro) => ({
             id: filtro.idactividades,
             text: filtro.actividad,
             idasigactivi: filtro.idasigactivi,
           }));
-        //console.log("Responsables",dato.responsables.respuesta);
+        console.log("Responsables",dato.responsables.respuesta);
         this.operadores = dato.responsables.respuesta.map((filtro) => ({
             id: filtro.idPMD,
             text: filtro.Nombre,

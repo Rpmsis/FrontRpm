@@ -212,6 +212,11 @@
                   </a>
                 </v-card>
                 <v-card class="v-sheet theme--dark">
+                  <a href="/activos/entregaactivosfijos">
+                    <h4 class="modulo">Entrega insumos</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
                   <a href="/activos/mantenimiento">
                     <h4 class="modulo">Alta de activos de mantenimiento</h4>
                   </a>

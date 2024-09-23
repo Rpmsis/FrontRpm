@@ -14,6 +14,7 @@ const _9d1964f8 = () => interopDefault(import('..\\pages\\actividades\\control.v
 const _2afd93b3 = () => interopDefault(import('..\\pages\\actividades\\editeficienciakg.vue' /* webpackChunkName: "pages/actividades/editeficienciakg" */))
 const _329c3024 = () => interopDefault(import('..\\pages\\actividades\\porusuario.vue' /* webpackChunkName: "pages/actividades/porusuario" */))
 const _64883dae = () => interopDefault(import('..\\pages\\activos\\activosFijos.vue' /* webpackChunkName: "pages/activos/activosFijos" */))
+const _0f9582cf = () => interopDefault(import('..\\pages\\activos\\entregaactivosfijos.vue' /* webpackChunkName: "pages/activos/entregaactivosfijos" */))
 const _de6c314e = () => interopDefault(import('..\\pages\\activos\\insumos.vue' /* webpackChunkName: "pages/activos/insumos" */))
 const _4ea36e16 = () => interopDefault(import('..\\pages\\activos\\mantenimiento.vue' /* webpackChunkName: "pages/activos/mantenimiento" */))
 const _ec095468 = () => interopDefault(import('..\\pages\\activos\\mostActmantt.vue' /* webpackChunkName: "pages/activos/mostActmantt" */))
@@ -87,6 +88,10 @@ export const routerOptions = {
     path: "/activos/activosFijos",
     component: _64883dae,
     name: "activos-activosFijos"
+  }, {
+    path: "/activos/entregaactivosfijos",
+    component: _0f9582cf,
+    name: "activos-entregaactivosfijos"
   }, {
     path: "/activos/insumos",
     component: _de6c314e,

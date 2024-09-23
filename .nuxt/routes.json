@@ -70,6 +70,13 @@
     "_name": "_64883dae"
   },
   {
+    "name": "activos-entregaactivosfijos",
+    "path": "/activos/entregaactivosfijos",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\activos\\\\entregaactivosfijos.vue",
+    "chunkName": "pages/activos/entregaactivosfijos",
+    "_name": "_0f9582cf"
+  },
+  {
     "name": "activos-insumos",
     "path": "/activos/insumos",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\activos\\\\insumos.vue",
