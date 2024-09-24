@@ -169,6 +169,11 @@
                     <h4 class="modulo">Devolución</h4>
                   </a>
                 </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/consumibles/vigenciaprestamo">
+                    <h4 class="modulo">Vigencia de prestamos</h4>
+                  </a>
+                </v-card>
               </v-card>
             </v-col>
           </v-row>

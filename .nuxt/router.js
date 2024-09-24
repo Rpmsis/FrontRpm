@@ -24,6 +24,7 @@ const _01ac8500 = () => interopDefault(import('..\\pages\\consumibles\\codigobar
 const _590682d1 = () => interopDefault(import('..\\pages\\consumibles\\consumible.vue' /* webpackChunkName: "pages/consumibles/consumible" */))
 const _301e4f84 = () => interopDefault(import('..\\pages\\consumibles\\devolucion.vue' /* webpackChunkName: "pages/consumibles/devolucion" */))
 const _396739e7 = () => interopDefault(import('..\\pages\\consumibles\\inventario.vue' /* webpackChunkName: "pages/consumibles/inventario" */))
+const _02551ed3 = () => interopDefault(import('..\\pages\\consumibles\\vigenciaprestamo.vue' /* webpackChunkName: "pages/consumibles/vigenciaprestamo" */))
 const _0865f59c = () => interopDefault(import('..\\pages\\idusuarios\\idusuarios.vue' /* webpackChunkName: "pages/idusuarios/idusuarios" */))
 const _452a8a7e = () => interopDefault(import('..\\pages\\menusemana\\Cargarimagen.vue' /* webpackChunkName: "pages/menusemana/Cargarimagen" */))
 const _26c168ee = () => interopDefault(import('..\\pages\\menusemana\\form.vue' /* webpackChunkName: "pages/menusemana/form" */))
@@ -128,6 +129,10 @@ export const routerOptions = {
     path: "/consumibles/inventario",
     component: _396739e7,
     name: "consumibles-inventario"
+  }, {
+    path: "/consumibles/vigenciaprestamo",
+    component: _02551ed3,
+    name: "consumibles-vigenciaprestamo"
   }, {
     path: "/idusuarios/idusuarios",
     component: _0865f59c,
