@@ -3,64 +3,22 @@
     <v-card class="mt-5">
       <v-card-title>
         <v-row>
-          <v-col cols="12" md="4">
-            <v-menu
-              v-model="menu"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on }">
-                <v-text-field
-                  v-model="fecha"
-                  label="Fecha de inicio"
-                  outlined
-                  readonly
-                  v-on="on"
-                  filled
-                  prepend-icon="mdi-calendar-range"
-                ></v-text-field>
-              </template>
-              <v-date-picker v-model="fecha" @input="menu = false" filled>
-              </v-date-picker>
-            </v-menu>
+          <v-col cols="12" md="6">
+            <v-date-picker v-model="date1" full-width class="mt-4" :landscape="landscape" ></v-date-picker>
           </v-col>
-          <v-col cols="12" md="4">
-            <v-menu
-              v-model="menu"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on }">
-                <v-text-field
-                  v-model="fecha"
-                  label="Fecha de inicio"
-                  outlined
-                  readonly
-                  v-on="on"
-                  filled
-                  prepend-icon="mdi-calendar-range"
-                ></v-text-field>
-              </template>
-              <v-date-picker v-model="fecha" @input="menu = false" filled>
-              </v-date-picker>
-            </v-menu>
+          <v-col cols="12" md="6">
+            <v-date-picker v-model="date2" full-width class="mt-4" :landscape="landscape" ></v-date-picker>
           </v-col>
           <v-col cols="12" md="4">
             <v-row justify="center" align="center" no-gutters>
-              <v-col cols="12" md="4" >
+              <v-col cols="12" md="4">
                 <v-btn style="margin-left: 15px; margin-top: 10px; left: 100px" icon>
                   <v-icon style="font-size: 80px"
                     >mdi-card-search-outline theme--dark yellow--text</v-icon
                   >
                 </v-btn>
               </v-col>
-              <v-col cols="12" md="4" >
+              <v-col cols="12" md="4">
                 <v-btn style="margin-left: 15px; margin-top: 10px; left: 100px" icon>
                   <v-icon style="font-size: 70px"
                     >mdi-file-download theme--dark yellow--text</v-icon
@@ -69,7 +27,7 @@
               </v-col>
             </v-row>
           </v-col>
-          
+          <p>{{ date1 }} {{ date2 }}</p>
         </v-row>
       </v-card-title>
       <v-data-table
@@ -533,6 +491,9 @@ export default {
       imageAct2: null,
       imageAct3: null,
       imageAct4: null,
+      date1:"",
+      date2:"",
+      landscape: true,
 
       headers: [
         { text: "Id comida", value: "idmenusemana" },

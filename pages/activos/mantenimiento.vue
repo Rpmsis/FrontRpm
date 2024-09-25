@@ -239,7 +239,7 @@ export default {
   methods: {
     async mostrarubi(){
       try {
-        const res = await fetch("http://localhost:3001/ubicacion");
+        const res = await fetch("http://localhost:3001/ubicacionMantt");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);

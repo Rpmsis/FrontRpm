@@ -3,198 +3,231 @@
     "name": "ayuda",
     "path": "/ayuda",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\ayuda.vue",
-    "chunkName": "pages/ayuda"
+    "chunkName": "pages/ayuda",
+    "_name": "_e3df6410"
   },
   {
     "name": "inicio",
     "path": "/inicio",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\inicio.vue",
-    "chunkName": "pages/inicio"
+    "chunkName": "pages/inicio",
+    "_name": "_74f9e757"
   },
   {
     "name": "tabla",
     "path": "/tabla",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\tabla.vue",
-    "chunkName": "pages/tabla"
+    "chunkName": "pages/tabla",
+    "_name": "_1ace9570"
   },
   {
     "name": "actividades-actdiarias",
     "path": "/actividades/actdiarias",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\actdiarias.vue",
-    "chunkName": "pages/actividades/actdiarias"
+    "chunkName": "pages/actividades/actdiarias",
+    "_name": "_5e3a3608"
   },
   {
     "name": "actividades-actForaneas",
     "path": "/actividades/actForaneas",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\actForaneas.vue",
-    "chunkName": "pages/actividades/actForaneas"
+    "chunkName": "pages/actividades/actForaneas",
+    "_name": "_024ce13a"
   },
   {
     "name": "actividades-asignacion",
     "path": "/actividades/asignacion",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\asignacion.vue",
-    "chunkName": "pages/actividades/asignacion"
+    "chunkName": "pages/actividades/asignacion",
+    "_name": "_2c0b7c1e"
   },
   {
     "name": "actividades-control",
     "path": "/actividades/control",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\control.vue",
-    "chunkName": "pages/actividades/control"
+    "chunkName": "pages/actividades/control",
+    "_name": "_9d1964f8"
   },
   {
     "name": "actividades-editeficienciakg",
     "path": "/actividades/editeficienciakg",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\editeficienciakg.vue",
-    "chunkName": "pages/actividades/editeficienciakg"
+    "chunkName": "pages/actividades/editeficienciakg",
+    "_name": "_2afd93b3"
   },
   {
     "name": "actividades-porusuario",
     "path": "/actividades/porusuario",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\porusuario.vue",
-    "chunkName": "pages/actividades/porusuario"
+    "chunkName": "pages/actividades/porusuario",
+    "_name": "_329c3024"
   },
   {
     "name": "activos-activosFijos",
     "path": "/activos/activosFijos",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\activos\\\\activosFijos.vue",
-    "chunkName": "pages/activos/activosFijos"
+    "chunkName": "pages/activos/activosFijos",
+    "_name": "_64883dae"
   },
   {
     "name": "activos-entregaactivosfijos",
     "path": "/activos/entregaactivosfijos",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\activos\\\\entregaactivosfijos.vue",
-    "chunkName": "pages/activos/entregaactivosfijos"
+    "chunkName": "pages/activos/entregaactivosfijos",
+    "_name": "_0f9582cf"
   },
   {
     "name": "activos-insumos",
     "path": "/activos/insumos",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\activos\\\\insumos.vue",
-    "chunkName": "pages/activos/insumos"
+    "chunkName": "pages/activos/insumos",
+    "_name": "_de6c314e"
   },
   {
     "name": "activos-mantenimiento",
     "path": "/activos/mantenimiento",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\activos\\\\mantenimiento.vue",
-    "chunkName": "pages/activos/mantenimiento"
+    "chunkName": "pages/activos/mantenimiento",
+    "_name": "_4ea36e16"
   },
   {
     "name": "activos-mostActmantt",
     "path": "/activos/mostActmantt",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\activos\\\\mostActmantt.vue",
-    "chunkName": "pages/activos/mostActmantt"
+    "chunkName": "pages/activos/mostActmantt",
+    "_name": "_ec095468"
   },
   {
     "name": "activos-mostmantt",
     "path": "/activos/mostmantt",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\activos\\\\mostmantt.vue",
-    "chunkName": "pages/activos/mostmantt"
+    "chunkName": "pages/activos/mostmantt",
+    "_name": "_13c93b66"
   },
   {
     "name": "activos-ubicacion",
     "path": "/activos/ubicacion",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\activos\\\\ubicacion.vue",
-    "chunkName": "pages/activos/ubicacion"
+    "chunkName": "pages/activos/ubicacion",
+    "_name": "_35847f64"
   },
   {
     "name": "consumibles-codigobarras",
     "path": "/consumibles/codigobarras",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\consumibles\\\\codigobarras.vue",
-    "chunkName": "pages/consumibles/codigobarras"
+    "chunkName": "pages/consumibles/codigobarras",
+    "_name": "_01ac8500"
   },
   {
     "name": "consumibles-consumible",
     "path": "/consumibles/consumible",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\consumibles\\\\consumible.vue",
-    "chunkName": "pages/consumibles/consumible"
+    "chunkName": "pages/consumibles/consumible",
+    "_name": "_590682d1"
   },
   {
     "name": "consumibles-devolucion",
     "path": "/consumibles/devolucion",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\consumibles\\\\devolucion.vue",
-    "chunkName": "pages/consumibles/devolucion"
+    "chunkName": "pages/consumibles/devolucion",
+    "_name": "_301e4f84"
   },
   {
     "name": "consumibles-inventario",
     "path": "/consumibles/inventario",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\consumibles\\\\inventario.vue",
-    "chunkName": "pages/consumibles/inventario"
+    "chunkName": "pages/consumibles/inventario",
+    "_name": "_396739e7"
   },
   {
     "name": "consumibles-vigenciaprestamo",
     "path": "/consumibles/vigenciaprestamo",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\consumibles\\\\vigenciaprestamo.vue",
-    "chunkName": "pages/consumibles/vigenciaprestamo"
+    "chunkName": "pages/consumibles/vigenciaprestamo",
+    "_name": "_02551ed3"
   },
   {
     "name": "idusuarios-idusuarios",
     "path": "/idusuarios/idusuarios",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\idusuarios\\\\idusuarios.vue",
-    "chunkName": "pages/idusuarios/idusuarios"
+    "chunkName": "pages/idusuarios/idusuarios",
+    "_name": "_0865f59c"
   },
   {
     "name": "menusemana-Cargarimagen",
     "path": "/menusemana/Cargarimagen",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\menusemana\\\\Cargarimagen.vue",
-    "chunkName": "pages/menusemana/Cargarimagen"
+    "chunkName": "pages/menusemana/Cargarimagen",
+    "_name": "_452a8a7e"
   },
   {
     "name": "menusemana-form",
     "path": "/menusemana/form",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\menusemana\\\\form.vue",
-    "chunkName": "pages/menusemana/form"
+    "chunkName": "pages/menusemana/form",
+    "_name": "_26c168ee"
   },
   {
     "name": "menusemana-formenu",
     "path": "/menusemana/formenu",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\menusemana\\\\formenu.vue",
-    "chunkName": "pages/menusemana/formenu"
+    "chunkName": "pages/menusemana/formenu",
+    "_name": "_550a876e"
   },
   {
     "name": "menusemana-Semanamenu",
     "path": "/menusemana/Semanamenu",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\menusemana\\\\Semanamenu.vue",
-    "chunkName": "pages/menusemana/Semanamenu"
+    "chunkName": "pages/menusemana/Semanamenu",
+    "_name": "_3e4bf542"
   },
   {
     "name": "preguntaSeg-formulario",
     "path": "/preguntaSeg/formulario",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\preguntaSeg\\\\formulario.vue",
-    "chunkName": "pages/preguntaSeg/formulario"
+    "chunkName": "pages/preguntaSeg/formulario",
+    "_name": "_4961270a"
   },
   {
     "name": "preguntaSeg-mostrarPreg",
     "path": "/preguntaSeg/mostrarPreg",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\preguntaSeg\\\\mostrarPreg.vue",
-    "chunkName": "pages/preguntaSeg/mostrarPreg"
+    "chunkName": "pages/preguntaSeg/mostrarPreg",
+    "_name": "_76579c6a"
   },
   {
     "name": "SGI-noconformidad",
     "path": "/SGI/noconformidad",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\SGI\\\\noconformidad.vue",
-    "chunkName": "pages/SGI/noconformidad"
+    "chunkName": "pages/SGI/noconformidad",
+    "_name": "_3b104d80"
   },
   {
     "name": "socioscomerciales-mostrarProv",
     "path": "/socioscomerciales/mostrarProv",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\socioscomerciales\\\\mostrarProv.vue",
-    "chunkName": "pages/socioscomerciales/mostrarProv"
+    "chunkName": "pages/socioscomerciales/mostrarProv",
+    "_name": "_fc00e0d8"
   },
   {
     "name": "socioscomerciales-proveedores",
     "path": "/socioscomerciales/proveedores",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\socioscomerciales\\\\proveedores.vue",
-    "chunkName": "pages/socioscomerciales/proveedores"
+    "chunkName": "pages/socioscomerciales/proveedores",
+    "_name": "_3356acd7"
   },
   {
     "name": "socioscomerciales-provusuario",
     "path": "/socioscomerciales/provusuario",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\socioscomerciales\\\\provusuario.vue",
-    "chunkName": "pages/socioscomerciales/provusuario"
+    "chunkName": "pages/socioscomerciales/provusuario",
+    "_name": "_0e7bf7f0"
   },
   {
     "name": "index",
     "path": "/",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\index.vue",
-    "chunkName": "pages/index"
+    "chunkName": "pages/index",
+    "_name": "_3935de50"
   }
 ]
