@@ -12,7 +12,7 @@
                     type="password"
                     append-icon="mdi-magnify"
                     label="Buscar supervisor"
-                    @change="Buscar"
+                    @input="Buscar"
                   ></v-text-field>
                 </v-card-title>
               </v-col>
@@ -155,7 +155,7 @@ export default {
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          //console.log(datos.result);
+          console.log(datos.result);
           this.controlactivi = datos.result;
         }
       } catch (error) {
@@ -165,7 +165,7 @@ export default {
 
     /* Insertar actividad a la tabla de controlactivi con el resposable correspondiente */
     async submitForm() {
-      this.datoNuevo.idchecksupervisor= this.Nombre;
+      this.datoNuevo.idchecksupervisor= this.Nombre.trimEnd();
       const idAsig = this.actividad.find(
         (filtro) => filtro.id === this.datoNuevo.idactividades
       );

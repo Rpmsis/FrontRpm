@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container  v-if="nombre === 'SI'" >
     <v-card class="mt-5">
       <v-card-title>
         <v-text-field
@@ -46,7 +46,7 @@
       <!-- Formulario insertar CONSUMIBLE -->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="consu" max-width="600px">
+          <v-dialog v-model="consu" max-width="800px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -61,7 +61,7 @@
               <v-form class="mt-5" @submit.prevent="submitForm">
                 <!-- row 1: tipo, proveedor, folio OC -->
                 <v-row>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="4">
                     <v-select
                       v-model="formData.tipo"
                       :items="tipoc"
@@ -69,13 +69,21 @@
                       filled
                     ></v-select>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="4">
                     <v-select
                       v-model="formData.unidadmedida"
                       :items="unidadesmedida"
                       label="UNIDAD DE MEDIDA"
                       filled
                     ></v-select>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field
+                      type="number"
+                      label="Minimo de productos"
+                      v-model="formData.minimo"
+                      filled
+                    ></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row>
@@ -89,76 +97,7 @@
                     ></v-text-field>
                   </v-col>
                 </v-row>
-                <!-- <v-col cols="12" md="2" v-show="kilomg">
-                    <v-text-field
-                      v-model="formData.enteros"
-                      type="number"
-                      label="KILOS O LITROS"
-                      min="1"
-                      max="1000"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="3" v-show="kilomg">
-                    <v-text-field
-                      v-model="formData.fracciones"
-                      type="number"
-                      label="MILILITROS O GRAMOS"
-                      min="1"
-                      max="1000"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="2" v-show="numpiezas">
-                    <v-text-field
-                      v-model="formData.canestandar"
-                      type="number"
-                      label="NUM. PIEZAS"
-                      min="1"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12" md="4">
-                    <v-text-field
-                      v-model="formData.oc"
-                      type="text"
-                      label="ORDEN DE COMPRA"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-select
-                      :items="prov"
-                      v-model="formData.proveedor"
-                      label="Proveedor"
-                      filled
-                    >
-                    </v-select>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-text-field
-                      v-model="formData.costo"
-                      type="text"
-                      prefix="$"
-                      label="COSTO UNITARIO"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-textarea
-                      clear-icon="mdi-close-circle"
-                      label="DESCRIPCIÓN GENERAL DEL CONSUMIBLE..."
-                      clearable
-                      style="border: white"
-                      v-model="formData.descripcion"
-                      filled
-                    ></v-textarea>
-                  </v-col>
-                </v-row> -->
+                
                 <center>
                   <v-btn block outlined class="btnEnviar" type="submit" color="success"
                     >Guardar</v-btn
@@ -398,6 +337,7 @@ export default {
         costo: "",
         codigobarras: "",
         descrip: "",
+        minimo: ""
       },
 
       formDataact: {
@@ -413,14 +353,39 @@ export default {
         codigobarras: "",
         descrip: "",
       },
+
+      nombre: ""
     };
   },
   mounted() {
     this.mostrar();
+    this.mostrarDatos();
   },
 
   computed: {},
   methods: {
+
+    async mostrarDatos() {
+      try {
+        const res = await fetch("http://localhost:3001/verificarpermiso", {
+          method: "GET",
+          headers: {
+            token: localStorage.token,
+          },
+        });
+        const datos = await res.json();
+        console.log(datos.respuesta);
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          this.nombre= datos.respuesta;
+          //console.log(datos.respuesta.respuesta);
+        } 
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
+
     /* Mostrar los datos de la tabla consumibles*/
     async mostrar() {
       try {
@@ -522,6 +487,7 @@ export default {
 
     limpiarFormulario() {
       this.formData.unidadmedida = "";
+      this.formData.minimo = "";
       this.formData.tipo = "";
       this.formData.descripcion = "";
     },

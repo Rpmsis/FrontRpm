@@ -12,6 +12,7 @@ const _024ce13a = () => interopDefault(import('..\\pages\\actividades\\actForane
 const _2c0b7c1e = () => interopDefault(import('..\\pages\\actividades\\asignacion.vue' /* webpackChunkName: "pages/actividades/asignacion" */))
 const _9d1964f8 = () => interopDefault(import('..\\pages\\actividades\\control.vue' /* webpackChunkName: "pages/actividades/control" */))
 const _2afd93b3 = () => interopDefault(import('..\\pages\\actividades\\editeficienciakg.vue' /* webpackChunkName: "pages/actividades/editeficienciakg" */))
+const _4f257e9e = () => interopDefault(import('..\\pages\\actividades\\eficacia.vue' /* webpackChunkName: "pages/actividades/eficacia" */))
 const _329c3024 = () => interopDefault(import('..\\pages\\actividades\\porusuario.vue' /* webpackChunkName: "pages/actividades/porusuario" */))
 const _64883dae = () => interopDefault(import('..\\pages\\activos\\activosFijos.vue' /* webpackChunkName: "pages/activos/activosFijos" */))
 const _0f9582cf = () => interopDefault(import('..\\pages\\activos\\entregaactivosfijos.vue' /* webpackChunkName: "pages/activos/entregaactivosfijos" */))
@@ -24,6 +25,7 @@ const _01ac8500 = () => interopDefault(import('..\\pages\\consumibles\\codigobar
 const _590682d1 = () => interopDefault(import('..\\pages\\consumibles\\consumible.vue' /* webpackChunkName: "pages/consumibles/consumible" */))
 const _301e4f84 = () => interopDefault(import('..\\pages\\consumibles\\devolucion.vue' /* webpackChunkName: "pages/consumibles/devolucion" */))
 const _396739e7 = () => interopDefault(import('..\\pages\\consumibles\\inventario.vue' /* webpackChunkName: "pages/consumibles/inventario" */))
+const _6a298ca2 = () => interopDefault(import('..\\pages\\consumibles\\minimo.vue' /* webpackChunkName: "pages/consumibles/minimo" */))
 const _02551ed3 = () => interopDefault(import('..\\pages\\consumibles\\vigenciaprestamo.vue' /* webpackChunkName: "pages/consumibles/vigenciaprestamo" */))
 const _0865f59c = () => interopDefault(import('..\\pages\\idusuarios\\idusuarios.vue' /* webpackChunkName: "pages/idusuarios/idusuarios" */))
 const _452a8a7e = () => interopDefault(import('..\\pages\\menusemana\\Cargarimagen.vue' /* webpackChunkName: "pages/menusemana/Cargarimagen" */))
@@ -82,6 +84,10 @@ export const routerOptions = {
     component: _2afd93b3,
     name: "actividades-editeficienciakg"
   }, {
+    path: "/actividades/eficacia",
+    component: _4f257e9e,
+    name: "actividades-eficacia"
+  }, {
     path: "/actividades/porusuario",
     component: _329c3024,
     name: "actividades-porusuario"
@@ -129,6 +135,10 @@ export const routerOptions = {
     path: "/consumibles/inventario",
     component: _396739e7,
     name: "consumibles-inventario"
+  }, {
+    path: "/consumibles/minimo",
+    component: _6a298ca2,
+    name: "consumibles-minimo"
   }, {
     path: "/consumibles/vigenciaprestamo",
     component: _02551ed3,

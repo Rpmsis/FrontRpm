@@ -372,7 +372,7 @@ export default {
       }
     },
 
-    /* Enviar estatus en proceso del botón Terminar actividad */
+    /* Enviar estatus en TERMINADO del botón Terminar actividad */
     async acttiempofinal() {
       //console.log(this.datoNuevo.motivo);
       const res = await fetch("http://localhost:3001/actualizarTimefin", {
@@ -397,6 +397,7 @@ export default {
       }
     },
 
+    /* Enviar estatus en EN PAUSA del botón pausa */
     async acttiempoPausa() {
       //console.log(this.datoNuevo.motivo);
       const res = await fetch("http://localhost:3001/actualizarTimepausa", {
@@ -424,7 +425,7 @@ export default {
       }
     },
 
-    /* Enviar estatus en proceso del botón reanudar actividad */
+    /* Enviar estatus en proceso del botón pausa actividad */
     async acttiempoReanudar() {
       this.datoNuevo2.status = "EN PROCESO";
       const res = await fetch("http://localhost:3001/insertarTiempo", {

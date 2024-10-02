@@ -144,12 +144,20 @@
                     <h4 class="modulo">Mostrar actividades por usuario</h4>
                   </a>
                 </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/actividades/eficacia">
+                    <h4 class="modulo">Eficacia</h4>
+                  </a>
+                </v-card>
               </v-card>
             </v-col>
             <v-col cols="12" md="6">
               <v-card>
                 <v-card-title>ACTIVOS CONSUMIBLES</v-card-title>
-                <v-card class="v-sheet theme--dark">
+                <v-card
+                  class="v-sheet theme--dark"
+                  v-if="nombre === 'LUIS REY HERNANDEZ ROMERO'"
+                >
                   <a href="/consumibles/consumible">
                     <h4 class="modulo">Alta de consumibles</h4>
                   </a>
@@ -174,13 +182,18 @@
                     <h4 class="modulo">Vigencia de prestamos</h4>
                   </a>
                 </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/consumibles/minimo">
+                    <h4 class="modulo">Ultimas piezas</h4>
+                  </a>
+                </v-card>
               </v-card>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12" md="6">
               <v-card>
-                <v-card-title>CONTABILIDAD</v-card-title>
+                <v-card-title>CONTABILIDAD {{ nombre }}</v-card-title>
                 <!-- <v-card class="v-sheet theme--dark">
                   <a href="/SGI/noconformidad">
                       <h4 class="modulo">Tickets de no conformidad</h4>
@@ -212,7 +225,10 @@
               <v-card>
                 <v-card-title>ACTIVOS FIJOS</v-card-title>
                 <v-card class="v-sheet theme--dark">
-                  <a href="/activos/insumos">
+                  <a
+                    href="/activos/insumos"
+                    v-if="nombre === 'LUIS REY HERNANDEZ ROMERO'"
+                  >
                     <h4 class="modulo">Activos de insumos</h4>
                   </a>
                 </v-card>
@@ -307,22 +323,22 @@
         </v-flex>
       </v-layout>
       <!-- Ventana emergente -->
-    <v-dialog v-model="alerta" max-width="500">
-      <v-card>
-        <v-card-title class="text-h4">
-          {{ Titulo }}
-        </v-card-title>
-        <v-card-text class="text-h6 text-center">
-          {{ Mensaje }}
-        </v-card-text>
-        <v-divider></v-divider>
+      <v-dialog v-model="alerta" max-width="500">
+        <v-card>
+          <v-card-title class="text-h4">
+            {{ Titulo }}
+          </v-card-title>
+          <v-card-text class="text-h6 text-center">
+            {{ Mensaje }}
+          </v-card-text>
+          <v-divider></v-divider>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="alerta = false"> Cerrar </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="alerta = false"> Cerrar </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
   </v-app>
 </template>
@@ -339,6 +355,7 @@ export default {
     return {
       alerta: false,
       Mensaje: "",
+      nombre: this.$store.state.nombre,
       Titulo: "",
       gifSrc: "http://localhost:3001/uploads/1724950497597-SPAGUETTI-CON-PIMIENTOS.jpg",
       imageSrc: "/logoimg.jpg",
@@ -370,6 +387,8 @@ export default {
       Solicitud: {
         archivo: null,
       },
+
+      tokenStorage: ""
     };
   },
   mounted() {
@@ -402,11 +421,11 @@ export default {
     async mostrarFotoperfil() {
       try {
         const res = await fetch("http://localhost:3001/foto", {
-        method: "GET",
-        headers: {
-          token: localStorage.token,
-        },
-      });
+          method: "GET",
+          headers: {
+            token: localStorage.token,
+          },
+        });
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -446,22 +465,19 @@ export default {
         this.alerta = true;
         this.Titulo = "¡Upss!";
         this.Mensaje = datos.mensaje;
-      } 
-      else {
+      } else {
         this.alerta = true;
         //this.Titulo = "El ID del activo es: ";
         this.Titulo = "Datos actualizados";
         this.Mensaje = " ";
         this.limpiarFormulario();
         this.mostrarFotoperfil();
-        this.fotodeperfil= false;
+        this.fotodeperfil = false;
       }
     },
-    limpiarFormulario(){
-      this.Solicitud.archivo= null,
-      this.imagePreview1= null
-
-    }
+    limpiarFormulario() {
+      (this.Solicitud.archivo = null), (this.imagePreview1 = null);
+    },
   },
 };
 </script>
