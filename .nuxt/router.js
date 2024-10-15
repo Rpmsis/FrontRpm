@@ -32,6 +32,8 @@ const _452a8a7e = () => interopDefault(import('..\\pages\\menusemana\\Cargarimag
 const _26c168ee = () => interopDefault(import('..\\pages\\menusemana\\form.vue' /* webpackChunkName: "pages/menusemana/form" */))
 const _550a876e = () => interopDefault(import('..\\pages\\menusemana\\formenu.vue' /* webpackChunkName: "pages/menusemana/formenu" */))
 const _3e4bf542 = () => interopDefault(import('..\\pages\\menusemana\\Semanamenu.vue' /* webpackChunkName: "pages/menusemana/Semanamenu" */))
+const _7ab2faa3 = () => interopDefault(import('..\\pages\\menusemana\\solicitudIndividual.vue' /* webpackChunkName: "pages/menusemana/solicitudIndividual" */))
+const _913981cc = () => interopDefault(import('..\\pages\\menusemana\\solicitudMultiple.vue' /* webpackChunkName: "pages/menusemana/solicitudMultiple" */))
 const _4961270a = () => interopDefault(import('..\\pages\\preguntaSeg\\formulario.vue' /* webpackChunkName: "pages/preguntaSeg/formulario" */))
 const _76579c6a = () => interopDefault(import('..\\pages\\preguntaSeg\\mostrarPreg.vue' /* webpackChunkName: "pages/preguntaSeg/mostrarPreg" */))
 const _3b104d80 = () => interopDefault(import('..\\pages\\SGI\\noconformidad.vue' /* webpackChunkName: "pages/SGI/noconformidad" */))
@@ -163,6 +165,14 @@ export const routerOptions = {
     path: "/menusemana/Semanamenu",
     component: _3e4bf542,
     name: "menusemana-Semanamenu"
+  }, {
+    path: "/menusemana/solicitudIndividual",
+    component: _7ab2faa3,
+    name: "menusemana-solicitudIndividual"
+  }, {
+    path: "/menusemana/solicitudMultiple",
+    component: _913981cc,
+    name: "menusemana-solicitudMultiple"
   }, {
     path: "/preguntaSeg/formulario",
     component: _4961270a,

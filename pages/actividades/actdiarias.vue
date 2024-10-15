@@ -3,6 +3,61 @@
     <v-container>
       <v-layout row wrap>
         <v-flex xs12>
+          <v-row>
+            <v-col cols="12" md="3">
+              <v-card
+                class="mt-5"
+                style="padding: 10px; text-align: center; font-size: 30px"
+              >
+                <v-card-title style="background-color: aliceblue; color: black">
+                  ASIGNADAS:
+                </v-card-title>
+                <center>
+                  <h1>
+                    {{ asignaciones }}
+                  </h1>
+                </center>
+              </v-card>
+            </v-col>
+            <v-col cols="12" md="3">
+              <v-card
+                class="mt-5"
+                style="padding: 10px; text-align: center; font-size: 30px"
+              >
+                <v-card-title style="background-color: aliceblue; color: black">
+                  PORCENTAJE:
+                </v-card-title>
+
+                <center>
+                  <h1>{{ promedioasig }}%</h1>
+                </center>
+              </v-card>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-card
+                class="mt-5"
+                style="padding: 10px; text-align: center; font-size: 30px"
+              >
+                <v-card-title style="background-color: aliceblue; color: black">
+                  PORCENTAJE DE EFICIENCIA :
+                </v-card-title>
+                <center>
+                  <h1>{{ promedio }}%</h1>
+                </center>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-card class="mt-10" style="padding: 10px">
+            <v-slider
+              label="ACTIVIDADES REALIZADAS:"
+              v-model="slider1"
+              model-value="30"
+              readonly
+              thumb-label="always"
+              :thumb-size="40"
+              :max="asignaciones"
+            ></v-slider>
+          </v-card>
           <v-card class="mt-5" style="padding: 10px">
             <v-text-field
               v-model="search"
@@ -39,6 +94,9 @@
                   </template>
                   <span>Visualizar</span>
                 </v-tooltip>
+              </template>
+              <template v-slot:item.concatenado2="{ item }">
+                {{ `${item.eficienciasig}%` }}
               </template>
             </v-data-table>
           </v-card>
@@ -86,6 +144,11 @@ export default {
   layout: "barra",
   data() {
     return {
+      slider1: 0,
+      asignaciones: 0,
+      promedio: 0,
+      promedioasig: 0,
+
       alerta: false,
       Mensaje: "",
       Titulo: "",
@@ -95,11 +158,25 @@ export default {
       responsables: [],
       statusres: false,
       headers: [
-        { text: "Id de\nasignación", value: "idasigactivi", align:"start",  class: "multi-line-header" },
+        {
+          text: "Id de\nasignación",
+          value: "idasigactivi",
+          align: "start",
+          class: "multi-line-header",
+        },
         { text: "Fecha de inicio", value: "fechainicio" },
         { text: "Empresa", value: "empresa" },
         { text: "Actividad", value: "actividad" },
-        { text: "Tiempo\ntranscurrido", value: "timeControl", align:"start",  class: "multi-line-header" },
+        {
+          text: "Tiempo\ntranscurrido",
+          value: "timeControl",
+          align: "start",
+          class: "multi-line-header",
+        },
+        { text: "Kilogramos realizados", value: "kgControl" },
+        { text: "Tiempo record", value: "timestandar" },
+        { text: "Kilogramos record", value: "kg" },
+        { text: "Eficiencia", value: "concatenado2" },
         { text: "Estatus", value: "status" },
         {
           text: "Detalles\ndel\nestatus",
@@ -111,10 +188,20 @@ export default {
       ],
 
       headers2: [
-        { text: "Id de la\nactividad", value: "idactividades", align:"center",  class: "multi-line-header", },
+        {
+          text: "Id de la\nactividad",
+          value: "idactividades",
+          align: "center",
+          class: "multi-line-header",
+        },
         { text: "Responsable", value: "responsables" },
-        { text: "Tiempo\ntranscurrido\nen minutos", value: "timestandar", align:"start",  class: "multi-line-header", },
-        { text: "Estatus", value: "status", class: "multi-line-header", },
+        {
+          text: "Tiempo\ntranscurrido\nen minutos",
+          value: "timestandar",
+          align: "start",
+          class: "multi-line-header",
+        },
+        { text: "Estatus", value: "status", class: "multi-line-header" },
       ],
     };
   },
@@ -123,8 +210,10 @@ export default {
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.mostrar();
-    }); 
+      this.mostrarGlobal();
+    });
     this.mostrar();
+    this.mostrarGlobal();
   },
 
   computed: {},
@@ -143,7 +232,27 @@ export default {
           console.error("Error al obtener los datos:", error);
         } else {
           this.actividades = datos.respuesta.respuesta;
-          //console.log(this.actividades);
+          console.log(this.actividades);
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
+
+    /* Mostrar estaus global de las actividades */
+    async mostrarGlobal() {
+      try {
+        const res = await fetch("http://localhost:3001/globalstatus");
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          console.log(datos);
+          this.asignaciones = datos.deldiatotal;
+          this.slider1 = datos.terminadastotal;
+          this.promedio = datos.promediototal;
+          this.promedioasig = datos.promedioasigtotal;
+          //this.datosEficacia = datos.respuesta.respuesta;
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -183,9 +292,7 @@ export default {
   justify-content: center !important;
   font-size: 30px !important;
 }
-.row {
-  padding: 0px 50px 0px 50px;
-}
+
 .btnEnviar {
   margin-top: 30px;
   margin-bottom: 50px;

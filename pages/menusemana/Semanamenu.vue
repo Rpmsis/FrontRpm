@@ -21,6 +21,41 @@
         :sort-by="['fechainicio']"
         :sort-desc="false"
       >
+        <template v-slot:item.platoentrada="{ item }">
+          <img
+            :src="`http://localhost:3001/uploads/${item.imagen1}`"
+            alt="Sopa"
+            style="width: 150px; height: 150px; padding: 5px"
+          />
+          <p>{{ item.platoentrada }}</p>
+        </template>
+
+        <template v-slot:item.platofuerteA="{ item }">
+          <img
+            :src="`http://localhost:3001/uploads/${item.imagen3}`"
+            alt="Sopa"
+            style="width: 150px; height: 150px; padding: 5px"
+          />
+          <p>{{ item.platofuerteA }}</p>
+        </template>
+
+        <template v-slot:item.platofuerteB="{ item }">
+          <img
+            :src="`http://localhost:3001/uploads/${item.imagen4}`"
+            alt="Sopa"
+            style="width: 150px; height: 150px; padding: 5px"
+          />
+          <p>{{ item.platofuerteB }}</p>
+        </template>
+
+        <template v-slot:item.bebida="{ item }">
+          <img
+            :src="`http://localhost:3001/uploads/${item.imagen2}`"
+            alt="Sopa"
+            style="width: 150px; height: 150px; padding: 5px"
+          />
+          <p>{{ item.bebida }}</p>
+        </template>
       </v-data-table>
     </v-card>
   </v-container>
@@ -44,9 +79,7 @@ export default {
         { text: "Plato fuerte A", value: "platofuerteA" },
         { text: "Plato fuerte B", value: "platofuerteB" },
         { text: "Bebida", value: "bebida" },
-        { text: "Fecha del día", value: "fechainicio" },
       ],
-
     };
   },
   mounted() {
@@ -63,13 +96,13 @@ export default {
           console.error("Error al obtener los datos:", error);
         } else {
           this.comidas = datos.respuesta.respuesta;
-          //console.log(datos.respuesta.respuesta);
+          this.enviarDatos.numsemana = datos.respuesta.respuesta[0].numsemana;
+          //console.log(this.comidas);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
     },
-
   },
 };
 </script>
@@ -86,12 +119,17 @@ export default {
   padding: 0px 10px 0px 10px;
 }
 .btnEnviar {
-  margin-top: 10px;
   margin-bottom: 10px;
-  width: 30%;
+  width: 50%;
+  height: 55px !important;
   font-size: 20px !important;
 }
 .multi-line-header {
   white-space: pre-line;
+}
+.responsive-gif {
+  width: 100px;
+  height: 100px;
+  border-radius: 30px;
 }
 </style>

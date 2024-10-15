@@ -24,14 +24,51 @@
           </v-row>
 
           <v-row>
-            <v-col cols="12" md="12">
+            <v-col cols="12" md="3">
+              <v-card
+                style="
+                  background: linear-gradient(to bottom right, white, 70%, orange);
+                  border-radius: 15px;
+                  text-align: left;
+                "
+              >
+                <v-row style="padding: 5px">
+                  <v-col cols="12" md="12">
+                    <center>
+                      <h2 style="color: chocolate">
+                        <v-icon color="black" dark large class="mr-2">
+                          mdi-notebook-heart-outline
+                        </v-icon>
+                        SOLICITADOS
+                      </h2>
+                    </center>
+                    <h3 style="color: black; font-family: cursive; font-size: 30px;">
+                      ≃ Lunes: {{ lunes }}
+                    </h3>
+                    <h3 style="color: black; font-family: cursive; font-size: 30px;">
+                      ≃ Martes: {{ martes }}
+                    </h3>
+                    <h3 style="color: black; font-family: cursive; font-size: 30px;">
+                      ≃ Miercoles: {{ miercoles }}
+                    </h3>
+                    <h3 style="color: black; font-family: cursive; font-size: 30px;">
+                      ≃ Jueves: {{ jueves }}
+                    </h3>
+                    <h3 style="color: black; font-family: cursive; font-size: 30px;">
+                      ≃ Viernes: {{ viernes }}
+                    </h3>
+                  </v-col>
+                </v-row>
+              </v-card>
+            </v-col>
+            <v-col cols="12" md="9">
               <v-card
                 style="
                   background: linear-gradient(to bottom right, white, 70%, orange);
                   border-radius: 15px;
                 "
               >
-                <a style="text-decoration: none !important" href="/menusemana/Semanamenu">
+                <a style="text-decoration: none !important" href="/menusemana/solicitudMultiple">
                   <v-row style="padding: 15px">
                     <v-col cols="12" md="2">
                       <img class="responsive-gif" :src="imgplatoentrada" />
@@ -146,7 +183,7 @@
                 </v-card>
                 <v-card class="v-sheet theme--dark">
                   <a href="/actividades/eficacia">
-                    <h4 class="modulo">Eficacia</h4>
+                    <h4 class="modulo">Tablero de actividades</h4>
                   </a>
                 </v-card>
               </v-card>
@@ -373,6 +410,7 @@ export default {
       foto: "",
       fotodeperfil: false,
       imagePreview1: null,
+      numsemana: "",
       headers: [
         { text: "Nombre", align: "start", value: "name" },
         { text: "Edad", value: "age" },
@@ -388,7 +426,12 @@ export default {
         archivo: null,
       },
 
-      tokenStorage: ""
+      tokenStorage: "",
+      lunes: "",
+      martes: "",
+      miercoles: "",
+      jueves: "",
+      viernes: "",
     };
   },
   mounted() {
@@ -412,6 +455,8 @@ export default {
           this.imgbebida = `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen2}`;
           this.imgplatoA = `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen3}`;
           this.imgplatoB = `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen4}`;
+          this.numsemana = datos.respuesta.respuesta[0].numsemana;
+          this.mostrarPedido(this.numsemana);
           //console.log(this.imgplatoentrada);
         }
       } catch (error) {
@@ -432,6 +477,33 @@ export default {
         } else {
           this.foto = `http://localhost:3001/fotoperfil/${datos.respuesta.respuesta[0].foto}`;
           //console.log(datos.respuesta.respuesta);
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
+    async mostrarPedido(numsemana) {
+      try {
+        const res = await fetch(
+          `http://localhost:3001/pedidocomida?numsemana=${numsemana}`,
+          {
+            method: "GET",
+            headers: {
+              token: localStorage.token,
+            },
+          }
+        );
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          //console.log(datos.solicito);
+          this.lunes = datos.solicito.lunes;
+          this.martes = datos.solicito.martes;
+          this.miercoles = datos.solicito.miercoles;
+          this.jueves = datos.solicito.jueves;
+          this.viernes = datos.solicito.viernes;
+          console.log(this.lunes, this.martes, this.miercoles, this.jueves, this.viernes);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -498,15 +570,15 @@ export default {
   margin-bottom: 30px;
 }
 .responsive-gif {
-  width: 150px;
-  height: 150px; /* Mantiene la proporción del GIF */
+  width: 100px;
+  height: 100px; /* Mantiene la proporción del GIF */
   border-radius: 20px;
   object-fit: cover; /* Asegura que el GIF cubra el área del contenedor */
 }
 .csstxtmenu {
   color: #050505;
   font-family: cursive;
-  font-size: 30px;
+  font-size: 25px;
 }
 .fotoperfil {
   width: 150px;

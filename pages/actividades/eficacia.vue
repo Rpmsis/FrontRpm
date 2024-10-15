@@ -18,11 +18,13 @@
           'items-per-page-options': [10, 20, 30, 40, 50],
         }"
         :items-per-page="10"
+        :sort-by="['fechainicio']"
         :sort-desc="true"
+        :item-class="buscarkgfaltantes"
       >
-      <template v-slot:item.concatenado="{ item }">
-        {{ `${item.eficacia}%` }}
-      </template>
+        <template v-slot:item.concatenado2="{ item }">
+          {{ `${item.eficienciasig}%` }}
+        </template>
       </v-data-table>
     </v-card>
   </v-container>
@@ -46,11 +48,11 @@ export default {
         { text: "Fecha de inicio", value: "fechainicio" },
         { text: "Actividad", value: "actividad" },
         { text: "Número de personas", value: "numpersonas" },
-        { text: "Tiempo record", value: "timestandar" },
         { text: "Tiempo realizado", value: "timeControl" },
         { text: "Kilogramos realizados", value: "kgControl" },
+        { text: "Tiempo record", value: "timestandar" },
         { text: "Kilogramos record", value: "kg" },
-        { text: "Eficacia", value: "concatenado"},
+        { text: "Eficiencia", value: "concatenado2" },
       ],
     };
   },
@@ -60,7 +62,7 @@ export default {
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.mostrar();
-    }); 
+    });
     this.mostrar();
   },
   methods: {
@@ -77,6 +79,12 @@ export default {
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
+    },
+    buscarkgfaltantes(item) {
+      if (item.kg > 0 && item.kgControl === 0) {
+        return "highlight-row"; // Clase CSS para destacar la fila
+      }
+      return "";
     },
   },
 };
@@ -98,5 +106,8 @@ export default {
   margin-bottom: 10px;
   width: 30%;
   font-size: 20px !important;
+}
+.highlight-row {
+  background-color: rgb(187, 0, 0); /* Cambia el color según lo que prefieras */
 }
 </style>

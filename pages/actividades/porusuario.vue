@@ -367,7 +367,8 @@ export default {
         //this.Titulo = "El ID del activo es: ";
         this.Titulo = datos.mensaje;
         this.Mensaje = "";
-        this.mostrarExistencias(this.formData.usuario);
+        this.formData.usuario = "";
+        this.tablacontrol = false;
         this.tiempoactivi = false;
       }
     },
@@ -392,7 +393,8 @@ export default {
         this.alerta = true;
         this.Titulo = "¡Termino!";
         this.Mensaje = datos.mensaje;
-        this.mostrarExistencias(this.formData.usuario);
+        this.formData.usuario = "";
+        this.tablacontrol = false;
         this.tiempoactivi = false;
       }
     },
@@ -419,8 +421,9 @@ export default {
         this.Titulo = datos.mensaje;
         this.Mensaje = "";
         this.limpiarFormularioPausa();
-        this.mostrarExistencias(this.formData.usuario);
+        this.formData.usuario = "";
         this.formpausa = false;
+        this.tablacontrol = false;
         this.tiempoactivi = false;
       }
     },
@@ -446,7 +449,8 @@ export default {
         //this.Titulo = "El ID del activo es: ";
         this.Titulo = datos.mensaje;
         this.Mensaje = "";
-        this.mostrarExistencias(this.formData.usuario);
+        this.formData.usuario = "";
+        this.tablacontrol = false;
         this.tiempoactivi = false;
       }
     },
