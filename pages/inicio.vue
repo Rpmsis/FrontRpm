@@ -27,7 +27,7 @@
             <v-col cols="12" md="3">
               <v-card
                 style="
-                  background: linear-gradient(to bottom right, white, 70%, orange);
+                  background: linear-gradient(to bottom right, white, 70%, blue);
                   border-radius: 15px;
                   text-align: left;
                 "
@@ -64,11 +64,11 @@
             <v-col cols="12" md="9">
               <v-card
                 style="
-                  background: linear-gradient(to bottom right, white, 70%, orange);
+                  background: linear-gradient(to bottom right, white, 70%, blue);
                   border-radius: 15px;
                 "
               >
-                <a style="text-decoration: none !important" href="/menusemana/solicitudMultiple">
+                <a style="text-decoration: none !important" href="/menusemana/Semanamenu">
                   <v-row style="padding: 15px">
                     <v-col cols="12" md="2">
                       <img class="responsive-gif" :src="imgplatoentrada" />
@@ -132,6 +132,11 @@
                 <v-card class="v-sheet theme--dark">
                   <a href="/menusemana/formenu">
                     <h4 class="modulo">Agregar comida</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/menusemana/solicitudMultiple">
+                    <h4 class="modulo">Solicitar comida</h4>
                   </a>
                 </v-card>
               </v-card>
@@ -390,6 +395,7 @@ export default {
   layout: "barra",
   data() {
     return {
+      permisocomida: "",
       alerta: false,
       Mensaje: "",
       nombre: this.$store.state.nombre,
@@ -437,8 +443,25 @@ export default {
   mounted() {
     this.mostrar();
     this.mostrarFotoperfil();
+    this.mostrarPermisos();
   },
   methods: {
+    async mostrarPermisos() {
+      //console.log(respon);
+      try {
+        const res = await fetch("http://localhost:3001/permisos", {
+          method: "GET",
+          headers: {
+            token: localStorage.token,
+          },
+        });
+        const datos = await res.json();
+        console.log(datos);
+        this.permisocomida = datos.mensaje;
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
     async mostrar() {
       try {
         const res = await fetch("http://localhost:3001/Menudeldia");

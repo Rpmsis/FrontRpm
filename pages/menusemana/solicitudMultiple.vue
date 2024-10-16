@@ -2,7 +2,6 @@
   <v-container>
     <v-card
       style="background: linear-gradient(to bottom right, white, 10%, darkblueshade)"
-      v-if="permisocomida === 'true'"
     >
       <v-row>
         <v-col cols="12" md="12">
@@ -187,7 +186,6 @@ export default {
   layout: "barra",
   data() {
     return {
-      permisocomida: "",
       alerta: false,
       Mensaje: "",
       Titulo: "",
@@ -220,27 +218,10 @@ export default {
   },
   mounted() {
     this.mostrar();
-    this.mostrarPermisos();
   },
 
   computed: {},
   methods: {
-    async mostrarPermisos() {
-      //console.log(respon);
-      try {
-        const res = await fetch("http://localhost:3001/permisos", {
-          method: "GET",
-          headers: {
-            token: localStorage.token,
-          },
-        });
-        const datos = await res.json();
-        console.log(datos);
-        this.permisocomida = datos.mensaje;
-      } catch (error) {
-        console.error("Error al obtener los datos:", error);
-      }
-    },
     async mostrarExistencias(respon) {
       const numsemana = this.enviarDatos.numsemana;
       //console.log(respon);

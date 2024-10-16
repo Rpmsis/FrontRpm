@@ -46,7 +46,7 @@
       <!-- Formulario insertar CONSUMIBLE -->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="consu" max-width="800px">
+          <v-dialog v-model="consu" persistent max-width="800px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -112,11 +112,11 @@
       <!-- Formulario compra-->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="consucompra" max-width="1200px">
+          <v-dialog v-model="consucompra" persistent max-width="1200px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn icon @click="(consucompra = false), limpiarFormularioCompra()">
+                <v-btn icon @click="(consucompra = false), limpiarFormularioCompra(), mostrarProveedores()">
                   <v-icon style="font-size: 30px"
                     >mdi-close theme--dark red--text</v-icon
                   ></v-btn
@@ -148,11 +148,21 @@
                 <v-row>
                   <v-col cols="12" md="4">
                     <v-select
-                      :items="prov"
+                      :items="proveedores"
                       v-model="formData.proveedor"
-                      label="PROVEEDOR"
+                      label="Proveedor"
                       filled
+                      :menu-props="{ bottom: true, offsetY: true, }"
+                      
                     >
+                    <template v-slot:prepend-item>
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-text-field v-model="searchProvInsert" placeholder="Search" @input="searchProvedorInsert "></v-text-field>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-divider class="mt-2"></v-divider>
+                    </template>
                     </v-select>
                   </v-col>
                   <v-col cols="12" md="4">
@@ -273,7 +283,13 @@ export default {
         "SERVICIOS"
       ],
       unidadesmedida: ["PIEZAS", "LITROS", "KILOS", "EVENTO"],
-      prov: ["Ejemplo1", "Ejemplo2", "Ejemplo3"],
+
+      /* BUSCAR PROVEEDOR */
+      proveedores:[],
+      searchProvInsert:"",
+      proveedoresFijos: [],
+      /* --------------- */
+
       search: "",
       consu: false,
       consucompra: false,
@@ -360,10 +376,38 @@ export default {
   mounted() {
     this.mostrar();
     this.mostrarDatos();
+    this.mostrarProveedores();
   },
 
   computed: {},
   methods: {
+    async mostrarProveedores() {
+      try {
+        const res = await fetch("http://localhost:3001/proveedores");
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          //this.proveedoresFijos = datos.respuesta.respuesta;
+          console.log(datos.respuesta.respuesta);
+          this.proveedoresFijos= datos.respuesta.respuesta.map((filtro) => filtro.nombre);
+          console.log(this.proveedoresFijos);
+          this.proveedores = [...this.proveedoresFijos];
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
+
+    /* Agregar buscador */
+    async searchProvedorInsert(){
+      if (!this.searchProvInsert) {
+        this.proveedores = this.proveedoresFijos;
+      }
+      this.proveedores = this.proveedoresFijos.filter((provee) => {
+        return provee.toLowerCase().indexOf(this.searchProvInsert.toLowerCase()) > -1;
+      });
+    },
 
     async mostrarDatos() {
       try {
@@ -498,6 +542,7 @@ export default {
       this.formData.cantidad = "";
       this.formData.costo = "";
       this.formData.descrip = "";
+      this.searchProvInsert="";
     },
   },
 };
