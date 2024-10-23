@@ -21,6 +21,8 @@ const _4ea36e16 = () => interopDefault(import('..\\pages\\activos\\mantenimiento
 const _ec095468 = () => interopDefault(import('..\\pages\\activos\\mostActmantt.vue' /* webpackChunkName: "pages/activos/mostActmantt" */))
 const _13c93b66 = () => interopDefault(import('..\\pages\\activos\\mostmantt.vue' /* webpackChunkName: "pages/activos/mostmantt" */))
 const _35847f64 = () => interopDefault(import('..\\pages\\activos\\ubicacion.vue' /* webpackChunkName: "pages/activos/ubicacion" */))
+const _b1c0ac36 = () => interopDefault(import('..\\pages\\capital_humano\\asistencia.vue' /* webpackChunkName: "pages/capital_humano/asistencia" */))
+const _f0bd7928 = () => interopDefault(import('..\\pages\\capital_humano\\user_registro.vue' /* webpackChunkName: "pages/capital_humano/user_registro" */))
 const _01ac8500 = () => interopDefault(import('..\\pages\\consumibles\\codigobarras.vue' /* webpackChunkName: "pages/consumibles/codigobarras" */))
 const _590682d1 = () => interopDefault(import('..\\pages\\consumibles\\consumible.vue' /* webpackChunkName: "pages/consumibles/consumible" */))
 const _301e4f84 = () => interopDefault(import('..\\pages\\consumibles\\devolucion.vue' /* webpackChunkName: "pages/consumibles/devolucion" */))
@@ -121,6 +123,14 @@ export const routerOptions = {
     path: "/activos/ubicacion",
     component: _35847f64,
     name: "activos-ubicacion"
+  }, {
+    path: "/capital_humano/asistencia",
+    component: _b1c0ac36,
+    name: "capital_humano-asistencia"
+  }, {
+    path: "/capital_humano/user_registro",
+    component: _f0bd7928,
+    name: "capital_humano-user_registro"
   }, {
     path: "/consumibles/codigobarras",
     component: _01ac8500,

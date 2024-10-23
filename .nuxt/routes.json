@@ -119,6 +119,20 @@
     "_name": "_35847f64"
   },
   {
+    "name": "capital_humano-asistencia",
+    "path": "/capital_humano/asistencia",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\capital_humano\\\\asistencia.vue",
+    "chunkName": "pages/capital_humano/asistencia",
+    "_name": "_b1c0ac36"
+  },
+  {
+    "name": "capital_humano-user_registro",
+    "path": "/capital_humano/user_registro",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\capital_humano\\\\user_registro.vue",
+    "chunkName": "pages/capital_humano/user_registro",
+    "_name": "_f0bd7928"
+  },
+  {
     "name": "consumibles-codigobarras",
     "path": "/consumibles/codigobarras",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\consumibles\\\\codigobarras.vue",

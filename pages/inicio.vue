@@ -143,10 +143,15 @@
             </v-col>
             <v-col cols="12" md="6">
               <v-card>
-                <v-card-title>Lista de id usuario</v-card-title>
+                <v-card-title>CAPITAL HUMANO</v-card-title>
                 <v-card class="v-sheet theme--dark">
-                  <a href="/idusuarios/idusuarios">
-                    <h4 class="modulo">Id usuarios</h4>
+                  <a href="/capital_humano/user_registro">
+                    <h4 class="modulo">AGREGAR USUARIO</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/capital_humano/asistencia">
+                    <h4 class="modulo">ASISTENCIAS</h4>
                   </a>
                 </v-card>
               </v-card>

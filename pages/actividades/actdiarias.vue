@@ -76,6 +76,7 @@
               :items-per-page="10"
               :sort-by="['fechainicio']"
               :sort-desc="true"
+              :item-class="buscarkgfaltantes"
             >
               <template v-slot:item.actions="{ item }">
                 <v-tooltip bottom>
@@ -206,7 +207,7 @@ export default {
     };
   },
   mounted() {
-    this.socket = io("http://192.168.1.180:3003");
+    this.socket = io("http://192.168.1.97:3003");
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.mostrar();
@@ -280,6 +281,12 @@ export default {
         console.error("Error al obtener los datos:", error);
       }
     },
+    buscarkgfaltantes(item) {
+      if (item.kg > 0 && item.kgControl === 0 && item.status === "TERMINADO") {
+        return "highlight-row"; // Clase CSS para destacar la fila
+      }
+      return "";
+    },
   },
 };
 </script>
@@ -301,5 +308,8 @@ export default {
 }
 .multi-line-header {
   white-space: pre-line;
+}
+.highlight-row {
+  background-color: rgb(133, 40, 12); /* Cambia el color según lo que prefieras */
 }
 </style>

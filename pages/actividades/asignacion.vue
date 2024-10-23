@@ -314,7 +314,7 @@ export default {
   },
   mounted() {
     this.fecha = this.fechaMinima;
-    this.socket = io("http://192.168.1.180:3003");
+    this.socket = io("http://192.168.1.97:3003");
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.mostrarubi();

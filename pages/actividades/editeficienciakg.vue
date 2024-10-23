@@ -54,8 +54,7 @@
                   <v-btn icon @click="(formkg = false), limpiarFormulario()">
                     <v-icon style="font-size: 30px"
                       >mdi-close theme--dark red--text</v-icon
-                    ></v-btn
-                  >
+                    ></v-btn>
                 </v-card-actions>
                 <v-divider></v-divider>
                 <v-divider></v-divider>
@@ -150,7 +149,7 @@ export default {
     };
   },
   mounted() {
-    this.socket = io("http://192.168.1.180:3003");
+    this.socket = io("http://192.168.1.97:3003");
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.mostrar();

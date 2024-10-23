@@ -307,7 +307,10 @@ export default {
       Mensaje: "",
       Titulo: "",
       search: "",
+
+      /* Caja de texto del bucador */
       searchProvInsert:"",
+
       searchProvUpdate:"",
       datosinsumos: [],
       insumos: false,
@@ -397,6 +400,8 @@ export default {
         console.error("Error al obtener los datos:", error);
       }
     },
+
+    /* Agregar buscador */
     async searchProvedorInsert(){
       if (!this.searchProvInsert) {
         this.proveedores = this.proveedoresFijos;
