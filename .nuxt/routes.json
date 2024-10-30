@@ -70,6 +70,13 @@
     "_name": "_329c3024"
   },
   {
+    "name": "actividades-tablerologistica",
+    "path": "/actividades/tablerologistica",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\tablerologistica.vue",
+    "chunkName": "pages/actividades/tablerologistica",
+    "_name": "_39f3443f"
+  },
+  {
     "name": "activos-activosFijos",
     "path": "/activos/activosFijos",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\activos\\\\activosFijos.vue",
@@ -124,6 +131,13 @@
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\capital_humano\\\\asistencia.vue",
     "chunkName": "pages/capital_humano/asistencia",
     "_name": "_b1c0ac36"
+  },
+  {
+    "name": "capital_humano-todoasistencia",
+    "path": "/capital_humano/todoasistencia",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\capital_humano\\\\todoasistencia.vue",
+    "chunkName": "pages/capital_humano/todoasistencia",
+    "_name": "_14fd6e2b"
   },
   {
     "name": "capital_humano-user_registro",

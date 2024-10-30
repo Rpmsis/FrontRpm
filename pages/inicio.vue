@@ -151,7 +151,24 @@
                 </v-card>
                 <v-card class="v-sheet theme--dark">
                   <a href="/capital_humano/asistencia">
-                    <h4 class="modulo">ASISTENCIAS</h4>
+                    <h4 class="modulo">ASISTENCIAS DEL DÍA</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/capital_humano/todoasistencia">
+                    <h4 class="modulo">TODAS LAS ASISTENCIAS</h4>
+                  </a>
+                </v-card>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-card>
+                <v-card-title>LOGISTICA</v-card-title>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/actividades/tablerologistica">
+                    <h4 class="modulo">TABLERO LOGISTICA</h4>
                   </a>
                 </v-card>
               </v-card>

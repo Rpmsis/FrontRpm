@@ -39,8 +39,7 @@
                 >
               </v-card-actions>
               <v-divider></v-divider>
-              <v-divider></v-divider>
-              <v-form class="mt-7" @submit.prevent="submitForm">
+              <v-form class="mt-5" @submit.prevent="submitForm">
                 <v-row>
                   <v-col cols="12" md="6">
                     <v-text-field
@@ -57,22 +56,101 @@
                       label="Días de descanso"
                       chips
                       multiple
+                      @change="descansos"
                     ></v-select>
+                  </v-col>
+                </v-row>
+                <v-row v-show="relojMD">
+                  <v-col cols="12" md="6">
+                    <v-menu
+                      ref="menu"
+                      v-model="menu2"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      :return-value.sync="time"
+                      transition="scale-transition"
+                      offset-y
+                      max-width="290px"
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="time"
+                          label="Hora de entrada fin de semana"
+                          prepend-icon="mdi-clock-time-four-outline"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-time-picker
+                        v-if="menu2"
+                        v-model="time"
+                        full-width
+                        color="green"
+                        @click:minute="$refs.menu.save(time)"
+                      ></v-time-picker>
+                    </v-menu>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-menu
+                      ref="menu3"
+                      v-model="menu4"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      :return-value.sync="time2"
+                      transition="scale-transition"
+                      offset-y
+                      max-width="290px"
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="time2"
+                          label="Hora de salida fin de semana"
+                          prepend-icon="mdi-clock-time-four-outline"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-time-picker
+                        v-if="menu4"
+                        v-model="time2"
+                        full-width
+                        color="pink"
+                        @click:minute="$refs.menu3.save(time2)"
+                      ></v-time-picker>
+                    </v-menu>
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col cols="12" md="6">
-                    <v-time-picker v-model="formData.horainicio" class="tamaño" color="green" :landscape="landscape"></v-time-picker
-                    >
+                    <h4>Hora de entrada:</h4>
+                    <v-time-picker
+                      v-model="formData.horainicio"
+                      class="tamaño"
+                      color="green"
+                      :landscape="landscape"
+                    ></v-time-picker>
                   </v-col>
                   <v-col cols="12" md="6">
-                    <v-time-picker v-model="formData.horafin" color="pink" :landscape="landscape"></v-time-picker>
+                    <h4>Hora de entrada:</h4>
+                    <v-time-picker
+                      v-model="formData.horafin"
+                      color="pink"
+                      :landscape="landscape"
+                    ></v-time-picker>
                   </v-col>
                 </v-row>
-                <center>
+
+                <center v-show="btnregistrar">
                   <v-btn class="btnEnviar" type="submit" block outlined color="success"
                     >Registrar usuario</v-btn
                   >
+                </center>
+                <center v-show="jirafita">
+                  <img class="gifjirafa" :src="perrito" />
                 </center>
               </v-form>
             </v-card>
@@ -109,6 +187,7 @@ export default {
   layout: "barra",
   data() {
     return {
+      perrito: "/perrito.gif",
       landscape: true,
       alerta: false,
       Mensaje: "",
@@ -117,17 +196,44 @@ export default {
       registrar: false,
       userasistencias: [],
       items: ["Sábado", "Domingo"],
+      relojMD: false,
+      time: "",
+      menu2: false,
+      time2: "",
+      menu4: false,
+      btnregistrar: true,
+      jirafita: false,
       headers: [
         { text: "id de registro ", value: "iduser_asistencia" },
         { text: "Nombre completo", value: "nombre" },
         { text: "Privilegios", value: "privilegios" },
-        { text: "Usuario biometrico", value: "userid" },
+        {
+          text: "Usuario\nbiometrico",
+          value: "userid",
+          align: "center",
+          class: "multi-line-header2",
+        },
+        {
+          text: "Hora\nde\nentrada",
+          value: "horaentrada",
+          align: "start",
+          class: "multi-line-header",
+        },
+        {
+          text: "Hora\nde\nsalida",
+          value: "horasalida",
+          align: "start",
+          class: "multi-line-header",
+        },
+        { text: "Descanso", value: "descanso" },
       ],
       formData: {
         idcheck: "",
         descanso: "",
         horainicio: "",
         horafin: "",
+        horainicioMD: "",
+        horafinMD: "",
       },
     };
   },
@@ -138,9 +244,29 @@ export default {
       //console.log(datos);
       this.mostrar();
     });
+    this.socket.on("deshabilitar", (datos) => {
+      //console.log(datos);
+      this.ocultarbtn();
+    });
     this.mostrar();
   },
   methods: {
+    ocultarbtn() {
+      this.btnregistrar = false;
+      this.jirafita = true;
+    },
+    async descansos() {
+      if (
+        this.formData.descanso.includes("Sábado") &&
+        this.formData.descanso.includes("Domingo")
+      ) {
+        //console.log(this.formData.descanso);
+        this.relojMD = false;
+      } else {
+        //console.log(this.formData.descanso);
+        this.relojMD = true;
+      }
+    },
     async mostrar() {
       try {
         const res = await fetch("http://localhost:3001/userasistencia");
@@ -148,7 +274,7 @@ export default {
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          //console.log(datos.respuesta.respuesta);
+          console.log(datos.respuesta.respuesta);
           this.userasistencias = datos.respuesta.respuesta;
         }
       } catch (error) {
@@ -156,6 +282,8 @@ export default {
       }
     },
     async submitForm() {
+      this.formData.horainicioMD = this.time;
+      this.formData.horafinMD = this.time2;
       const res = await fetch("http://localhost:3001/insertarBiometrico", {
         method: "POST",
         headers: {
@@ -168,20 +296,28 @@ export default {
         this.alerta = true;
         this.Titulo = "¡Upss!";
         this.Mensaje = datos.mensaje;
+        this.btnregistrar = true;
+        this.jirafita = false;
       } else {
         this.alerta = true;
         //this.Titulo = "El ID del activo es: ";
         this.Titulo = datos.respuesta.mensaje;
+        this.Mensaje = "";
         this.limpiarFormulario();
         this.registrar = false;
+        this.btnregistrar = true;
+        this.jirafita = false;
       }
       console.log(datos);
     },
     limpiarFormulario() {
       this.formData.idcheck = "";
-      this.formData.descanso= "";
-      this.formData.horainicio= "";
-      this.formData.horafin= "";
+      this.formData.descanso = "";
+      this.formData.horainicio = "";
+      this.formData.horafin = "";
+      this.time = "";
+      this.time2 = "";
+      this.relojMD = false;
     },
   },
 };
@@ -208,5 +344,18 @@ export default {
 .tamaño .v-time-picker__clock {
   width: 100px; /* Ajusta según lo necesites */
   height: 100px; /* Ajusta según lo necesites */
+}
+.gifjirafa {
+  margin-top: -146px;
+  position: relative;
+  z-index: 1;
+}
+.multi-line-header2 {
+  white-space: pre-line;
+  background-color: #eaecf0; /* Cambia este valor al color que desees */
+  color: #eb0e0e !important;
+}
+.multi-line-header {
+  white-space: pre-line;
 }
 </style>

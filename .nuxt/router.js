@@ -14,6 +14,7 @@ const _9d1964f8 = () => interopDefault(import('..\\pages\\actividades\\control.v
 const _2afd93b3 = () => interopDefault(import('..\\pages\\actividades\\editeficienciakg.vue' /* webpackChunkName: "pages/actividades/editeficienciakg" */))
 const _4f257e9e = () => interopDefault(import('..\\pages\\actividades\\eficacia.vue' /* webpackChunkName: "pages/actividades/eficacia" */))
 const _329c3024 = () => interopDefault(import('..\\pages\\actividades\\porusuario.vue' /* webpackChunkName: "pages/actividades/porusuario" */))
+const _39f3443f = () => interopDefault(import('..\\pages\\actividades\\tablerologistica.vue' /* webpackChunkName: "pages/actividades/tablerologistica" */))
 const _64883dae = () => interopDefault(import('..\\pages\\activos\\activosFijos.vue' /* webpackChunkName: "pages/activos/activosFijos" */))
 const _0f9582cf = () => interopDefault(import('..\\pages\\activos\\entregaactivosfijos.vue' /* webpackChunkName: "pages/activos/entregaactivosfijos" */))
 const _de6c314e = () => interopDefault(import('..\\pages\\activos\\insumos.vue' /* webpackChunkName: "pages/activos/insumos" */))
@@ -22,6 +23,7 @@ const _ec095468 = () => interopDefault(import('..\\pages\\activos\\mostActmantt.
 const _13c93b66 = () => interopDefault(import('..\\pages\\activos\\mostmantt.vue' /* webpackChunkName: "pages/activos/mostmantt" */))
 const _35847f64 = () => interopDefault(import('..\\pages\\activos\\ubicacion.vue' /* webpackChunkName: "pages/activos/ubicacion" */))
 const _b1c0ac36 = () => interopDefault(import('..\\pages\\capital_humano\\asistencia.vue' /* webpackChunkName: "pages/capital_humano/asistencia" */))
+const _14fd6e2b = () => interopDefault(import('..\\pages\\capital_humano\\todoasistencia.vue' /* webpackChunkName: "pages/capital_humano/todoasistencia" */))
 const _f0bd7928 = () => interopDefault(import('..\\pages\\capital_humano\\user_registro.vue' /* webpackChunkName: "pages/capital_humano/user_registro" */))
 const _01ac8500 = () => interopDefault(import('..\\pages\\consumibles\\codigobarras.vue' /* webpackChunkName: "pages/consumibles/codigobarras" */))
 const _590682d1 = () => interopDefault(import('..\\pages\\consumibles\\consumible.vue' /* webpackChunkName: "pages/consumibles/consumible" */))
@@ -96,6 +98,10 @@ export const routerOptions = {
     component: _329c3024,
     name: "actividades-porusuario"
   }, {
+    path: "/actividades/tablerologistica",
+    component: _39f3443f,
+    name: "actividades-tablerologistica"
+  }, {
     path: "/activos/activosFijos",
     component: _64883dae,
     name: "activos-activosFijos"
@@ -127,6 +133,10 @@ export const routerOptions = {
     path: "/capital_humano/asistencia",
     component: _b1c0ac36,
     name: "capital_humano-asistencia"
+  }, {
+    path: "/capital_humano/todoasistencia",
+    component: _14fd6e2b,
+    name: "capital_humano-todoasistencia"
   }, {
     path: "/capital_humano/user_registro",
     component: _f0bd7928,
