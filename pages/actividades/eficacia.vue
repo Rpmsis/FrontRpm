@@ -68,13 +68,18 @@ export default {
   methods: {
     async mostrar() {
       try {
-        const res = await fetch("http://localhost:3001/Eficacia");
+        const res = await fetch("http://localhost:3001/Eficacia",{
+          method: "GET",
+          headers: {
+            token: localStorage.token,
+          },
+        });
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          console.log(datos.respuesta.respuesta);
-          this.datosEficacia = datos.respuesta.respuesta;
+          console.log(datos.respuesta);
+          this.datosEficacia = datos.respuesta;
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -82,7 +87,7 @@ export default {
     },
     buscarkgfaltantes(item) {
       if (item.kg > 0 && item.kgControl === 0) {
-        return "highlight-row"; // Clase CSS para destacar la fila
+        return "highlight-row"; 
       }
       return "";
     },

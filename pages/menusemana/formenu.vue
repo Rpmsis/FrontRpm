@@ -1,60 +1,98 @@
 <template>
   <v-container>
-    <v-card>
-      <v-row>
-        <v-col cols="12" md="2">
+    <v-row>
+      <v-col cols="12" md="2">
+        <v-card>
           <v-card-text>
-            <h4>Lunes A = {{ lunesA }}</h4>
-            <h4>Lunes B = {{ lunesB }}</h4>
+            <center>
+              <h2>LUNES</h2>
+              <h2>A = {{ lunesA }}</h2>
+              <h2>B = {{ lunesB }}</h2>
+            </center>
           </v-card-text>
-        </v-col>
-        <v-col cols="12" md="2">
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="2">
+        <v-card>
           <v-card-text>
-            <h4>Martes A = {{ martesA }}</h4>
-            <h4>Martes B ={{ martesB }}</h4>
+            <center>
+              <h2>MARTES</h2>
+              <h2>A = {{ martesA }}</h2>
+              <h2>B ={{ martesB }}</h2>
+            </center>
           </v-card-text>
-        </v-col>
-        <v-col cols="12" md="2">
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="2">
+        <v-card>
           <v-card-text>
-            <h4>Miercoles A = {{ miercolesA }}</h4>
-            <h4>Miercoles B = {{ miercolesB }}</h4>
+            <center>
+              <h2>MIERCOLES</h2>
+              <h2>A = {{ miercolesA }}</h2>
+              <h2>B = {{ miercolesB }}</h2>
+            </center>
           </v-card-text>
-        </v-col>
-        <v-col cols="12" md="2">
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="2">
+        <v-card>
           <v-card-text>
-            <h4>Jueves A = {{ juevesA }}</h4>
-            <h4>Jueves B = {{ juevesB }}</h4>
+            <center>
+              <h2>JUEVES</h2>
+              <h2>A = {{ juevesA }}</h2>
+              <h2>B = {{ juevesB }}</h2>
+            </center>
           </v-card-text>
-        </v-col>
-        <v-col cols="12" md="2">
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="2">
+        <v-card>
           <v-card-text>
-            <h4>Viernes A = {{ viernesA }}</h4>
-            <h4>Viernes B = {{ viernesB }}</h4>
+            <center>
+              <h2>VIERNES</h2>
+              <h2>A = {{ viernesA }}</h2>
+              <h2>B = {{ viernesB }}</h2>
+            </center>
           </v-card-text>
-        </v-col>
-      </v-row>
-    </v-card>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="2">
+        <center>
+          <h3>Semana activa: {{ numerosemana }}</h3>
+          <v-switch
+            v-model="switch1"
+            :label="`Estatus: ${switch1.toString()}`"
+            color="green"
+            @change="formhabilitar()"
+            hide-details
+            inset
+          ></v-switch>
+        </center>
+      </v-col>
+    </v-row>
     <v-card class="mt-5">
       <v-card-title>
         <v-row>
-          <v-col cols="12" md="6">
-            <h4>FECHA INICIO DE SEMANA</h4>
+          <v-col cols="12" md="6" style="color: white">
+            <h4>Fecha inicio:</h4>
             <v-date-picker
               v-model="date1"
               full-width
               class="mt-4"
               :landscape="landscape"
               @input="mostrarbuscador"
+              color="green"
             ></v-date-picker>
           </v-col>
           <v-col cols="12" md="6">
-            <h4>FECHA FIN DE SEMANA</h4>
+            <h4>Fecha fin:</h4>
             <v-date-picker
               v-model="date2"
               full-width
               class="mt-4"
               :landscape="landscape"
               @input="mostrarbuscador"
+              color="purple"
             ></v-date-picker>
           </v-col>
         </v-row>
@@ -510,6 +548,45 @@
           </v-dialog>
         </div>
       </template>
+
+      <!-- Formulario  para habilitar la semana de comidas-->
+      <template>
+        <div class="pa-4 text-center">
+          <v-dialog v-model="habilitarsem" persistent max-width="400px">
+            <v-card style="padding: 15px">
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  icon
+                  @click="(habilitarsem = false), limpiarFormulario2(), (switch1 = false)"
+                >
+                  <v-icon style="font-size: 30px"
+                    >mdi-close theme--dark red--text</v-icon
+                  ></v-btn
+                >
+              </v-card-actions>
+              <v-divider></v-divider>
+              <v-divider></v-divider>
+              <v-form class="mt-5" @submit.prevent="actualizarestatusmenutrue">
+                <v-col cols="12" md="12">
+                  <v-select
+                    v-model="hnumsemana.numsemana"
+                    :items="listanumsemana"
+                    label="Número de semana"
+                    filled
+                  ></v-select>
+                </v-col>
+
+                <center>
+                  <v-btn block outlined color="yellow" class="btnEnviar" type="submit"
+                    >Habilitar</v-btn
+                  >
+                </center>
+              </v-form>
+            </v-card>
+          </v-dialog>
+        </div>
+      </template>
     </v-card>
 
     <!-- Ventana emergente -->
@@ -561,6 +638,7 @@ export default {
       fecha2: null,
       formcomidas: false,
       actComida: false,
+      habilitarsem: false,
       imagePreview1: null,
       imagePreview2: null,
       imagePreview3: null,
@@ -580,7 +658,10 @@ export default {
       platoA: [],
       platoB: [],
       bebidas: [],
-      numsemana: 0,
+      listanumsemana: [],
+
+      switch1: false,
+      numerosemana: "",
 
       headers: [
         { text: "Id comida", value: "idmenusemana" },
@@ -639,16 +720,21 @@ export default {
       juevesB: 0,
       viernesA: 0,
       viernesB: 0,
+
+      hnumsemana: {
+        numsemana: "",
+      },
     };
   },
   mounted() {
-    this.socket = io("http://192.168.1.180:3003");
+    this.socket = io("http://192.168.1.97:3003");
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.mostrar();
       this.mostrarSolicitadas(this.numsemana);
     });
     this.mostrar();
+    this.mostrarNumsemanas();
   },
 
   computed: {},
@@ -1082,20 +1168,51 @@ export default {
 
     async mostrar() {
       try {
-        const res = await fetch("http://localhost:3001/Menusemana");
+        const res = await fetch("http://localhost:3001/Menusemana", {
+          method: "GET",
+          headers: {
+            token: localStorage.token,
+          },
+        });
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
           this.comidas = datos.respuesta.respuesta;
-
-          //console.log(datos.respuesta.respuesta);
+          //this.switch1 = datos.permisomenu;
+          console.log(datos.permisomenu);
+          if (datos.permisomenu === "true") {
+            this.switch1 = true;
+          } else {
+            this.switch1 = false;
+          }
+          this.numerosemana = datos.nsemana;
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
     },
 
+    async mostrarNumsemanas() {
+      try {
+        const res = await fetch("http://localhost:3001/Numsemanamenu");
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          //console.log(datos.respuesta.respuesta);
+          this.listanumsemana = datos.respuesta.respuesta.map(
+            (filtro) => filtro.numsemana
+          );
+          //console.log(this.listanumsemana);
+
+          /* const listanumsemana = datos.respuesta.respuesta.map((filtro) => ({numsem: filtro.numsemana}));
+          console.log(listanumsemana); */
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
     /* Abre el formulario de actualizar */
     async actualizar(item) {
       const objeto = this.comidas.find((filtro) => filtro.idmenusemana === item);
@@ -1202,6 +1319,69 @@ export default {
       this.imagePreview3 = null;
       this.Solicitud.archivo4 = null;
       this.imagePreview4 = null;
+    },
+    limpiarFormulario2() {
+      this.hnumsemana.numsemana = "";
+    },
+
+    /* Desactiva la actividad asignada */
+    async actualizarestatusmenutrue() {
+      const res = await fetch("http://localhost:3001/actualizarestatusmenutrue", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.token,
+        },
+        body: JSON.stringify(this.hnumsemana),
+      });
+      const datos = await res.json();
+      console.log(datos);
+      if (res.status === 400) {
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje = datos.respuesta.mensaje;
+      } else {
+        this.alerta = true;
+        //this.Titulo = "El ID del activo es: ";
+        this.Titulo = datos.respuesta.mensaje;
+        this.Mensaje = " ";
+        this.habilitarsem = false;
+        this.limpiarFormulario2();
+        this.mostrar();
+      }
+    },
+    async actualizarestatusmenufalse() {
+      this.hnumsemana.numsemana = this.numerosemana;
+      const res = await fetch("http://localhost:3001/actualizarestatusmenufalse", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.token,
+        },
+        body: JSON.stringify(this.hnumsemana),
+      });
+      const datos = await res.json();
+      console.log(datos);
+      if (res.status === 400) {
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje = datos.respuesta.mensaje;
+      } else {
+        this.alerta = true;
+        //this.Titulo = "El ID del activo es: ";
+        this.Titulo = datos.respuesta.mensaje;
+        this.Mensaje = " ";
+        this.limpiarFormulario2();
+        this.mostrar();
+      }
+    },
+
+    formhabilitar() {
+      if (this.switch1 === true) {
+        this.habilitarsem = true;
+      } else {
+        this.actualizarestatusmenufalse();
+      }
     },
   },
 };

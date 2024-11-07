@@ -10,7 +10,7 @@
                 style="padding: 10px; text-align: center; font-size: 30px"
               >
                 <v-card-title style="background-color: aliceblue; color: black">
-                  ASIGNADAS:
+                  ASIGNADOS:
                 </v-card-title>
                 <center>
                   <h1>
@@ -25,7 +25,7 @@
                 style="padding: 10px; text-align: center; font-size: 30px"
               >
                 <v-card-title style="background-color: aliceblue; color: black">
-                  PORCENTAJE:
+                  PORCENTAJE DE TERMINADOS:
                 </v-card-title>
 
                 <center>
@@ -36,7 +36,7 @@
           </v-row>
           <v-card class="mt-10" style="padding: 10px">
             <v-slider
-              label="ACTIVIDADES REALIZADAS:"
+              label="SERVICIOS REALIZADOS:"
               v-model="slider1"
               model-value="30"
               readonly

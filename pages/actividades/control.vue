@@ -136,21 +136,20 @@ export default {
       //console.log(datos);
       this.Buscar();
       this.mostrarControl();
-    }); 
+    });
   },
 
   computed: {},
   methods: {
-
     /* Mostrar Tabla de control */
     async mostrarControl() {
       try {
-        const res = await fetch("http://localhost:3001/Controlasignados/"+ this.Nombre,{
-            headers: {
-              "Content-Type": "application/json",
-              token: localStorage.token,
-            },
-          });
+        const res = await fetch("http://localhost:3001/Controlasignados/" + this.Nombre, {
+          headers: {
+            "Content-Type": "application/json",
+            token: localStorage.token,
+          },
+        });
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -165,7 +164,7 @@ export default {
 
     /* Insertar actividad a la tabla de controlactivi con el resposable correspondiente */
     async submitForm() {
-      this.datoNuevo.idchecksupervisor= this.Nombre.trimEnd();
+      this.datoNuevo.idchecksupervisor = this.Nombre.trimEnd();
       const idAsig = this.actividad.find(
         (filtro) => filtro.id === this.datoNuevo.idactividades
       );
@@ -211,25 +210,25 @@ export default {
         const dato = await res.json();
         //console.log(dato.mensaje);
         if (res.status === 400) {
-        this.alerta = true;
-        this.Titulo = "¡Upss!";
-        this.Mensaje =dato.mensaje;
-        this.datos = false;
-      } else {
-        this.datos = true;
-        console.log("Actividades: ",dato.actividades.respuesta);
-        this.actividad = dato.actividades.respuesta.map((filtro) => ({
+          this.alerta = true;
+          this.Titulo = "¡Upss!";
+          this.Mensaje = dato.mensaje;
+          this.datos = false;
+        } else {
+          this.datos = true;
+          console.log("Actividades: ", dato.actividades.respuesta);
+          this.actividad = dato.actividades.respuesta.map((filtro) => ({
             id: filtro.idactividades,
             text: filtro.actividad,
             idasigactivi: filtro.idasigactivi,
           }));
-        console.log("Responsables",dato.responsables.respuesta);
-        this.operadores = dato.responsables.respuesta.map((filtro) => ({
+          console.log("Responsables", dato.responsables.respuesta);
+          this.operadores = dato.responsables.respuesta.map((filtro) => ({
             id: filtro.idPMD,
             text: filtro.Nombre,
-          })); 
+          }));
           this.mostrarControl();
-      }
+        }
         //console.log(dato.results3)
       }
     },

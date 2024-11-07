@@ -243,7 +243,12 @@ export default {
     /* Mostrar estaus global de las actividades */
     async mostrarGlobal() {
       try {
-        const res = await fetch("http://localhost:3001/globalstatus");
+        const res = await fetch("http://localhost:3001/globalstatus",{
+          method: "GET",
+          headers: {
+            token: localStorage.token,
+          },
+        });
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -286,6 +291,11 @@ export default {
         return "highlight-row"; // Clase CSS para destacar la fila
       }
       return "";
+    },
+
+    created() {
+      this.mostrar();
+      this.mostrarGlobal();
     },
   },
 };

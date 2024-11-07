@@ -402,7 +402,7 @@ export default {
         } else {
           //this.ubicaciones = datos.ubicacionesPDM;
           this.ubicaciones = datos.ubicacionesPDM.map((ubi) => [ubi.descrip]);
-          //console.log(datos.ubicacionesPDM);
+          console.log(this.ubicaciones);
         } 
       } catch (error) {
         console.error("Error al obtener los datos:", error);

@@ -162,13 +162,18 @@ export default {
     /* Mostrar Actividad */
     async mostrar() {
       try {
-        const res = await fetch("http://localhost:3001/EficienciaKg");
+        const res = await fetch("http://localhost:3001/EficienciaKg",{
+          method: "GET",
+          headers: {
+            token: localStorage.token,
+          },
+        });
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          this.actividades = datos.respuesta.respuesta;
-          //console.log(this.actividades);
+          this.actividades = datos.respuesta;
+          console.log(this.actividades);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);

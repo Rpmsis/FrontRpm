@@ -4,65 +4,50 @@
       <v-layout row wrap style="padding: 20px">
         <v-flex>
           <v-row>
-            <v-col cols="12" md="4">
-              <v-card
-                style="
-                  background: linear-gradient(to bottom right, white, 20%, pink);
-                  border-radius: 15px;
-                "
-              >
-                <center>
-                  <a
-                    style="text-decoration: none !important"
-                    @click="fotodeperfil = true"
-                  >
-                    <img class="fotoperfil" :src="foto" />
-                  </a>
-                </center>
-              </v-card>
-            </v-col>
-          </v-row>
-
-          <v-row>
             <v-col cols="12" md="3">
               <v-card
                 style="
-                  background: linear-gradient(to bottom right, white, 70%, blue);
-                  border-radius: 15px;
+                  background: linear-gradient(
+                    to bottom right,
+                    white,
+                    90%,
+                    rgba(9, 97, 116, 1)
+                  );
                   text-align: left;
+                  margin-top: 15px;
                 "
               >
                 <v-row style="padding: 5px">
                   <v-col cols="12" md="12">
                     <center>
-                      <h2 style="color: chocolate">
-                        <v-icon color="black" dark large class="mr-2">
+                      <h2 style="color: rgba(9, 97, 116, 1)">
+                        <v-icon color="rgba(9, 97, 116, 1)" dark large class="mr-2">
                           mdi-notebook-heart-outline
                         </v-icon>
                         SOLICITADOS
                       </h2>
                     </center>
-                    <h3 style="color: black; font-family: cursive; font-size: 30px;">
+                    <h3 style="color: black; font-family: cursive; font-size: 30px">
                       ≃ Lunes: {{ lunes }}
                     </h3>
-                    <h3 style="color: black; font-family: cursive; font-size: 30px;">
+                    <h3 style="color: black; font-family: cursive; font-size: 30px">
                       ≃ Martes: {{ martes }}
                     </h3>
-                    <h3 style="color: black; font-family: cursive; font-size: 30px;">
+                    <h3 style="color: black; font-family: cursive; font-size: 30px">
                       ≃ Miercoles: {{ miercoles }}
                     </h3>
-                    <h3 style="color: black; font-family: cursive; font-size: 30px;">
+                    <h3 style="color: black; font-family: cursive; font-size: 30px">
                       ≃ Jueves: {{ jueves }}
                     </h3>
-                    <h3 style="color: black; font-family: cursive; font-size: 30px;">
+                    <h3 style="color: black; font-family: cursive; font-size: 30px">
                       ≃ Viernes: {{ viernes }}
                     </h3>
                   </v-col>
                 </v-row>
               </v-card>
             </v-col>
-            <v-col cols="12" md="9">
-              <v-card
+            <v-col cols="12" md="3">
+              <!-- <v-card
                 style="
                   background: linear-gradient(to bottom right, white, 70%, blue);
                   border-radius: 15px;
@@ -122,10 +107,21 @@
                     </v-col>
                   </v-row>
                 </a>
-              </v-card>
+              </v-card> -->
+              <template>
+                <v-carousel style="height: 300px !important">
+                  <v-carousel-item
+                    v-for="(item, i) in items"
+                    :key="i"
+                    :src="item.src"
+                    reverse-transition="fade-transition"
+                    transition="fade-transition"
+                  >
+                    <div class="title">{{ item.title }}</div>
+                  </v-carousel-item>
+                </v-carousel>
+              </template>
             </v-col>
-          </v-row>
-          <v-row>
             <v-col cols="12" md="6">
               <v-card>
                 <v-card-title>MENÚ DE LA SEMANA</v-card-title>
@@ -141,6 +137,8 @@
                 </v-card>
               </v-card>
             </v-col>
+          </v-row>
+          <v-row>
             <v-col cols="12" md="6">
               <v-card>
                 <v-card-title>CAPITAL HUMANO</v-card-title>
@@ -161,8 +159,6 @@
                 </v-card>
               </v-card>
             </v-col>
-          </v-row>
-          <v-row>
             <v-col cols="12" md="6">
               <v-card>
                 <v-card-title>LOGISTICA</v-card-title>
@@ -194,23 +190,23 @@
                   </a>
                 </v-card>
                 <v-card class="v-sheet theme--dark">
-                  <a href="/actividades/control">
-                    <h4 class="modulo">Control de actividades</h4>
-                  </a>
-                </v-card>
-                <v-card class="v-sheet theme--dark">
                   <a href="/actividades/editeficienciakg">
                     <h4 class="modulo">Editar kilogramos</h4>
                   </a>
                 </v-card>
                 <v-card class="v-sheet theme--dark">
-                  <a href="/actividades/porusuario">
-                    <h4 class="modulo">Mostrar actividades por usuario</h4>
+                  <a href="/actividades/eficacia">
+                    <h4 class="modulo">Tablero de actividades</h4>
                   </a>
                 </v-card>
                 <v-card class="v-sheet theme--dark">
-                  <a href="/actividades/eficacia">
-                    <h4 class="modulo">Tablero de actividades</h4>
+                  <a href="/actividades/control">
+                    <h4 class="modulo">Supervisores</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/actividades/porusuario">
+                    <h4 class="modulo">Actividades</h4>
                   </a>
                 </v-card>
               </v-card>
@@ -460,6 +456,8 @@ export default {
       miercoles: "",
       jueves: "",
       viernes: "",
+
+      items: [],
     };
   },
   mounted() {
@@ -496,17 +494,34 @@ export default {
           this.platofuerteA = datos.respuesta.respuesta[0].platofuerteA;
           this.platofuerteB = datos.respuesta.respuesta[0].platofuerteB;
           this.bebida = datos.respuesta.respuesta[0].bebida;
-          this.imgplatoentrada = `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen1}`;
-          this.imgbebida = `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen2}`;
-          this.imgplatoA = `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen3}`;
-          this.imgplatoB = `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen4}`;
           this.numsemana = datos.respuesta.respuesta[0].numsemana;
           this.mostrarPedido(this.numsemana);
+          this.cargarImagenes(datos);
           //console.log(this.imgplatoentrada);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
+    },
+    cargarImagenes(datos) {
+      this.items = [
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen1}`,
+          title: `SOPA: ${datos.respuesta.respuesta[0].platoentrada}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen2}`,
+          title: `PLATO A: ${datos.respuesta.respuesta[0].platofuerteA}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen3}`,
+          title: `PLATO B: ${datos.respuesta.respuesta[0].platofuerteB}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen4}`,
+          title: `BEBIDA: ${datos.respuesta.respuesta[0].bebida}`,
+        },
+      ];
     },
     async mostrarFotoperfil() {
       try {
@@ -614,21 +629,14 @@ export default {
 .v-sheet.v-card {
   margin-bottom: 30px;
 }
-.responsive-gif {
-  width: 100px;
-  height: 100px; /* Mantiene la proporción del GIF */
-  border-radius: 20px;
-  object-fit: cover; /* Asegura que el GIF cubra el área del contenedor */
+
+.v-image {
+  height: 350px !important;
 }
-.csstxtmenu {
-  color: #050505;
-  font-family: cursive;
-  font-size: 25px;
-}
-.fotoperfil {
-  width: 150px;
-  height: 150px; /* Mantiene la proporción del GIF */
-  border-radius: 100%;
-  object-fit: cover; /* Asegura que el GIF cubra el área del contenedor */
+.title {
+  position: absolute;
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px;
 }
 </style>

@@ -253,6 +253,7 @@ export default {
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
+          console.log(datos.respuesta.respuesta);
           this.comidas = datos.respuesta.respuesta;
           this.enviarDatos.numsemana = datos.respuesta.respuesta[0].numsemana;
           //console.log(this.comidas);
