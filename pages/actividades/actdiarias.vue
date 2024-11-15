@@ -47,6 +47,7 @@
               </v-card>
             </v-col>
           </v-row>
+
           <v-card class="mt-10" style="padding: 10px">
             <v-slider
               label="ACTIVIDADES REALIZADAS:"
@@ -86,7 +87,7 @@
                       dark
                       v-bind="attrs"
                       v-on="on"
-                      @click="actualizar(item.idactividades, item.idasigactivi)"
+                      @click="(actualizar(item.idasigactivi)),(mostEvidencias(item.idasigactivi))"
                       small
                       class="mr-2"
                     >
@@ -106,29 +107,66 @@
         <!-- Tabla personas que estan realizando la actividad-->
         <template>
           <div class="pa-4 text-center">
-            <v-dialog v-model="statusres" persistent max-width="500px">
-              <v-card style="padding: 15px">
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn icon @click="statusres = false">
-                    <v-icon style="font-size: 30px"
-                      >mdi-close theme--dark red--text</v-icon
-                    ></v-btn
-                  >
-                </v-card-actions>
-                <v-divider></v-divider>
-                <v-divider></v-divider>
-                <v-data-table
-                  :headers="headers2"
-                  :items="responsables"
-                  :search="search2"
-                  :footer-props="{
-                    'items-per-page-options': [10, 20, 30, 40, 50],
-                  }"
-                  :items-per-page="10"
-                >
-                </v-data-table>
-              </v-card>
+            <v-dialog v-model="statusres" persistent max-width="1200px">
+              <v-row style="padding: 10px">
+                <v-col cols="12" md="6">
+                  <v-card>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn icon @click="statusres = false">
+                        <v-icon style="font-size: 30px"
+                          >mdi-close theme--dark red--text</v-icon
+                        ></v-btn
+                      >
+                    </v-card-actions>
+                    <v-divider></v-divider>
+                    <v-divider></v-divider>
+                    <v-data-table
+                      :headers="headers2"
+                      :items="responsables"
+                      :search="search2"
+                      :footer-props="{
+                        'items-per-page-options': [10, 20, 30, 40, 50],
+                      }"
+                      :items-per-page="10"
+                    >
+                    </v-data-table>
+                  </v-card>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-card class="mx-auto" max-width="500">
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn icon @click="statusres = false">
+                        <v-icon style="font-size: 30px"
+                          >mdi-close theme--dark red--text</v-icon
+                        ></v-btn
+                      >
+                    </v-card-actions>
+                    <v-divider></v-divider>
+                    <v-divider></v-divider>
+
+                    <v-virtual-scroll :items="items" height="300" item-height="200">
+                      <template v-slot:default="{ item }"
+                        ><v-row style="padding: 20px">
+                          <v-col cols="12" md="6">
+                            <h4 class="namecolor">{{ item.fullName }}</h4>
+                            <h4>{{ item.fecha }}</h4>
+                            <h4>{{ item.hora }}</h4>
+                          </v-col>
+                          <v-col cols="12" md="6">
+                            <ImageZoom
+                              style="margin: 15px; max-width: 100%; "
+                              :thumbnail="item.imageUrl"
+                              :fullImage="item.imageUrl"
+                            />
+                          </v-col>
+                        </v-row>
+                      </template>
+                    </v-virtual-scroll>
+                  </v-card>
+                </v-col>
+              </v-row>
             </v-dialog>
           </div>
         </template>
@@ -140,8 +178,12 @@
 /* Fijoo */
 <script>
 import io from "socket.io-client";
+import ImageZoom from "~/components/ImageZoom.vue";
 
 export default {
+  components: {
+    ImageZoom,
+  },
   layout: "barra",
   data() {
     return {
@@ -190,8 +232,8 @@ export default {
 
       headers2: [
         {
-          text: "Id de la\nactividad",
-          value: "idactividades",
+          text: "Id control",
+          value: "idcontrolactivi",
           align: "center",
           class: "multi-line-header",
         },
@@ -204,25 +246,48 @@ export default {
         },
         { text: "Estatus", value: "status", class: "multi-line-header" },
       ],
+
+      name2: [],
+      evidencias: [],
     };
   },
   mounted() {
-    this.socket = io("http://192.168.1.97:3003");
+    this.socket = io("http://192.168.1.97:3004");
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.mostrar();
       this.mostrarGlobal();
     });
+    this.socket.on("newevidencia", (datos) => {
+      console.log(datos);
+      this.nuevaevidencia(datos);
+    });
     this.mostrar();
     this.mostrarGlobal();
   },
 
-  computed: {},
+  computed: {
+    items() {
+      return this.evidencias.map((evidencia) => {
+        return {
+          fullName: evidencia.responsable,
+          imageUrl: `http://localhost:3005/evidenciasact/${evidencia.archivo}`,
+          fecha: evidencia.fecha,
+          hora: evidencia.hora,
+        };
+      });
+    },
+  },
+
   methods: {
+    nuevaevidencia(datos) {
+      this.actualizar(datos);
+    },
+
     /* Mostrar Actividad */
     async mostrar() {
       try {
-        const res = await fetch("http://localhost:3001/actividiarias", {
+        const res = await fetch("http://localhost:3005/actividiarias", {
           method: "GET",
           headers: {
             token: localStorage.token,
@@ -233,7 +298,7 @@ export default {
           console.error("Error al obtener los datos:", error);
         } else {
           this.actividades = datos.respuesta.respuesta;
-          console.log(this.actividades);
+          //console.log(this.actividades);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -243,7 +308,7 @@ export default {
     /* Mostrar estaus global de las actividades */
     async mostrarGlobal() {
       try {
-        const res = await fetch("http://localhost:3001/globalstatus",{
+        const res = await fetch("http://localhost:3005/globalstatus", {
           method: "GET",
           headers: {
             token: localStorage.token,
@@ -266,13 +331,12 @@ export default {
     },
 
     /* Mostrar las actividades de los responsables */
-
-    async actualizar(idactividad, idasigactivi) {
+    async actualizar(idasigactivi) {
       //console.log(idactividad);
       //console.log(idasigactivi);
       try {
         const res = await fetch(
-          `http://localhost:3001/Statusresponsables?idactividad=${idactividad}&idasigactivi=${idasigactivi}`
+          `http://localhost:3005/Statusresponsables?idasigactivi=${idasigactivi}`
         );
         const datos = await res.json();
         if (res.status == 404) {
@@ -280,12 +344,39 @@ export default {
         } else {
           this.responsables = datos.respuesta.respuesta;
           //console.log(this.responsables);
+          this.name2 = datos.respuesta.respuesta.map((filtro) => [filtro.responsables]);
+
+          const nombres3 = datos.respuesta.respuesta.map((filtro) => [
+            filtro.responsables,
+          ]);
+          console.log(nombres3);
+          //this.mostEvidencias(idasigactivi);
           this.statusres = true;
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
     },
+
+    async mostEvidencias(idasigactivi) {
+      //console.log(idactividad);
+      //console.log(idasigactivi);
+      try {
+        const res = await fetch(
+          `http://localhost:3005/evidencias?idasigactivi=${idasigactivi}`
+        );
+        const datos = await res.json();
+        if (res.status == 404) {
+          console.error("Error al obtener los datos:", error);
+        } else {
+          this.evidencias = datos.respuesta.respuesta;
+          console.log(this.evidencias);
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    },
+
     buscarkgfaltantes(item) {
       if (item.kg > 0 && item.kgControl === 0 && item.status === "TERMINADO") {
         return "highlight-row"; // Clase CSS para destacar la fila
@@ -321,5 +412,11 @@ export default {
 }
 .highlight-row {
   background-color: rgb(133, 40, 12); /* Cambia el color según lo que prefieras */
+}
+.row {
+  margin: 0px !important;
+}
+.namecolor {
+  color: brown;
 }
 </style>

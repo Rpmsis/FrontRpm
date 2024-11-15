@@ -149,7 +149,7 @@ export default {
     };
   },
   mounted() {
-    this.socket = io("http://192.168.1.97:3003");
+    this.socket = io("http://192.168.1.97:3004");
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.mostrar();
@@ -162,7 +162,7 @@ export default {
     /* Mostrar Actividad */
     async mostrar() {
       try {
-        const res = await fetch("http://localhost:3001/EficienciaKg",{
+        const res = await fetch("http://localhost:3005/EficienciaKg",{
           method: "GET",
           headers: {
             token: localStorage.token,
@@ -189,7 +189,7 @@ export default {
 
     async actAsignacionkg() {
       //console.log(this.datoNuevo.motivo);
-      const res = await fetch("http://localhost:3001/actualizarAsignacionkg", {
+      const res = await fetch("http://localhost:3005/actualizarAsignacionkg", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

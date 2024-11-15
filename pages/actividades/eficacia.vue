@@ -58,7 +58,7 @@ export default {
   },
 
   mounted() {
-    this.socket = io("http://192.168.1.97:3003");
+    this.socket = io("http://192.168.1.97:3004");
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.mostrar();
@@ -68,7 +68,7 @@ export default {
   methods: {
     async mostrar() {
       try {
-        const res = await fetch("http://localhost:3001/Eficacia",{
+        const res = await fetch("http://localhost:3005/Eficacia",{
           method: "GET",
           headers: {
             token: localStorage.token,

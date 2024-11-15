@@ -4,6 +4,18 @@
       <v-layout row wrap style="padding: 20px">
         <v-flex>
           <v-row>
+            <v-col cols="12" md="12">
+              <v-card>
+                <v-card-title>REPORTES</v-card-title>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/graficas/graficas">
+                    <h4 class="modulo">Reporte en graficas</h4>
+                  </a>
+                </v-card>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row>
             <v-col cols="12" md="3">
               <v-card
                 style="
@@ -47,67 +59,6 @@
               </v-card>
             </v-col>
             <v-col cols="12" md="3">
-              <!-- <v-card
-                style="
-                  background: linear-gradient(to bottom right, white, 70%, blue);
-                  border-radius: 15px;
-                "
-              >
-                <a style="text-decoration: none !important" href="/menusemana/Semanamenu">
-                  <v-row style="padding: 15px">
-                    <v-col cols="12" md="2">
-                      <img class="responsive-gif" :src="imgplatoentrada" />
-                    </v-col>
-                    <v-col cols="12" md="4">
-                      <h4 style="color: chocolate">
-                        <v-icon color="black" dark large class="mr-2">
-                          mdi-noodles
-                        </v-icon>
-                        Sopa:
-                      </h4>
-                      <h3 class="csstxtmenu">{{ platoentrada }}</h3>
-                    </v-col>
-                    <v-col cols="12" md="2">
-                      <img class="responsive-gif" :src="imgbebida" />
-                    </v-col>
-                    <v-col cols="12" md="4">
-                      <h4 style="color: chocolate">
-                        <v-icon color="black" dark large class="mr-2">
-                          mdi-beer-outline
-                        </v-icon>
-                        Bebida:
-                      </h4>
-                      <h3 class="csstxtmenu">{{ bebida }}</h3>
-                    </v-col>
-                  </v-row>
-                  <v-row style="padding: 5px">
-                    <v-col cols="12" md="2">
-                      <img class="responsive-gif" :src="imgplatoA" />
-                    </v-col>
-                    <v-col cols="12" md="4">
-                      <h4 style="color: chocolate">
-                        <v-icon color="black" dark large class="mr-2">
-                          mdi-food-turkey
-                        </v-icon>
-                        Plato fuerte A:
-                      </h4>
-                      <h3 class="csstxtmenu">{{ platofuerteA }}</h3>
-                    </v-col>
-                    <v-col cols="12" md="2">
-                      <img class="responsive-gif" :src="imgplatoB" />
-                    </v-col>
-                    <v-col cols="12" md="4">
-                      <h4 style="color: chocolate">
-                        <v-icon color="black" dark large class="mr-2">
-                          mdi-food-turkey
-                        </v-icon>
-                        Plato fuerte B:
-                      </h4>
-                      <h3 class="csstxtmenu">{{ platofuerteB }}</h3>
-                    </v-col>
-                  </v-row>
-                </a>
-              </v-card> -->
               <template>
                 <v-carousel style="height: 300px !important">
                   <v-carousel-item
@@ -161,10 +112,15 @@
             </v-col>
             <v-col cols="12" md="6">
               <v-card>
-                <v-card-title>LOGISTICA</v-card-title>
+                <v-card-title>TABLEROS</v-card-title>
                 <v-card class="v-sheet theme--dark">
                   <a href="/actividades/tablerologistica">
                     <h4 class="modulo">TABLERO LOGISTICA</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/mantenimiento/tablero">
+                    <h4 class="modulo">TABLERO MANTENIMIENTO</h4>
                   </a>
                 </v-card>
               </v-card>
@@ -214,10 +170,7 @@
             <v-col cols="12" md="6">
               <v-card>
                 <v-card-title>ACTIVOS CONSUMIBLES</v-card-title>
-                <v-card
-                  class="v-sheet theme--dark"
-                  v-if="nombre === 'LUIS REY HERNANDEZ ROMERO'"
-                >
+                <v-card class="v-sheet theme--dark">
                   <a href="/consumibles/consumible">
                     <h4 class="modulo">Alta de consumibles</h4>
                   </a>

@@ -131,7 +131,7 @@ export default {
     };
   },
   mounted() {
-    this.socket = io("http://192.168.1.97:3003");
+    this.socket = io("http://192.168.1.97:3004");
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.Buscar();
@@ -144,7 +144,7 @@ export default {
     /* Mostrar Tabla de control */
     async mostrarControl() {
       try {
-        const res = await fetch("http://localhost:3001/Controlasignados/" + this.Nombre, {
+        const res = await fetch("http://localhost:3005/Controlasignados/" + this.Nombre, {
           headers: {
             "Content-Type": "application/json",
             token: localStorage.token,
@@ -164,33 +164,40 @@ export default {
 
     /* Insertar actividad a la tabla de controlactivi con el resposable correspondiente */
     async submitForm() {
-      this.datoNuevo.idchecksupervisor = this.Nombre.trimEnd();
-      const idAsig = this.actividad.find(
-        (filtro) => filtro.id === this.datoNuevo.idactividades
-      );
-      //console.log(idAsig.idasigactivi);
-      this.datoNuevo.idasigactivi = idAsig.idasigactivi;
-      const res = await fetch("http://localhost:3001/insertarControl", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this.datoNuevo),
-      });
-      const datos = await res.json();
-      //console.log(datos);
-      if (res.status === 400) {
+      if (this.datoNuevo.idactividades === "" && this.datoNuevo.responsables === "" ) {
         this.alerta = true;
         this.Titulo = "¡Upss!";
-        this.Mensaje = datos.mensaje;
+        this.Mensaje = "Parece que existen campos vacíos, válida la información nuevamente";
       } else {
-        this.alerta = true;
-        //this.Titulo = "El ID del activo es: ";
-        this.Titulo = datos.mensaje;
-        this.Mensaje = "";
-        this.limpiarFormulario();
-        this.mostrarControl();
+        this.datoNuevo.idchecksupervisor = this.Nombre.trimEnd();
+        const idAsig = this.actividad.find(
+          (filtro) => filtro.id === this.datoNuevo.idactividades
+        );
+        console.log(idAsig.idasigactivi);
+        this.datoNuevo.idasigactivi = idAsig.idasigactivi;
+        const res = await fetch("http://localhost:3005/insertarControl", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(this.datoNuevo),
+        });
+        const datos = await res.json();
+        //console.log(datos);
+        if (res.status === 400) {
+          this.alerta = true;
+          this.Titulo = "¡Upss!";
+          this.Mensaje = datos.mensaje;
+        } else {
+          this.alerta = true;
+          //this.Titulo = "El ID del activo es: ";
+          this.Titulo = datos.mensaje;
+          this.Mensaje = "";
+          this.limpiarFormulario();
+          this.mostrarControl();
+        }
       }
+
       //console.log(datos.respuestaMante.mensaje);
     },
 
@@ -199,7 +206,7 @@ export default {
         return false;
       } else {
         const res = await fetch(
-          "http://localhost:3001/buscar_Supervisor/" + this.Nombre,
+          "http://localhost:3005/buscar_Supervisor/" + this.Nombre,
           {
             headers: {
               "Content-Type": "application/json",

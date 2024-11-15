@@ -1,5 +1,5 @@
 <template>
-  <v-container  v-if="nombre === 'SI'" >
+  <v-container>
     <v-card class="mt-5">
       <v-card-title>
         <v-text-field

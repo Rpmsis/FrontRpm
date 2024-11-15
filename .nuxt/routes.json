@@ -189,11 +189,25 @@
     "_name": "_02551ed3"
   },
   {
+    "name": "graficas-graficas",
+    "path": "/graficas/graficas",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\graficas\\\\graficas.vue",
+    "chunkName": "pages/graficas/graficas",
+    "_name": "_5dae19ac"
+  },
+  {
     "name": "idusuarios-idusuarios",
     "path": "/idusuarios/idusuarios",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\idusuarios\\\\idusuarios.vue",
     "chunkName": "pages/idusuarios/idusuarios",
     "_name": "_0865f59c"
+  },
+  {
+    "name": "mantenimiento-tablero",
+    "path": "/mantenimiento/tablero",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\mantenimiento\\\\tablero.vue",
+    "chunkName": "pages/mantenimiento/tablero",
+    "_name": "_5a7be277"
   },
   {
     "name": "menusemana-Cargarimagen",

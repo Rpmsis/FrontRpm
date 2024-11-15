@@ -8,13 +8,13 @@
               <v-col cols="12" md="12">
                 <v-card-title>
                   <v-text-field
-                  v-model="formData.usuario"
-                  type="password"
-                  append-icon="mdi-magnify"
-                  label="Buscar usuario"
-                  @input="mostrarExistencias(formData.usuario)"
-                  clearable
-                ></v-text-field>
+                    v-model="formData.usuario"
+                    type="password"
+                    append-icon="mdi-magnify"
+                    label="Buscar usuario"
+                    @input="mostrarExistencias(formData.usuario)"
+                    clearable
+                  ></v-text-field>
                 </v-card-title>
               </v-col>
             </v-row>
@@ -53,7 +53,8 @@
                             item.estatusC,
                             item.idasigactivi,
                             item.idactividades,
-                            item.estatusA
+                            item.estatusA,
+                            item.responsables
                           )
                         "
                         small
@@ -126,6 +127,40 @@
                             >mdi-motion-pause-outline theme--dark red--text</v-icon
                           >
                         </v-btn>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12" md="12">
+                        <v-form class="mt-5" @submit.prevent="submitForm">
+                          <v-row>
+                            <v-col cols="12" sm="8" md="10">
+                              <v-file-input
+                                counter
+                                show-size
+                                prepend-icon="mdi-camera-plus"
+                                label="Enviar evidencia.."
+                                v-model="evidencia.archivo"
+                              ></v-file-input>
+                            </v-col>
+                            <v-col cols="12" md="2">
+                              <center>
+                                <v-btn
+                                  style="
+                                    margin-top: 10px;
+                                    margin-bottom: 10px;
+                                    border: 20px;
+                                  "
+                                  elevation="16"
+                                  type="submit"
+                                  color="#b3ce96"
+                                  ><v-icon color="#3c5f15" style="font-size: 30px"
+                                    >mdi-send-check</v-icon
+                                  ></v-btn
+                                >
+                              </center>
+                            </v-col>
+                          </v-row>
+                        </v-form>
                       </v-col>
                     </v-row>
                   </v-card>
@@ -211,7 +246,6 @@
 
 /* Fijoo */
 <script>
-
 export default {
   layout: "barra",
   data() {
@@ -264,6 +298,9 @@ export default {
         motivoselec: "",
         motivodes: "",
       },
+      evidencia: {
+        archivo: null,
+      },
     };
   },
   mounted() {},
@@ -275,7 +312,7 @@ export default {
       const responsable = user;
       try {
         const res = await fetch(
-          `http://localhost:3001/Controlresponsable?responsable=${responsable}`
+          `http://localhost:3005/Controlresponsable?responsable=${responsable}`
         );
         const datos = await res.json();
         if (res.status == 404) {
@@ -302,11 +339,12 @@ export default {
     },
 
     /* Mostrar los botones */
-    async activi(item, estatus, asignacion, actividades, statusAsignacion) {
+    async activi(item, estatus, asignacion, actividades, statusAsignacion, responsable) {
       this.datoNuevo2.idcontrolactivi = item;
       this.datoNuevo2.idasigactivi = asignacion;
       this.datoNuevo2.idactividades = actividades;
-      this.datoNuevo2.status = statusAsignacion
+      this.datoNuevo2.status = statusAsignacion;
+      this.datoNuevo2.responsables = responsable;
       this.tiempoactivi = true;
       console.log(
         "idcontrolactivi: ",
@@ -349,7 +387,7 @@ export default {
     /* Enviar estatus en proceso del botón iniciar actividad */
     async acttiempo() {
       this.datoNuevo2.status = "EN PROCESO";
-      const res = await fetch("http://localhost:3001/insertarTiempo", {
+      const res = await fetch("http://localhost:3005/insertarTiempo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -376,7 +414,7 @@ export default {
     /* Enviar estatus en TERMINADO del botón Terminar actividad */
     async acttiempofinal() {
       //console.log(this.datoNuevo.motivo);
-      const res = await fetch("http://localhost:3001/actualizarTimefin", {
+      const res = await fetch("http://localhost:3005/actualizarTimefin", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -402,7 +440,7 @@ export default {
     /* Enviar estatus en EN PAUSA del botón pausa */
     async acttiempoPausa() {
       //console.log(this.datoNuevo.motivo);
-      const res = await fetch("http://localhost:3001/actualizarTimepausa", {
+      const res = await fetch("http://localhost:3005/actualizarTimepausa", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -431,7 +469,7 @@ export default {
     /* Enviar estatus en proceso del botón pausa actividad */
     async acttiempoReanudar() {
       this.datoNuevo2.status = "EN PROCESO";
-      const res = await fetch("http://localhost:3001/insertarTiempo", {
+      const res = await fetch("http://localhost:3005/insertarTiempo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -457,10 +495,42 @@ export default {
 
     /* Limpiar formulario de agendar */
     limpiarFormulario() {
-      (this.datoNuevo.responsables = ""), (this.datoNuevo.idactividades = "");
+      (this.datoNuevo.responsables = ""),
+        (this.datoNuevo.idactividades = ""),
+        (this.evidencia.archivo = null);
     },
     limpiarFormularioPausa() {
-      (this.datoNuevo2.motivodes = ""), (this.datoNuevo2.motivoselec = "");
+      (this.datoNuevo2.motivodes = ""),
+        (this.datoNuevo2.motivoselec = ""),
+        (this.evidencia.archivo = null);
+    },
+
+    /* Guardar evidencia */
+    async submitForm() {
+      const formulario = new FormData();
+      formulario.append("idcontrolactivi", this.datoNuevo2.idcontrolactivi);
+      formulario.append("idasigactivi", this.datoNuevo2.idasigactivi);
+      formulario.append("responsable", this.datoNuevo2.responsables);
+      formulario.append("archivo", this.evidencia.archivo);
+      const res = await fetch("http://localhost:3005/guardarevidencia", {
+        method: "POST",
+        headers: {
+          token: localStorage.token,
+        },
+        body: formulario,
+      });
+      const datos = await res.json();
+      if (res.status === 400) {
+        this.alerta = true;
+        //this.Titulo = "Error";
+        this.Titulo = "¡Upss!";
+        this.Mensaje = datos.mensaje;
+      } else {
+        this.alerta = true;
+        this.Titulo = datos.mensaje;
+        this.Mensaje = " ";
+        this.evidencia.archivo = null;
+      }
     },
   },
 };
@@ -498,5 +568,3 @@ export default {
   color: white;
 }
 </style>
-
-

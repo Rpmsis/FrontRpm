@@ -375,7 +375,7 @@ export default {
     };
   },
   mounted() {
-    this.socket = io("http://192.168.1.97:3003");
+    this.socket = io("http://192.168.1.97:3004");
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.mostrarubi();
@@ -387,10 +387,10 @@ export default {
 
   computed: {},
   methods: {
-    /* Mostrar ubicación */
+    /* Mostrar ubicación ++++*/
     async mostrarubi() {
       try {
-        const res = await fetch("http://localhost:3001/ubicacion",{
+        const res = await fetch("http://localhost:3005/ubicacion",{
           method: "GET",
           headers: {
             token: localStorage.token,
@@ -409,10 +409,10 @@ export default {
       }
     },
 
-    /* Mostrar los datos de la tabla*/
+    /* Mostrar los datos de la tabla +++*/
     async mostrar() {
       try {
-        const res = await fetch("http://localhost:3001/actividades");
+        const res = await fetch("http://localhost:3005/actividades");
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -425,12 +425,12 @@ export default {
       }
     },
 
-    /* Mostrar material */
+    /* Mostrar material +++*/
     async mostrarproduc() {
       const famil = this.formData.familias;
       //console.log(famil);
       try {
-        const res = await fetch( `http://localhost:3001/material`);
+        const res = await fetch( `http://localhost:3005/material`);
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -454,9 +454,9 @@ export default {
     },
     /* -------------------------------- */
 
-    /* Enviar formulario de actividades */
+    /* Enviar formulario de actividades +++*/
     async submitForm() {
-      const res = await fetch("http://localhost:3001/insertarActif", {
+      const res = await fetch("http://localhost:3005/insertarActif", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -480,9 +480,9 @@ export default {
     },
     /* ------------------------------------------------------------ */
 
-    /* Enviar formulario de material */
+    /* Enviar formulario de material +++*/
     async submitFormAdd() {
-      const res = await fetch("http://localhost:3001/insertarMaterial", {
+      const res = await fetch("http://localhost:3005/insertarMaterial", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -507,7 +507,7 @@ export default {
     /* ------------------------------------------------------------ */
     /* Api que actualiza los datos  de la tabla */
     async actualizaracti() {
-      const res = await fetch("http://localhost:3001/actualizaractivi", {
+      const res = await fetch("http://localhost:3005/actualizaractivi", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -1,158 +1,217 @@
 <template>
   <v-container>
-    <v-card
-      style="background: linear-gradient(to bottom right, white, 10%, darkblueshade)"
-    >
-      <v-row>
-        <v-col cols="12" md="12">
-          <v-text-field
-            type="password"
-            clearable
-            label="ESCANEA TU QR Y ELIGE TUS PLATILLOS"
-            v-model="idcheck"
-            filled
-            @input="mostrarExistencias(idcheck)"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-    </v-card>
-    <v-card
-      style="background: linear-gradient(to bottom right, white, 10%, darkblueshade)"
-      v-show="existe"
-      class="mt-5"
-    >
-      <v-card-title>
-        <h4 style="color: White">SELECCIONA LOS PLATILLOS QUE QUIERAS Y GUARDA:</h4>
-      </v-card-title>
-      <v-form @submit.prevent="submitForm">
-        <v-row style="padding-top: 20px">
-          <v-col cols="12" sm="2" md="2">
-            <v-select
-              :items="tipos"
-              v-model="enviarDatos.lunes"
-              label="LUNES"
-              filled
-              class="mi-select"
-              clearable
-            >
-            </v-select>
-          </v-col>
-          <v-col cols="12" sm="2" md="2">
-            <v-select
-              :items="tipos"
-              v-model="enviarDatos.martes"
-              label="MARTES"
-              filled
-              clearable
-            >
-            </v-select>
-          </v-col>
-          <v-col cols="12" sm="2" md="2">
-            <v-select
-              :items="tipos"
-              v-model="enviarDatos.miercoles"
-              label="MIERCOLES"
-              filled
-              clearable
-            >
-            </v-select>
-          </v-col>
-          <v-col cols="12" sm="2" md="2">
-            <v-select
-              :items="tipos"
-              v-model="enviarDatos.jueves"
-              label="JUEVES"
-              filled
-              clearable
-            >
-            </v-select>
-          </v-col>
-          <v-col cols="12" sm="2" md="2">
-            <v-select
-              :items="tipos"
-              v-model="enviarDatos.viernes"
-              label="VIERNES"
-              filled
-              clearable
-            >
-            </v-select>
-          </v-col>
-          <v-col cols="12" sm="2" md="2">
-            <center>
-              <v-btn class="btnEnviar" type="submit" color="green"
-                ><v-icon color="white" white x-large class="mr-2">
-                  mdi-checkbox-marked
-                </v-icon></v-btn
-              >
-            </center>
-          </v-col>
-        </v-row>
-      </v-form>
+    <v-btn v-if="permiso==='true'" text class="btnmenu" color="primary" @click="solicitar = true"> 
+      <v-icon style="font-size: 50px">mdi-nutrition theme--dark yellow--text</v-icon> 
+      SOLICITAR COMIDA 
+    </v-btn>
 
-      <center>
-        <h4 style="color: chocolate">
-          ¡¡NO OLVIDES FIRMAR AL MOMENTO DE CONSUMIR TUS ALIMENTOS EN EL COMEDOR!!
-        </h4>
-      </center>
-    </v-card>
-    <v-card class="mt-5">
-      <v-card-title>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Buscar"
-          single-line
-          hide-details
-        ></v-text-field>
-      </v-card-title>
-      <v-data-table
-        :headers="headers"
-        :items="comidas"
-        :search="search"
-        :footer-props="{
-          'items-per-page-options': [10, 20, 30, 40, 50],
-        }"
-        :items-per-page="10"
-        :sort-by="['fechainicio']"
-        :sort-desc="false"
-      >
-        <template v-slot:item.platoentrada="{ item }">
-          <img
-            :src="`http://localhost:3001/uploads/${item.imagen1}`"
-            alt="Sopa"
-            style="width: 150px; height: 150px; padding: 5px"
-          />
-          <p>{{ item.platoentrada }}</p>
-        </template>
 
-        <template v-slot:item.platofuerteA="{ item }">
-          <img
-            :src="`http://localhost:3001/uploads/${item.imagen3}`"
-            alt="Sopa"
-            style="width: 150px; height: 150px; padding: 5px"
-          />
-          <p>{{ item.platofuerteA }}</p>
-        </template>
+    <div class="pa-4 text-center">
+      <v-dialog v-model="solicitar" max-width="1600" persistent>
+        <v-card style="padding: 15px">
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn icon @click="(solicitar = false), limpiarCheck(), (existe = false)">
+              <v-icon style="font-size: 30px"
+                >mdi-close theme--dark red--text</v-icon
+              ></v-btn
+            >
+          </v-card-actions>
+          <v-divider></v-divider>
+          <v-divider></v-divider>
+          <v-card
+            style="
+              background: linear-gradient(to bottom right, white, 10%, darkblueshade);
+            "
+          >
+            <v-card-title> MENÚ DE LA SEMANA {{ enviarDatos.numsemana }} </v-card-title>
+            <v-row>
+              <v-col cols="12" md="12">
+                <v-text-field
+                  type="password"
+                  clearable
+                  label="ESCANEA TU QR Y ELIGE TUS PLATILLOS"
+                  v-model="idcheck"
+                  filled
+                  @input="mostrarExistencias(idcheck)"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-card>
+          <v-card
+            style="
+              background: linear-gradient(to bottom right, white, 10%, darkblueshade);
+            "
+            v-show="existe"
+            class="mt-5"
+          >
+            <v-card-title>
+              <center>
+                <h4 style="color: white">
+                  SELECCIONA LOS PLATILLOS QUE QUIERAS Y GUARDA:
+                </h4>
+              </center>
+            </v-card-title>
+            <v-form @submit.prevent="submitForm">
+              <v-row style="padding-top: 20px">
+                <v-col cols="12" sm="2" md="2">
+                  <v-select
+                    :items="tipos"
+                    v-model="enviarDatos.lunes"
+                    label="LUNES"
+                    filled
+                    class="mi-select"
+                    clearable
+                    @click="carruselpordia(1)"
+                  >
+                  </v-select>
+                </v-col>
+                <v-col cols="12" sm="2" md="2">
+                  <v-select
+                    :items="tipos"
+                    v-model="enviarDatos.martes"
+                    label="MARTES"
+                    filled
+                    clearable
+                    @click="carruselpordia(2)"
+                  >
+                  </v-select>
+                </v-col>
+                <v-col cols="12" sm="2" md="2">
+                  <v-select
+                    :items="tipos"
+                    v-model="enviarDatos.miercoles"
+                    label="MIERCOLES"
+                    filled
+                    clearable
+                    @click="carruselpordia(3)"
+                  >
+                  </v-select>
+                </v-col>
+                <v-col cols="12" sm="2" md="2">
+                  <v-select
+                    :items="tipos"
+                    v-model="enviarDatos.jueves"
+                    label="JUEVES"
+                    filled
+                    clearable
+                    @click="carruselpordia(4)"
+                  >
+                  </v-select>
+                </v-col>
+                <v-col cols="12" sm="2" md="2">
+                  <v-select
+                    :items="tipos"
+                    v-model="enviarDatos.viernes"
+                    label="VIERNES"
+                    filled
+                    clearable
+                    @click="carruselpordia(5)"
+                  >
+                  </v-select>
+                </v-col>
+                <v-col cols="12" sm="2" md="2">
+                  <center>
+                    <v-btn class="btnEnviar" type="submit" color="green"
+                      ><v-icon color="white" white x-large class="mr-2">
+                        mdi-checkbox-marked
+                      </v-icon></v-btn
+                    >
+                  </center>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-card>
 
-        <template v-slot:item.platofuerteB="{ item }">
-          <img
-            :src="`http://localhost:3001/uploads/${item.imagen4}`"
-            alt="Sopa"
-            style="width: 150px; height: 150px; padding: 5px"
-          />
-          <p>{{ item.platofuerteB }}</p>
-        </template>
-
-        <template v-slot:item.bebida="{ item }">
-          <img
-            :src="`http://localhost:3001/uploads/${item.imagen2}`"
-            alt="Sopa"
-            style="width: 150px; height: 150px; padding: 5px"
-          />
-          <p>{{ item.bebida }}</p>
-        </template>
-      </v-data-table>
-    </v-card>
+          <v-card class="mt-5">
+            <v-row justify="center">
+              <v-col v-show="uno" cols="12" md="4">
+                <h4>LUNES</h4>
+                <template>
+                  <v-carousel style="height: 300px !important">
+                    <v-carousel-item
+                      v-for="(item, i) in itemslunes"
+                      :key="i"
+                      :src="item.src"
+                      reverse-transition="fade-transition"
+                      transition="fade-transition"
+                    >
+                      <div class="title">{{ item.title }}</div>
+                    </v-carousel-item>
+                  </v-carousel>
+                </template>
+              </v-col>
+              <v-col v-show="dos" cols="12" md="4">
+                <h4>MARTES</h4>
+                <template>
+                  <v-carousel style="height: 300px !important">
+                    <v-carousel-item
+                      v-for="(item, i) in itemsmartes"
+                      :key="i"
+                      :src="item.src"
+                      reverse-transition="fade-transition"
+                      transition="fade-transition"
+                    >
+                      <div class="title">{{ item.title }}</div>
+                    </v-carousel-item>
+                  </v-carousel>
+                </template>
+              </v-col>
+              <v-col v-show="tres" cols="12" md="4">
+                <h4>MIERCOLES</h4>
+                <template>
+                  <v-carousel style="height: 300px !important">
+                    <v-carousel-item
+                      v-for="(item, i) in itemsmiercoles"
+                      :key="i"
+                      :src="item.src"
+                      reverse-transition="fade-transition"
+                      transition="fade-transition"
+                    >
+                      <div class="title">{{ item.title }}</div>
+                    </v-carousel-item>
+                  </v-carousel>
+                </template>
+              </v-col>
+            </v-row>
+            <v-row justify="center">
+              <v-col v-show="cuatro" cols="12" md="4">
+                <h4>JUEVES</h4>
+                <template>
+                  <v-carousel style="height: 300px !important">
+                    <v-carousel-item
+                      v-for="(item, i) in itemsjueves"
+                      :key="i"
+                      :src="item.src"
+                      reverse-transition="fade-transition"
+                      transition="fade-transition"
+                    >
+                      <div class="title">{{ item.title }}</div>
+                    </v-carousel-item>
+                  </v-carousel>
+                </template>
+              </v-col>
+              <v-col v-show="cinco" cols="12" md="4">
+                <h4>VIERNES</h4>
+                <template>
+                  <v-carousel style="height: 300px !important">
+                    <v-carousel-item
+                      v-for="(item, i) in itemsviernes"
+                      :key="i"
+                      :src="item.src"
+                      reverse-transition="fade-transition"
+                      transition="fade-transition"
+                    >
+                      <div class="title">{{ item.title }}</div>
+                    </v-carousel-item>
+                  </v-carousel>
+                </template>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-card>
+      </v-dialog>
+    </div>
 
     <!-- Ventana emergente -->
     <v-dialog v-model="alerta" max-width="500">
@@ -186,6 +245,9 @@ export default {
   layout: "barra",
   data() {
     return {
+      solicitar: false,
+      permiso: "",
+
       alerta: false,
       Mensaje: "",
       Titulo: "",
@@ -214,6 +276,18 @@ export default {
         idcheck: "",
         numsemana: "",
       },
+
+      uno: true,
+      dos: true,
+      tres: true,
+      cuatro: true,
+      cinco: true,
+
+      itemslunes: [],
+      itemsmartes: [],
+      itemsmiercoles: [],
+      itemsjueves: [],
+      itemsviernes: [],
     };
   },
   mounted() {
@@ -237,6 +311,11 @@ export default {
           this.Titulo = "¡Upss!";
           this.Mensaje = datos.mensaje;
           this.existe = false;
+          this.uno = true;
+          this.dos = true;
+          this.tres = true;
+          this.cuatro = true;
+          this.cinco = true;
           this.limpiarFormulario();
         } else {
           this.existe = true;
@@ -253,14 +332,109 @@ export default {
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          console.log(datos.respuesta.respuesta);
+          console.log(datos);
           this.comidas = datos.respuesta.respuesta;
           this.enviarDatos.numsemana = datos.respuesta.respuesta[0].numsemana;
+          this.permiso = datos.permiso;
+          this.cargarImagenes(datos);
           //console.log(this.comidas);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
+    },
+
+    cargarImagenes(datos) {
+      this.itemslunes = [
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen1}`,
+          title: `SOPA: ${datos.respuesta.respuesta[0].platoentrada}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen2}`,
+          title: `PLATO A: ${datos.respuesta.respuesta[0].platofuerteA}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen3}`,
+          title: `PLATO B: ${datos.respuesta.respuesta[0].platofuerteB}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[0].imagen4}`,
+          title: `BEBIDA: ${datos.respuesta.respuesta[0].bebida}`,
+        },
+      ];
+      this.itemsmartes = [
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[1].imagen1}`,
+          title: `SOPA: ${datos.respuesta.respuesta[1].platoentrada}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[1].imagen2}`,
+          title: `PLATO A: ${datos.respuesta.respuesta[1].platofuerteA}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[1].imagen3}`,
+          title: `PLATO B: ${datos.respuesta.respuesta[1].platofuerteB}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[1].imagen4}`,
+          title: `BEBIDA: ${datos.respuesta.respuesta[1].bebida}`,
+        },
+      ];
+      this.itemsmiercoles = [
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[2].imagen1}`,
+          title: `SOPA: ${datos.respuesta.respuesta[2].platoentrada}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[2].imagen2}`,
+          title: `PLATO A: ${datos.respuesta.respuesta[2].platofuerteA}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[2].imagen3}`,
+          title: `PLATO B: ${datos.respuesta.respuesta[2].platofuerteB}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[2].imagen4}`,
+          title: `BEBIDA: ${datos.respuesta.respuesta[2].bebida}`,
+        },
+      ];
+      this.itemsjueves = [
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[3].imagen1}`,
+          title: `SOPA: ${datos.respuesta.respuesta[3].platoentrada}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[3].imagen2}`,
+          title: `PLATO A: ${datos.respuesta.respuesta[3].platofuerteA}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[3].imagen3}`,
+          title: `PLATO B: ${datos.respuesta.respuesta[3].platofuerteB}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[3].imagen4}`,
+          title: `BEBIDA: ${datos.respuesta.respuesta[3].bebida}`,
+        },
+      ];
+      this.itemsviernes = [
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[4].imagen1}`,
+          title: `SOPA: ${datos.respuesta.respuesta[4].platoentrada}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[4].imagen2}`,
+          title: `PLATO A: ${datos.respuesta.respuesta[4].platofuerteA}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[4].imagen3}`,
+          title: `PLATO B: ${datos.respuesta.respuesta[4].platofuerteB}`,
+        },
+        {
+          src: `http://localhost:3001/uploads/${datos.respuesta.respuesta[4].imagen4}`,
+          title: `BEBIDA: ${datos.respuesta.respuesta[4].bebida}`,
+        },
+      ];
     },
 
     async seleccionar(item) {
@@ -297,6 +471,11 @@ export default {
         //this.Titulo = "Error";
         this.Titulo = "¡Upss!";
         this.Mensaje = datos.mensaje;
+        this.uno = true;
+        this.dos = true;
+        this.tres = true;
+        this.cuatro = true;
+        this.cinco = true;
       } else {
         this.alerta = true;
         this.Titulo = datos.mensaje;
@@ -304,6 +483,61 @@ export default {
         this.limpiarFormulario();
         this.enviarDatos.idcheck = "";
         this.existe = false;
+        this.uno = true;
+        this.dos = true;
+        this.tres = true;
+        this.cuatro = true;
+        this.cinco = true;
+      }
+    },
+
+    carruselpordia(num) {
+      console.log(num);
+      if (num === 1) {
+        this.uno = true;
+        this.dos = false;
+        this.tres = false;
+        this.cuatro = false;
+        this.cinco = false;
+      } else {
+        if (num === 2) {
+          this.uno = false;
+          this.dos = true;
+          this.tres = false;
+          this.cuatro = false;
+          this.cinco = false;
+        } else {
+          if (num === 3) {
+            this.uno = false;
+            this.dos = false;
+            this.tres = true;
+            this.cuatro = false;
+            this.cinco = false;
+          } else {
+            if (num === 4) {
+              this.uno = false;
+              this.dos = false;
+              this.tres = false;
+              this.cuatro = true;
+              this.cinco = false;
+            } else {
+              if (num === 5) {
+                this.uno = false;
+                this.dos = false;
+                this.tres = false;
+                this.cuatro = false;
+                this.cinco = true;
+              } else {
+                // Si no se ha seleccionado ninguno de los números (1-5), se ponen todos en true.
+                this.uno = true;
+                this.dos = true;
+                this.tres = true;
+                this.cuatro = true;
+                this.cinco = true;
+              }
+            }
+          }
+        }
       }
     },
   },
@@ -334,5 +568,17 @@ export default {
   width: 100px;
   height: 100px;
   border-radius: 30px;
+}
+.v-image {
+  height: 350px !important;
+}
+.title {
+  position: absolute;
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px;
+}
+.btnmenu {
+  width: 100%;
 }
 </style>

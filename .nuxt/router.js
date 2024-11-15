@@ -31,7 +31,9 @@ const _301e4f84 = () => interopDefault(import('..\\pages\\consumibles\\devolucio
 const _396739e7 = () => interopDefault(import('..\\pages\\consumibles\\inventario.vue' /* webpackChunkName: "pages/consumibles/inventario" */))
 const _6a298ca2 = () => interopDefault(import('..\\pages\\consumibles\\minimo.vue' /* webpackChunkName: "pages/consumibles/minimo" */))
 const _02551ed3 = () => interopDefault(import('..\\pages\\consumibles\\vigenciaprestamo.vue' /* webpackChunkName: "pages/consumibles/vigenciaprestamo" */))
+const _5dae19ac = () => interopDefault(import('..\\pages\\graficas\\graficas.vue' /* webpackChunkName: "pages/graficas/graficas" */))
 const _0865f59c = () => interopDefault(import('..\\pages\\idusuarios\\idusuarios.vue' /* webpackChunkName: "pages/idusuarios/idusuarios" */))
+const _5a7be277 = () => interopDefault(import('..\\pages\\mantenimiento\\tablero.vue' /* webpackChunkName: "pages/mantenimiento/tablero" */))
 const _452a8a7e = () => interopDefault(import('..\\pages\\menusemana\\Cargarimagen.vue' /* webpackChunkName: "pages/menusemana/Cargarimagen" */))
 const _26c168ee = () => interopDefault(import('..\\pages\\menusemana\\form.vue' /* webpackChunkName: "pages/menusemana/form" */))
 const _550a876e = () => interopDefault(import('..\\pages\\menusemana\\formenu.vue' /* webpackChunkName: "pages/menusemana/formenu" */))
@@ -166,9 +168,17 @@ export const routerOptions = {
     component: _02551ed3,
     name: "consumibles-vigenciaprestamo"
   }, {
+    path: "/graficas/graficas",
+    component: _5dae19ac,
+    name: "graficas-graficas"
+  }, {
     path: "/idusuarios/idusuarios",
     component: _0865f59c,
     name: "idusuarios-idusuarios"
+  }, {
+    path: "/mantenimiento/tablero",
+    component: _5a7be277,
+    name: "mantenimiento-tablero"
   }, {
     path: "/menusemana/Cargarimagen",
     component: _452a8a7e,

@@ -314,7 +314,7 @@ export default {
   },
   mounted() {
     this.fecha = this.fechaMinima;
-    this.socket = io("http://192.168.1.97:3003");
+    this.socket = io("http://192.168.1.97:3004");
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.mostrarubi();
@@ -340,7 +340,7 @@ export default {
       const empre = this.datoNuevo.empresa;
       //console.log(empre);
       try {
-        const res = await fetch("http://localhost:3001/actividades",{
+        const res = await fetch("http://localhost:3005/actividades",{
           method: "GET",
           headers: {
             token: localStorage.token,
@@ -368,7 +368,7 @@ export default {
     /* Mostrar ubicaciónes  */
     async mostrarubi() {
       try {
-        const res = await fetch("http://localhost:3001/ubicacion",{
+        const res = await fetch("http://localhost:3005/ubicacion",{
           method: "GET",
           headers: {
             token: localStorage.token,
@@ -393,7 +393,7 @@ export default {
     /* Mostrar Asignación */
     async mostrarAsignacion() {
       try {
-        const res = await fetch("http://localhost:3001/asignacion", {
+        const res = await fetch("http://localhost:3005/asignacion", {
           method: "GET",
           headers: {
             token: localStorage.token,
@@ -417,7 +417,7 @@ export default {
     async submitForm() {
       this.datoNuevo.fechainicio = this.fecha;
       //console.log(this.datoNuevo.idactividad);
-      const res = await fetch("http://localhost:3001/insertarAsigactividad", {
+      const res = await fetch("http://localhost:3005/insertarAsigactividad", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -464,7 +464,7 @@ export default {
 
     /* Desactiva la actividad asignada */
     async actualizaracti() {
-      const res = await fetch("http://localhost:3001/actualizarAsig", {
+      const res = await fetch("http://localhost:3005/actualizarAsig", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
