@@ -373,6 +373,13 @@ export default {
             this.reanudar = false;
             this.btniniciar = false;
             this.btnterminar = false;
+          } else {
+            if (estatus === "TERMINADO") {
+              this.btniniciar = true;
+              this.btnterminar = false;
+              this.pausa = false;
+              this.reanudar = false;
+            }
           }
         }
       }

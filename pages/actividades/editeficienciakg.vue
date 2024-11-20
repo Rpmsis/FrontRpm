@@ -132,7 +132,8 @@ export default {
         { text: "Empresa", value: "empresa" },
         { text: "Actividad", value: "actividad" },
         { text: "Tiempo de los responsables", value: "timeControl" },
-        { text: "Tiempo de la actividad", value: "timestandar" },
+        { text: "Tiempo record", value: "timestandar" },
+        { text: "Kilogramos record", value: "kg" },
         {
           text: "Estatus",
           value: "actions",

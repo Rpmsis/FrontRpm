@@ -86,7 +86,7 @@ export default {
       }
     },
     buscarkgfaltantes(item) {
-      if (item.kg > 0 && item.kgControl === 0) {
+      if (item.kg > 0 && item.kgControl === 0 && item.status==="TERMINADO") {
         return "highlight-row"; 
       }
       return "";

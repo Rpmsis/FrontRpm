@@ -3,6 +3,21 @@
     <v-container>
       <v-layout row wrap>
         <v-flex xs12>
+          <v-row justify="center">
+            <v-col cols="12" md="4">
+              <v-card class="mt-10" style="padding: 10px">
+                <v-select
+                  v-model="mes"
+                  :items="meses"
+                  item-text="text"
+                  item-value="value"
+                  label="Buscar por mes.."
+                  :menu-props="{ maxHeight: '150px' }"
+                  @input="mostrarGlobal()"
+                ></v-select>
+              </v-card>
+            </v-col>
+          </v-row>
           <v-row>
             <v-col cols="12" md="6">
               <v-card
@@ -10,7 +25,7 @@
                 style="padding: 10px; text-align: center; font-size: 30px"
               >
                 <v-card-title style="background-color: aliceblue; color: black">
-                  ASIGNADOS:
+                  CON FECHA COMPROMISO:
                 </v-card-title>
                 <center>
                   <h1>
@@ -25,7 +40,7 @@
                 style="padding: 10px; text-align: center; font-size: 30px"
               >
                 <v-card-title style="background-color: aliceblue; color: black">
-                  PORCENTAJE DE TERMINADOS:
+                  PORCENTAJE DE ATENDIDOS:
                 </v-card-title>
 
                 <center>
@@ -62,6 +77,22 @@ export default {
       slider1: 0,
       confechac: 0,
       promedioasig: 0,
+      mes: 0,
+
+      meses: [
+        { text: "Enero", value: 1 },
+        { text: "Febrero", value: 2 },
+        { text: "Marzo", value: 3 },
+        { text: "Abril", value: 4 },
+        { text: "Mayo", value: 5 },
+        { text: "Junio", value: 6 },
+        { text: "Julio", value: 7 },
+        { text: "Agosto", value: 8 },
+        { text: "Septiembre", value: 9 },
+        { text: "Octubre", value: 10 },
+        { text: "Noviembre", value: 11 },
+        { text: "Diciembre", value: 12 },
+      ],
     };
   },
   mounted() {
@@ -78,15 +109,20 @@ export default {
     /* Mostrar estaus global de las actividades */
     async mostrarGlobal() {
       try {
-        const res = await fetch("http://localhost:3001/tableromantt");
+        const res = await fetch("http://localhost:3001/tableromantt/" + this.mes, {
+          headers: {
+            "Content-Type": "application/json",
+            token: localStorage.token,
+          },
+        });
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          console.log(datos);
+          //console.log(datos);
           this.confechac = datos.confechacompromiso;
           this.slider1 = datos.atendidos;
-          this.promedioasig = datos.promedioatendidostotal; 
+          this.promedioasig = datos.promedioatendidostotal;
           //this.datosEficacia = datos.respuesta.respuesta;
         }
       } catch (error) {
