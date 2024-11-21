@@ -319,6 +319,7 @@ export default {
       //console.log(datos);
       this.mostrarubi();
       this.mostrarActividades();
+      this.mostrarAsignacion();
     });
     this.mostrarubi();
     this.mostrarAsignacion();

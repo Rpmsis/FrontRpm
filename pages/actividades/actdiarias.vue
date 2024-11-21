@@ -217,8 +217,7 @@ export default {
           class: "multi-line-header",
         },
         { text: "Kilogramos realizados", value: "kgControl" },
-        { text: "Tiempo record", value: "timestandar" },
-        { text: "Kilogramos record", value: "kg" },
+        { text: "Responsable de asignación", value: "responsable" },
         { text: "Eficiencia", value: "concatenado2" },
         { text: "Estatus", value: "status" },
         {
@@ -297,8 +296,8 @@ export default {
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          this.actividades = datos.respuesta.respuesta;
-          //console.log(this.actividades);
+          this.actividades = datos.respuesta;
+          console.log(this.actividades);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);

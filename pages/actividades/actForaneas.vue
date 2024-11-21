@@ -412,7 +412,12 @@ export default {
     /* Mostrar los datos de la tabla +++*/
     async mostrar() {
       try {
-        const res = await fetch("http://localhost:3005/actividades");
+        const res = await fetch("http://localhost:3005/actividades",{
+          method: "GET",
+          headers: {
+            token: localStorage.token,
+          },
+        });
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
@@ -460,6 +465,7 @@ export default {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          token: localStorage.token,
         },
         body: JSON.stringify(this.formData),
       });
