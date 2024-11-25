@@ -564,7 +564,7 @@ export default {
     },
     async mostrarAsigactivi_mes() {
       if (this.id && this.mes && this.empresa) {
-        //console.log("si existen");
+        console.log(this.id , this.mes , this.empresa);
         try {
           const res = await fetch(
             "http://localhost:3005/asigactivimes/?id=" + this.id + "&mes=" + this.mes,
@@ -616,11 +616,11 @@ export default {
     },
 
     async mostrarControl_mes() {
-      if (this.id && this.mes && this.empresa) {
+      if (this.id && this.mes && this.empresa && this.kilos) {
         //console.log("si existen");
         try {
           const res = await fetch(
-            "http://localhost:3005/controlmes/?id=" + this.id + "&mes=" + this.mes,
+            "http://localhost:3005/controlmes/?id=" + this.id + "&mes=" + this.mes + "&kilos=" + this.kilos,
             {
               method: "GET",
               headers: {

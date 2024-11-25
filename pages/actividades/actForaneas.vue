@@ -35,10 +35,10 @@
                 small
                 class="mr-2"
               >
-                mdi-eye
+               mdi-file-edit
               </v-icon>
             </template>
-            <span>Visualizar</span>
+            <span>Editar</span>
           </v-tooltip>
         </template>
       </v-data-table>
@@ -95,11 +95,19 @@
                 </v-row>
                 <!-- row 1: tipo, proveedor, folio OC -->
                 <v-row>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="3">
                     <v-select
                       v-model="formData.ubicacion"
                       :items="ubicaciones"
                       label="UBICACIÓN DONDE SE REALIZA.."
+                      filled
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12" md="3">
+                    <v-select
+                      v-model="formData.periodo"
+                      :items="periodos"
+                      label="PERIODO"
                       filled
                     ></v-select>
                   </v-col>
@@ -173,7 +181,7 @@
       <!-- Formulario actualizar-->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="actiActualizar" persistent max-width="600px">
+          <v-dialog v-model="actiActualizar" persistent max-width="400px">
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -186,39 +194,14 @@
               <v-divider></v-divider>
               <v-divider></v-divider>
               <v-form class="mt-5" @submit.prevent="actualizaracti">
-                <!-- row 1: tipo, proveedor, folio OC -->
                 <v-row>
-                  <v-col cols="12" md="6">
-                    <v-text-field
-                      v-model="formDataact.actividad"
-                      type="text"
-                      label="* ACTIVIDAD"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="2">
-                    <v-text-field
-                      v-model="formDataact.hora"
-                      type="number"
-                      label="* HORA"
-                      min="1"
-                      max="24"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="2">
-                    <v-text-field
-                      v-model="formDataact.minutos"
-                      type="number"
-                      label="* MINUTOS"
-                      min="1"
-                      max="60"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="2">
-                    <v-text-field
-                      v-model="formDataact.kg"
-                      type="number"
-                      label="* KG"
-                    ></v-text-field>
+                  <v-col cols="12" md="12">
+                    <v-select
+                      v-model="formDataact.periodo"
+                      :items="periodos"
+                      label="PERIODO"
+                      filled
+                    ></v-select>
                   </v-col>
                 </v-row>
                 <center>
@@ -343,7 +326,9 @@ export default {
         { text: "kilogramos", value: "kg" },
         { text: "Producto", value: "producto" },
         { text: "Tiempo estandar", value: "timestandar" },
+        { text: "Periodo", value: "periodo" },
         { text: "Eficiencia", value: "eficiencia" },
+        { text: "Editar periodo", value: "actions" },
       ],
       opcionSeleccionada: "",
       formData: {
@@ -355,17 +340,12 @@ export default {
         kg: "",
         productos: "",
         actividad: "",
+        periodo:"",
       },
-
+      periodos: ["EXTRAORDINARIO", "DIARIO"],
       formDataact: {
         idactividades: "",
-        ubicacion: "",
-        hora: "",
-        minutos: "",
-        kg: "",
-        familias: "",
-        productos: "",
-        actividad: "",
+        periodo:"",
       },
 
       formDataAdd: {
@@ -513,7 +493,7 @@ export default {
     /* ------------------------------------------------------------ */
     /* Api que actualiza los datos  de la tabla */
     async actualizaracti() {
-      const res = await fetch("http://localhost:3005/actualizaractivi", {
+      const res = await fetch("http://localhost:3005/editactividad", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -545,6 +525,7 @@ export default {
       this.formData.minutos = "";
       this.formData.familias = "";
       this.formData.productos = "";
+      this.formData.periodo = "";
       this.opcionSeleccionada = "";
       this.medibles = false;
     },
