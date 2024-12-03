@@ -298,9 +298,13 @@ export default {
         motivoselec: "",
         motivodes: "",
       },
+      /* Guadar evidencia */
       evidencia: {
         archivo: null,
       },
+
+      /* Guardar geolocaizacion */
+      location: null,
     };
   },
   mounted() {},
@@ -537,6 +541,27 @@ export default {
         this.Titulo = datos.mensaje;
         this.Mensaje = " ";
         this.evidencia.archivo = null;
+      }
+    },
+
+    /* Guardar geolocalizacion */
+
+    getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            this.location = `Lat: ${lat}, Lon: ${lon}`;
+            console.log(this.location);
+          },
+          (error) => {
+            console.error(error);
+            this.location = "Error al obtener ubicación";
+          }
+        );
+      } else {
+        console.error("La geolocalización no es compatible con este navegador.");
       }
     },
   },

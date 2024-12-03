@@ -81,24 +81,16 @@
                     :items="tipo"
                     label="Tipo"
                     v-model="datoNuevo.tipocontmate"
-                    @change="cambiarotro1"
                     filled
                   ></v-select>
-                  <div v-show="habilitarotro1">
-                    <v-text-field v-model="otrotipo" label="Especifica.."></v-text-field>
-                  </div>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-select
                     :items="espec"
                     label="ESPECIFICACIÓN"
                     v-model="datoNuevo.espeficicacion"
-                    @change="cambiarotro2"
                     filled
                   ></v-select>
-                  <div v-show="habilitarotro2">
-                    <v-text-field v-model="otroesp" label="Especifica.."></v-text-field>
-                  </div>
                 </v-col>
               </v-row>
               <!-- row 4:  DESCRIPCIÓN ADICIONAL -->
@@ -176,7 +168,7 @@ export default {
       contmat: false,
       infra: false,
       maqui: false,
-      tipoActivo: [ "INFRAESTRUCTURA", "EQUIPOS DE CONTENCIÓN","MAQUINARIA", "EQUIPOS PARA MANEJO DE MATERIALES"],
+      tipoActivo: [ "INFRAESTRUCTURA", "EQUIPOS DE CONTENCIÓN","EQUIPOS DE PRODUCCION"],
       clasificacion: ["A", "B", "C"],
       tipo: [
         "BASCULANTE/GÓNDOLA",
@@ -202,8 +194,6 @@ export default {
         "CERROJO PARA CANDADO",
         "OTRO",
       ],
-      habilitarotro1: false,
-      habilitarotro2: false,
       datoNuevo: {
         folioActivo: "",
         fabricacion: "",
@@ -255,7 +245,7 @@ export default {
 
     async cambiar(){
       const tipo = this.datoNuevo.tipoAct;
-      if(tipo === "EQUIPOS DE CONTENCIÓN" || tipo === "EQUIPOS PARA MANEJO DE MATERIALES"){
+      if(tipo === "EQUIPOS DE CONTENCIÓN"){
         this.contmat = true;
         this.infra = false;
         this.maqui = false;
@@ -272,7 +262,7 @@ export default {
             console.log("Tipo de dato",this.datoNuevo.tipoAct)
           }
           else{
-            if(tipo === "MAQUINARIA"){
+            if(tipo === "EQUIPOS DE PRODUCCION"){
               this.maqui = true;
               this.infra = false;
               this.contmat = false;
@@ -282,17 +272,6 @@ export default {
 
             }
           }
-      }
-
-    },
-
-    async enviarComparar(){
-      console.log(this.datoNuevo.tipocontmate);
-      const otro1 = this.datoNuevo.tipocontmate;
-      console.log(this.datoNuevo.espeficicacion);
-      const otro2 = this.datoNuevo.espeficicacion;
-      if(otro1 === "ESPECIAL/OTRO"){
-        this.datoNuevo.tipocontmate = this.otrotipo;
       }
 
     },
@@ -345,29 +324,6 @@ export default {
       this.otrotipo = "";
       this.habilitarotro2 = false;
       this.otroesp = "";
-    },
-
-    async cambiarotro1() {
-      //console.log(this.datoNuevo.tipocontmate);
-      const tipo = this.datoNuevo.tipocontmate;
-      if (tipo === "ESPECIAL/OTRO") {
-        this.habilitarotro1 = true;
-        //console.log(this.otrotipo);
-      } else {
-        this.habilitarotro1 = false;
-        this.otrotipo = "";
-      }
-    },
-    async cambiarotro2() {
-      //console.log(this.datoNuevo.espeficicacion);
-      const esp = this.datoNuevo.espeficicacion;
-      if (esp === "OTRO") {
-        this.habilitarotro2 = true;
-        //console.log(this.datoNuevo.espeficicacion);
-      } else {
-        this.habilitarotro2 = false;
-        this.otroesp = "";
-      }
     },
   },
 };

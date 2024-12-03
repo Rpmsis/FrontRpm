@@ -1,49 +1,47 @@
 <template>
   <v-container>
-    <v-row justify="center">
-      <v-col cols="12" md="4">
-        <v-card class="mt-10" style="padding: 10px">
-          <v-select
-            v-model="empresa"
-            :items="empresas"
-            label="Buscar por empresa.."
-            :menu-props="{ maxHeight: '150px' }"
-            @input="mostrarAsignadas(), mostrarTerminadas(), mostrarActividades()"
-          ></v-select>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="4">
-        <v-card class="mt-10" style="padding: 10px">
-          <v-select
-            v-model="id"
-            :items="actividades"
-            item-text="text"
-            item-value="id"
-            label="Buscar por actividad.."
-            :menu-props="{ maxHeight: '100px' }"
-            @input="mostrarAsigactivi_mes(), mostrarControl_mes()"
-          ></v-select>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="4">
-        <v-card class="mt-10" style="padding: 10px">
-          <v-select
-            v-model="mes"
-            :items="meses"
-            item-text="text"
-            item-value="value"
-            label="Buscar por mes.."
-            :menu-props="{ maxHeight: '100px' }"
-            @input="mostrarAsigactivi_mes(), mostrarControl_mes()"
-          ></v-select>
-        </v-card>
-      </v-col>
-    </v-row>
+    <div style="margin-bottom: 10%">
+      <v-card class="mt-10" style="padding: 10px; position: fixed; z-index: 1">
+        <v-row justify="center" max-width: 450%>
+          <v-col cols="12" md="3">
+            <v-select
+              v-model="empresa"
+              :items="empresas"
+              label="Buscar por empresa.."
+              :menu-props="{ maxHeight: '150px' }"
+              @change="mostrarAsignadas(), mostrarTerminadas(), mostrarActividades()"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" md="3">
+            <v-select
+              v-model="mes"
+              :items="meses"
+              item-text="text"
+              item-value="value"
+              label="Buscar por mes.."
+              :menu-props="{ maxHeight: '100px' }"
+              @change="mostrarAsigactivi_mes(), mostrarControl_mes()"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-select
+              v-model="id"
+              :items="actividades"
+              item-text="text"
+              item-value="id"
+              label="Buscar por actividad.."
+              style="width: 450px"
+              @change="mostrarAsigactivi_mes(), mostrarControl_mes()"
+            ></v-select>
+          </v-col>
+        </v-row>
+      </v-card>
+    </div>
     <v-row justify="center">
       <v-col cols="12" md="6">
         <v-card class="mt-10" style="padding: 10px" color="#f3f3ef">
           <div class="tkcajas">
-            <h2>TIEMPO DE LA ACTIVIDAD POR MES</h2>
+            <h2>TIEMPO DE LA ACTIVIDAD EN EL MES</h2>
             <h1>{{ horas }}hr con {{ minutos }}min</h1>
           </div>
         </v-card>
@@ -51,7 +49,7 @@
       <v-col cols="12" md="6">
         <v-card class="mt-10" style="padding: 10px" color="#f3f3ef">
           <div class="tkcajas">
-            <h2>KILOS DE LA ACTIVIDAD POR MES</h2>
+            <h2>KILOS DE LA ACTIVIDAD EN EL MES</h2>
             <h1>{{ kilos }}kg</h1>
           </div>
         </v-card>
@@ -119,6 +117,11 @@
             </div>
           </template>
         </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" md="12">
+        //Implementar geo
       </v-col>
     </v-row>
   </v-container>
@@ -352,16 +355,11 @@ export default {
           categories: [],
           labels: {
             style: {
-              fontSize: "15px", // Tamaño de fuente
+              fontSize: "10px",
               fontFamily: "Arial, sans-serif",
               fontWeight: "normal",
-              color: "#FFFFFF !important",
-              whiteSpace: "pre-line", // Permite saltos de línea
+              color: "#FFFFFF !important", // Aseguramos que las etiquetas del eje X sean blancas
             },
-            offsetX: 0,
-            offsetY: 5,
-            rotate: -30, // Ajusta el ángulo si es necesario
-            align: "center",
           },
         },
         yaxis: {
@@ -410,13 +408,12 @@ export default {
           borderColor: "#111",
           strokeDashArray: 7,
         },
-        
       },
 
       // Datos de las series4
       series4: [
         {
-          name: "Kilogramos en minutos", // Serie para las barras
+          name: "Kilogramos", // Serie para las barras
           type: "bar", // Tipo barra
           data: [], // Datos de ejemplo para barras
         },
@@ -428,7 +425,7 @@ export default {
           id: "EFICIENCIA-COLABORADORES",
         },
         title: {
-          text: "KILOGRAMOS REALIZADO POR COLABORADOR",
+          text: "KILOGRAMOS REALIZADOS POR COLABORADOR",
           align: "center",
           style: {
             fontSize: "15px", // Tamaño de la fuente
@@ -526,6 +523,7 @@ export default {
 
   computed: {},
   methods: {
+    //Si funciona
     async mostrarAsignadas() {
       try {
         const res = await fetch("http://localhost:3005/asignadasmes/" + this.empresa, {
@@ -542,6 +540,16 @@ export default {
         this.options.xaxis.categories = mes;
         this.options = { ...this.options };
         this.$set(this.series, 0, { ...this.series[0], data: asignados });
+
+        this.mes = 0;
+        this.horas = 0;
+        this.minutos = 0;
+        this.kilos = 0;
+        const tiempo = [];
+        this.$set(this.series3, 0, { ...this.series3[0], data: tiempo });
+
+        const kilos = [];
+        this.$set(this.series4, 0, { ...this.series4[0], data: kilos });
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
@@ -564,7 +572,7 @@ export default {
     },
     async mostrarAsigactivi_mes() {
       if (this.id && this.mes && this.empresa) {
-        console.log(this.id , this.mes , this.empresa);
+        console.log(this.id, this.mes, this.empresa);
         try {
           const res = await fetch(
             "http://localhost:3005/asigactivimes/?id=" + this.id + "&mes=" + this.mes,
@@ -616,11 +624,10 @@ export default {
     },
 
     async mostrarControl_mes() {
-      if (this.id && this.mes && this.empresa && this.kilos) {
-        //console.log("si existen");
+      if (this.id && this.mes && this.empresa) {
         try {
           const res = await fetch(
-            "http://localhost:3005/controlmes/?id=" + this.id + "&mes=" + this.mes + "&kilos=" + this.kilos,
+            "http://localhost:3005/controlmes/?id=" + this.id + "&mes=" + this.mes,
             {
               method: "GET",
               headers: {
@@ -636,17 +643,24 @@ export default {
           this.options3.xaxis.categories = nombres;
           this.options3 = { ...this.options3 };
 
-          //tooltip
-          
+          this.options4.xaxis.categories = nombres;
+          this.options4 = { ...this.options4 };
 
           const tiempo = datos.tiempo;
           this.$set(this.series3, 0, { ...this.series3[0], data: tiempo });
+
+          const kilos = datos.kilos;
+          this.$set(this.series4, 0, { ...this.series4[0], data: kilos });
         } catch (error) {
           console.error("Error al obtener los datos:", error);
         }
       } else {
         console.log("falta uno");
       }
+    },
+
+    async buscar() {
+      console.log(this.id && this.mes && this.empresa);
     },
   },
 };
@@ -659,5 +673,11 @@ export default {
 .tkcajas {
   color: black;
   text-align: center;
+}
+.centrarbtn {
+  margin-top: 5%;
+}
+.v-application .mt-10 {
+  margin-top: 0px !important;
 }
 </style>

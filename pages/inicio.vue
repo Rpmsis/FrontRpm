@@ -169,35 +169,35 @@
             </v-col>
             <v-col cols="12" md="6">
               <v-card>
-                <v-card-title>ACTIVOS CONSUMIBLES</v-card-title>
+                <v-card-title>COMSUMIBLES/ACTIVOS FIJOS</v-card-title>
                 <v-card class="v-sheet theme--dark">
                   <a href="/consumibles/consumible">
-                    <h4 class="modulo">Alta de consumibles</h4>
+                    <h4 class="modulo">ALTA/COMPRA</h4>
                   </a>
                 </v-card>
                 <v-card class="v-sheet theme--dark">
                   <a href="/consumibles/codigobarras">
-                    <h4 class="modulo">Lista de consumibles</h4>
+                    <h4 class="modulo">LISTA</h4>
                   </a>
                 </v-card>
                 <v-card class="v-sheet theme--dark">
                   <a href="/consumibles/inventario">
-                    <h4 class="modulo">Consumo</h4>
+                    <h4 class="modulo">ENTREGA</h4>
                   </a>
                 </v-card>
                 <v-card class="v-sheet theme--dark">
                   <a href="/consumibles/devolucion">
-                    <h4 class="modulo">Devolución</h4>
+                    <h4 class="modulo">DEVOLUCIÓN</h4>
                   </a>
                 </v-card>
                 <v-card class="v-sheet theme--dark">
                   <a href="/consumibles/vigenciaprestamo">
-                    <h4 class="modulo">Vigencia de prestamos</h4>
+                    <h4 class="modulo">P. VENCIDOS</h4>
                   </a>
                 </v-card>
                 <v-card class="v-sheet theme--dark">
                   <a href="/consumibles/minimo">
-                    <h4 class="modulo">Ultimas piezas</h4>
+                    <h4 class="modulo">P. MINIMOS</h4>
                   </a>
                 </v-card>
               </v-card>

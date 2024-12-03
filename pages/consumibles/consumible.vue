@@ -28,7 +28,7 @@
                 dark
                 v-bind="attrs"
                 v-on="on"
-                @click="compra(item.idconsumibles)"
+                @click="compra(item)"
                 medium
                 class="mr-4"
               >
@@ -46,7 +46,7 @@
       <!-- Formulario insertar CONSUMIBLE -->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="consu" persistent max-width="800px">
+          <v-dialog v-model="consu" max-width="800px" persistent>
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -80,7 +80,7 @@
                   <v-col cols="12" md="4">
                     <v-text-field
                       type="number"
-                      label="Minimo de productos"
+                      label="MINIMO DE PRODUCTOS"
                       v-model="formData.minimo"
                       filled
                     ></v-text-field>
@@ -97,7 +97,7 @@
                     ></v-text-field>
                   </v-col>
                 </v-row>
-                
+
                 <center>
                   <v-btn block outlined class="btnEnviar" type="submit" color="success"
                     >Guardar</v-btn
@@ -112,11 +112,11 @@
       <!-- Formulario compra-->
       <template>
         <div class="pa-4 text-center">
-          <v-dialog v-model="consucompra" persistent max-width="1200px">
+          <v-dialog v-model="consucompra" max-width="1200px" persistent>
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn icon @click="(consucompra = false), limpiarFormularioCompra(), mostrarProveedores()">
+                <v-btn icon @click="(consucompra = false), limpiarFormularioCompra()">
                   <v-icon style="font-size: 30px"
                     >mdi-close theme--dark red--text</v-icon
                   ></v-btn
@@ -130,7 +130,7 @@
                     <h2>ID del activo:</h2>
                     <center>
                       <h4 style="font-size: 35px; color: chocolate">
-                        {{ formDataact.folioActivo }}
+                        {{ formData.folioActivo }}
                       </h4>
                     </center>
                   </v-col>
@@ -140,7 +140,7 @@
                       label="CÓDIGO DE BARRAS"
                       clearable
                       v-model="formData.codigobarras"
-                       @input="formData.codigobarras = formData.codigobarras.toUpperCase()"
+                      @input="formData.codigobarras = formData.codigobarras.toUpperCase()"
                       filled
                     ></v-text-field>
                   </v-col>
@@ -152,17 +152,20 @@
                       v-model="formData.proveedor"
                       label="Proveedor"
                       filled
-                      :menu-props="{ bottom: true, offsetY: true, }"
-                      
+                      :menu-props="{ bottom: true, offsetY: true }"
                     >
-                    <template v-slot:prepend-item>
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-text-field v-model="searchProvInsert" placeholder="Search" @input="searchProvedorInsert "></v-text-field>
-                        </v-list-item-content>
-                      </v-list-item>
-                      <v-divider class="mt-2"></v-divider>
-                    </template>
+                      <template v-slot:prepend-item>
+                        <v-list-item>
+                          <v-list-item-content>
+                            <v-text-field
+                              v-model="searchProvInsert"
+                              placeholder="Search"
+                              @input="searchProvedorInsert"
+                            ></v-text-field>
+                          </v-list-item-content>
+                        </v-list-item>
+                        <v-divider class="mt-2"></v-divider>
+                      </template>
                     </v-select>
                   </v-col>
                   <v-col cols="12" md="4">
@@ -203,7 +206,6 @@
                     ></v-text-field>
                   </v-col>
                 </v-row>
-
                 <center>
                   <v-btn block outlined color="orange" class="btnEnviar" type="submit"
                     >Registrar compra</v-btn
@@ -221,6 +223,41 @@
                 :sort-by="['idcompras']"
                 :sort-desc="true"
               >
+                <template v-slot:item.actions1="{ item }">
+                  <v-tooltip bottom v-if="item.validado === 'true'">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        icon
+                        :href="'https://192.168.1.115:3002/Ticket/' + item.idcompras"
+                        class="pa-3"
+                      >
+                        <v-icon color="red" dark v-bind="attrs" small class="mr-2">
+                          mdi-printer
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                  </v-tooltip>
+                  <v-tooltip bottom v-else>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn icon class="pa-3">
+                        <v-icon color="yellow" dark v-bind="attrs" small class="mr-2">
+                          mdi-account-tie-hat
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                  </v-tooltip>
+                </template>
+                <template v-slot:item.actions2="{ item }">
+                  <v-tooltip bottom v-if="item.validado === 'false'">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn icon @click="editarP(item)" class="pa-3">
+                        <v-icon dark v-bind="attrs" small class="mr-2">
+                          mdi-pencil
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                  </v-tooltip>
+                </template>
               </v-data-table>
             </v-card>
           </v-dialog>
@@ -245,11 +282,25 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="edit" max-width="500" persistent>
+      <v-card>
+        <v-card-title class="text-h4"> Editar cantidad </v-card-title>
+        <v-text-field
+          v-model="actcompra.cantidad"
+          type="number"
+          label="Cantidad"
+          filled
+        ></v-text-field>
+        <v-btn block color="primary" text @click="actualizarP"> Actualizar </v-btn>
+        <v-btn color="primary" text @click="edit = false"> Cerrar </v-btn>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 /* Fijoo */
 <script>
+import io from "socket.io-client";
 import ImageZoom from "~/components/ImageZoom.vue";
 export default {
   components: {
@@ -258,6 +309,7 @@ export default {
   layout: "barra",
   data() {
     return {
+      edit: false,
       alerta: false,
       numpiezas: false,
       kilomg: false,
@@ -280,16 +332,9 @@ export default {
         "FERRETERIA",
         "SOLDADURA Y CORTE",
         "ACEITES",
-        "SERVICIOS"
+        "SERVICIOS",
       ],
       unidadesmedida: ["PIEZAS", "LITROS", "KILOS", "EVENTO"],
-
-      /* BUSCAR PROVEEDOR */
-      proveedores:[],
-      searchProvInsert:"",
-      proveedoresFijos: [],
-      /* --------------- */
-
       search: "",
       consu: false,
       consucompra: false,
@@ -339,6 +384,8 @@ export default {
         { text: "Costo total", value: "costototal" },
         { text: "Valor inventario", value: "valorinventario" },
         { text: "Descripción", value: "descrip" },
+        { text: "Editar", value: "actions2" },
+        { text: "Imprimir", value: "actions1" },
       ],
 
       formData: {
@@ -353,7 +400,7 @@ export default {
         costo: "",
         codigobarras: "",
         descrip: "",
-        minimo: ""
+        minimo: "",
       },
 
       formDataact: {
@@ -369,18 +416,61 @@ export default {
         codigobarras: "",
         descrip: "",
       },
+      actcompra: {
+        idconsumibles: "",
+        idcompras: "",
+        cantidad: 0,
+      },
 
-      nombre: ""
+      /* BUSCAR PROVEEDOR */
+      proveedores: [],
+      searchProvInsert: "",
+      proveedoresFijos: [],
+      /* --------------- */
     };
   },
   mounted() {
+    /* this.socket = io("http://192.168.56.1:3001/");
+    this.socket.on("validacion", (datos) => {
+      this.alerta = true;
+      this.Titulo = "¡Aviso!";
+      this.Mensaje = "Se valido la entrada de proveedor";
+      this.mostrar();
+      this.TT();
+    }); */
     this.mostrar();
-    this.mostrarDatos();
+    this.TT();
     this.mostrarProveedores();
   },
 
   computed: {},
   methods: {
+    /* Agregar buscador */
+    async searchProvedorInsert() {
+      if (!this.searchProvInsert) {
+        this.proveedores = this.proveedoresFijos;
+      }
+      this.proveedores = this.proveedoresFijos.filter((provee) => {
+        return provee.toLowerCase().indexOf(this.searchProvInsert.toLowerCase()) > -1;
+      });
+    },
+    async TT() {
+      const res = await fetch("http://localhost:3001/proveedores", {
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.token,
+        },
+      });
+      /* this.prov = await res.json();
+      console.log(this.prov); */
+    },
+    async editarP(item) {
+      this.actcompra.cantidad = item.cantidad;
+      console.log(item);
+      this.actcompra.idconsumibles = item.folioActivo;
+      this.actcompra.idcompras = item.idcompras;
+      this.edit = true;
+    },
     async mostrarProveedores() {
       try {
         const res = await fetch("http://localhost:3001/proveedores");
@@ -389,47 +479,17 @@ export default {
           console.error("Error al obtener los datos:", error);
         } else {
           //this.proveedoresFijos = datos.respuesta.respuesta;
-          console.log(datos.respuesta.respuesta);
-          this.proveedoresFijos= datos.respuesta.respuesta.map((filtro) => filtro.nombre);
-          console.log(this.proveedoresFijos);
+          //console.log(datos.respuesta.respuesta);
+          this.proveedoresFijos = datos.respuesta.respuesta.map(
+            (filtro) => filtro.nombre
+          );
+          //console.log(this.proveedoresFijos);
           this.proveedores = [...this.proveedoresFijos];
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
     },
-
-    /* Agregar buscador */
-    async searchProvedorInsert(){
-      if (!this.searchProvInsert) {
-        this.proveedores = this.proveedoresFijos;
-      }
-      this.proveedores = this.proveedoresFijos.filter((provee) => {
-        return provee.toLowerCase().indexOf(this.searchProvInsert.toLowerCase()) > -1;
-      });
-    },
-
-    async mostrarDatos() {
-      try {
-        const res = await fetch("http://localhost:3001/verificarpermiso", {
-          method: "GET",
-          headers: {
-            token: localStorage.token,
-          },
-        });
-        const datos = await res.json();
-        console.log(datos.respuesta);
-        if (res.status == 404) {
-          console.error("Error al obtener los datos:", error);
-        } else {
-          this.nombre= datos.respuesta;
-          //console.log(datos.respuesta.respuesta);
-        } 
-      } catch (error) {
-        console.error("Error al obtener los datos:", error);
-      }
-    },
-
     /* Mostrar los datos de la tabla consumibles*/
     async mostrar() {
       try {
@@ -439,7 +499,7 @@ export default {
           console.error("Error al obtener los datos:", error);
         } else {
           this.consumibles = datos.respuesta.respuesta;
-          console.log(datos.respuesta.respuesta);
+          //console.log(datos.respuesta.respuesta);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -465,14 +525,10 @@ export default {
     /* Abre el formulario de comprad */
     async compra(item) {
       console.log(item);
-      const objeto = this.consumibles.find((filtro) => filtro.idconsumibles === item);
-      this.formDataact = objeto;
-      console.log(this.formDataact);
       this.consucompra = true;
-      this.formData.folioActivo = this.formDataact.folioActivo;
-      this.formData.idconsumibles = this.formDataact.idconsumibles;
-      this.formData.codigobarras = this.formDataact.codigobarras;
-      this.mostrarCompras(this.formDataact.folioActivo);
+      this.formData.folioActivo = item.folioActivo;
+      this.formData.idconsumibles = item.idconsumibles;
+      this.mostrarCompras(item.folioActivo);
     },
     /* -------------------------------- */
 
@@ -542,8 +598,33 @@ export default {
       this.formData.cantidad = "";
       this.formData.costo = "";
       this.formData.descrip = "";
-      this.searchProvInsert="";
     },
+
+    /* Actualizar piezas */
+    async actualizarP() {
+      const res = await fetch("http://localhost:3001/actualizarcompra", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.actcompra),
+      });
+      const datos = await res.json();
+      if (res.status === 400) {
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje = datos.mensaje;
+      } else {
+        this.alerta = true;
+        //this.Titulo = "El ID del activo es: ";
+        this.Titulo = "Datos actualizados";
+        this.Mensaje = datos.mensaje;
+        this.edit = false;
+        this.mostrarCompras(this.formData.folioActivo);
+        this.mostrar();
+      }
+    },
+    /* ----------------- */
   },
 };
 </script>
