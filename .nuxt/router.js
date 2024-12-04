@@ -13,6 +13,7 @@ const _2c0b7c1e = () => interopDefault(import('..\\pages\\actividades\\asignacio
 const _9d1964f8 = () => interopDefault(import('..\\pages\\actividades\\control.vue' /* webpackChunkName: "pages/actividades/control" */))
 const _2afd93b3 = () => interopDefault(import('..\\pages\\actividades\\editeficienciakg.vue' /* webpackChunkName: "pages/actividades/editeficienciakg" */))
 const _4f257e9e = () => interopDefault(import('..\\pages\\actividades\\eficacia.vue' /* webpackChunkName: "pages/actividades/eficacia" */))
+const _7b8211dc = () => interopDefault(import('..\\pages\\actividades\\huella.vue' /* webpackChunkName: "pages/actividades/huella" */))
 const _329c3024 = () => interopDefault(import('..\\pages\\actividades\\porusuario.vue' /* webpackChunkName: "pages/actividades/porusuario" */))
 const _39f3443f = () => interopDefault(import('..\\pages\\actividades\\tablerologistica.vue' /* webpackChunkName: "pages/actividades/tablerologistica" */))
 const _64883dae = () => interopDefault(import('..\\pages\\activos\\activosFijos.vue' /* webpackChunkName: "pages/activos/activosFijos" */))
@@ -30,6 +31,7 @@ const _590682d1 = () => interopDefault(import('..\\pages\\consumibles\\consumibl
 const _301e4f84 = () => interopDefault(import('..\\pages\\consumibles\\devolucion.vue' /* webpackChunkName: "pages/consumibles/devolucion" */))
 const _396739e7 = () => interopDefault(import('..\\pages\\consumibles\\inventario.vue' /* webpackChunkName: "pages/consumibles/inventario" */))
 const _6a298ca2 = () => interopDefault(import('..\\pages\\consumibles\\minimo.vue' /* webpackChunkName: "pages/consumibles/minimo" */))
+const _657be076 = () => interopDefault(import('..\\pages\\consumibles\\verificar.vue' /* webpackChunkName: "pages/consumibles/verificar" */))
 const _02551ed3 = () => interopDefault(import('..\\pages\\consumibles\\vigenciaprestamo.vue' /* webpackChunkName: "pages/consumibles/vigenciaprestamo" */))
 const _5dae19ac = () => interopDefault(import('..\\pages\\graficas\\graficas.vue' /* webpackChunkName: "pages/graficas/graficas" */))
 const _0865f59c = () => interopDefault(import('..\\pages\\idusuarios\\idusuarios.vue' /* webpackChunkName: "pages/idusuarios/idusuarios" */))
@@ -95,6 +97,10 @@ export const routerOptions = {
     path: "/actividades/eficacia",
     component: _4f257e9e,
     name: "actividades-eficacia"
+  }, {
+    path: "/actividades/huella",
+    component: _7b8211dc,
+    name: "actividades-huella"
   }, {
     path: "/actividades/porusuario",
     component: _329c3024,
@@ -163,6 +169,10 @@ export const routerOptions = {
     path: "/consumibles/minimo",
     component: _6a298ca2,
     name: "consumibles-minimo"
+  }, {
+    path: "/consumibles/verificar",
+    component: _657be076,
+    name: "consumibles-verificar"
   }, {
     path: "/consumibles/vigenciaprestamo",
     component: _02551ed3,

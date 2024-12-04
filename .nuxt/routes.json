@@ -63,6 +63,13 @@
     "_name": "_4f257e9e"
   },
   {
+    "name": "actividades-huella",
+    "path": "/actividades/huella",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\huella.vue",
+    "chunkName": "pages/actividades/huella",
+    "_name": "_7b8211dc"
+  },
+  {
     "name": "actividades-porusuario",
     "path": "/actividades/porusuario",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\porusuario.vue",
@@ -180,6 +187,13 @@
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\consumibles\\\\minimo.vue",
     "chunkName": "pages/consumibles/minimo",
     "_name": "_6a298ca2"
+  },
+  {
+    "name": "consumibles-verificar",
+    "path": "/consumibles/verificar",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\consumibles\\\\verificar.vue",
+    "chunkName": "pages/consumibles/verificar",
+    "_name": "_657be076"
   },
   {
     "name": "consumibles-vigenciaprestamo",

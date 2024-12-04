@@ -4,12 +4,22 @@
       <v-layout row wrap style="padding: 20px">
         <v-flex>
           <v-row>
-            <v-col cols="12" md="12">
+            <v-col cols="12" md="6">
               <v-card>
                 <v-card-title>REPORTES</v-card-title>
                 <v-card class="v-sheet theme--dark">
                   <a href="/graficas/graficas">
                     <h4 class="modulo">Reporte en graficas</h4>
+                  </a>
+                </v-card>
+              </v-card>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-card>
+                <v-card-title>huella</v-card-title>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/actividades/huella">
+                    <h4 class="modulo">Registrar huella</h4>
                   </a>
                 </v-card>
               </v-card>
@@ -173,6 +183,11 @@
                 <v-card class="v-sheet theme--dark">
                   <a href="/consumibles/consumible">
                     <h4 class="modulo">ALTA/COMPRA</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/consumibles/verificar">
+                    <h4 class="modulo">VALIDACIONES</h4>
                   </a>
                 </v-card>
                 <v-card class="v-sheet theme--dark">

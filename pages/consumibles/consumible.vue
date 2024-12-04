@@ -258,6 +258,17 @@
                     </template>
                   </v-tooltip>
                 </template>
+                <template v-slot:item.actions3="{ item }">
+                  <v-tooltip bottom v-if="item.validado === 'false'">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn icon @click="eliminarP(item)" class="pa-3">
+                        <v-icon dark v-bind="attrs" small class="mr-2">
+                          mdi-delete
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                  </v-tooltip>
+                </template>
               </v-data-table>
             </v-card>
           </v-dialog>
@@ -295,6 +306,19 @@
         <v-btn color="primary" text @click="edit = false"> Cerrar </v-btn>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="delet" max-width="500" persistent>
+      <v-card>
+        <v-card-title class="text-h4"> Eliminar compra </v-card-title>
+        <v-textarea
+          v-model="deletcompra.motivo"
+          type="text"
+          label="Motivo"
+          filled
+        ></v-textarea>
+        <v-btn block color="error" text @click="deletP"> Eliminar </v-btn>
+        <v-btn color="primary" text @click="delet = false"> Cerrar </v-btn>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -310,6 +334,7 @@ export default {
   data() {
     return {
       edit: false,
+      delet: false,
       alerta: false,
       numpiezas: false,
       kilomg: false,
@@ -385,6 +410,7 @@ export default {
         { text: "Valor inventario", value: "valorinventario" },
         { text: "Descripción", value: "descrip" },
         { text: "Editar", value: "actions2" },
+        { text: "Eliminar", value: "actions3" },
         { text: "Imprimir", value: "actions1" },
       ],
 
@@ -416,10 +442,17 @@ export default {
         codigobarras: "",
         descrip: "",
       },
+
       actcompra: {
         idconsumibles: "",
         idcompras: "",
         cantidad: 0,
+      },
+
+      deletcompra: {
+        idconsumibles: "",
+        idcompras: "",
+        motivo: "",
       },
 
       /* BUSCAR PROVEEDOR */
@@ -430,14 +463,14 @@ export default {
     };
   },
   mounted() {
-    /* this.socket = io("http://192.168.56.1:3001/");
-    this.socket.on("validacion", (datos) => {
+    this.socket = io("http://192.168.1.97:3003");
+    this.socket.on("verificado", (datos) => {
+      console.log(datos);
       this.alerta = true;
       this.Titulo = "¡Aviso!";
       this.Mensaje = "Se valido la entrada de proveedor";
       this.mostrar();
-      this.TT();
-    }); */
+    });
     this.mostrar();
     this.TT();
     this.mostrarProveedores();
@@ -464,6 +497,7 @@ export default {
       /* this.prov = await res.json();
       console.log(this.prov); */
     },
+    /* Abre el formulario de editar*/
     async editarP(item) {
       this.actcompra.cantidad = item.cantidad;
       console.log(item);
@@ -471,6 +505,15 @@ export default {
       this.actcompra.idcompras = item.idcompras;
       this.edit = true;
     },
+
+    /* Abre el formulario de eliminar*/
+    async eliminarP(item) {
+      console.log(item);
+      this.deletcompra.idconsumibles = item.folioActivo;
+      this.deletcompra.idcompras = item.idcompras;
+      this.delet = true;
+    },
+
     async mostrarProveedores() {
       try {
         const res = await fetch("http://localhost:3001/proveedores");
@@ -508,6 +551,7 @@ export default {
 
     /* Mostrar los datos de la tabla compras*/
     async mostrarCompras(folio) {
+      //console.log(folio);
       try {
         const res = await fetch(`http://localhost:3001/compras?compra=${folio}`);
         const datos = await res.json();
@@ -522,9 +566,9 @@ export default {
       }
     },
 
-    /* Abre el formulario de comprad */
+    /* Abre el formulario de compra*/
     async compra(item) {
-      console.log(item);
+      //console.log(item.folioActivo);
       this.consucompra = true;
       this.formData.folioActivo = item.folioActivo;
       this.formData.idconsumibles = item.idconsumibles;
@@ -579,8 +623,7 @@ export default {
         this.Mensaje = " ";
         this.limpiarFormularioCompra();
         this.mostrarCompras(datos.mensaje);
-        this.mostrar();
-        this.consucompra = false;
+        console.log(datos.mensaje);
       }
     },
     /* ------------------------------------------ */
@@ -617,9 +660,36 @@ export default {
       } else {
         this.alerta = true;
         //this.Titulo = "El ID del activo es: ";
-        this.Titulo = "Datos actualizados";
-        this.Mensaje = datos.mensaje;
+        this.Titulo = "Compra editada";
+        this.Mensaje = "";
         this.edit = false;
+        this.mostrarCompras(this.formData.folioActivo);
+        this.mostrar();
+      }
+    },
+    /* ----------------- */
+
+    /* Actualizar piezas */
+    async deletP() {
+      const res = await fetch("http://localhost:3001/eliminarcompra", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.deletcompra),
+      });
+      const datos = await res.json();
+      if (res.status === 400) {
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje = datos.mensaje;
+      } else {
+        this.alerta = true;
+        //this.Titulo = "El ID del activo es: ";
+        this.Titulo = "Compra eliminada";
+        this.Mensaje = "";
+        this.delet = false;
+        this.deletcompra.motivo= "";
         this.mostrarCompras(this.formData.folioActivo);
         this.mostrar();
       }
