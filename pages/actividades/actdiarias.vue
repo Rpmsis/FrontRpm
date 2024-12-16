@@ -3,9 +3,9 @@
     <v-container>
       <v-layout row wrap>
         <v-flex xs12>
-          <v-row>
-            <v-col cols="12" md="3">
-              <v-card
+          <v-row justify="center">
+            <v-col cols="12" md="4">
+              <!-- <v-card
                 class="mt-5"
                 style="padding: 10px; text-align: center; font-size: 30px"
               >
@@ -17,24 +17,45 @@
                     {{ asignaciones }}
                   </h1>
                 </center>
-              </v-card>
-            </v-col>
-            <v-col cols="12" md="3">
+              </v-card> -->
               <v-card
-                class="mt-5"
-                style="padding: 10px; text-align: center; font-size: 30px"
+                class="mx-auto mt-5"
+                max-width="344"
+                outlined
+                elevation="24"
+                color="white"
               >
-                <v-card-title style="background-color: aliceblue; color: black">
-                  PORCENTAJE:
-                </v-card-title>
+                <v-list-item three-line>
+                  <v-list-item-content style="color: black">
+                    <div class="text-overline mb-4">EFICACIA</div>
+                    <v-list-item-title class="text-h5 mb-1">
+                      ASIGNADAS
+                    </v-list-item-title>
+                    <v-list-item-subtitle style="color: black"
+                      >Porcentaje de actividades TERMINADAS en el
+                      día.</v-list-item-subtitle
+                    >
+                  </v-list-item-content>
 
-                <center>
-                  <h1>{{ promedioasig }}%</h1>
-                </center>
+                  <v-list-item-avatar
+                    style="font-size: 25px"
+                    tile
+                    size="100"
+                    color="orange"
+                  >
+                    {{ slider1 }}/{{ asignaciones }}</v-list-item-avatar
+                  >
+                </v-list-item>
+
+                <v-card-actions>
+                  <v-progress-linear v-model="promedioasig" height="25" color="orange">
+                    <strong>{{ Math.ceil(promedioasig) }}%</strong>
+                  </v-progress-linear>
+                </v-card-actions>
               </v-card>
             </v-col>
-            <v-col cols="12" md="6">
-              <v-card
+            <v-col cols="12" md="4">
+              <!-- <v-card
                 class="mt-5"
                 style="padding: 10px; text-align: center; font-size: 30px"
               >
@@ -44,11 +65,35 @@
                 <center>
                   <h1>{{ promedio }}%</h1>
                 </center>
+              </v-card> -->
+              <v-card class="mx-auto mt-5" max-width="344" outlined elevation="24">
+                <v-list-item three-line>
+                  <v-list-item-content>
+                    <div class="text-overline mb-4">EFICIENCIA</div>
+                    <v-list-item-title class="text-h5 mb-1">
+                      TERMINADAS
+                    </v-list-item-title>
+                    <v-list-item-subtitle
+                      >Porcentaje de eficiencia de las actividades
+                      terminadas.</v-list-item-subtitle
+                    >
+                  </v-list-item-content>
+
+                  <v-list-item-avatar
+                    style="font-size: 25px"
+                    tile
+                    size="80"
+                    color="primary"
+                    >{{ promedio }}%</v-list-item-avatar
+                  >
+                </v-list-item>
+
+                <v-card-actions> </v-card-actions>
               </v-card>
             </v-col>
           </v-row>
 
-          <v-card class="mt-10" style="padding: 10px">
+          <!-- <v-card class="mt-10" style="padding: 10px">
             <v-slider
               label="ACTIVIDADES REALIZADAS:"
               v-model="slider1"
@@ -58,7 +103,68 @@
               :thumb-size="40"
               :max="asignaciones"
             ></v-slider>
-          </v-card>
+          </v-card> -->
+
+          <v-row>
+            <v-col v-for="(actividad, index) in actividades" :key="index" cols="12" md="4">
+              <v-card class="mx-auto my-12" max-width="374">
+                <v-img
+                  height="150"
+                  src="https://media.licdn.com/dms/image/v2/D4E22AQFN7GuX8omFNg/feedshare-shrink_800/feedshare-shrink_800/0/1714511284311?e=2147483647&v=beta&t=GOTGOlfhgSZvoy8Es20gJaRw0vd05Kzn3M_QvuXPW14"
+                  style="text-align: center; color: #04273f"
+                >
+                  <h1
+                    style="position: relative; bottom: -50px; background-color: #f5f5dcb8"
+                  >
+                    {{actividad.empresa}}
+                  </h1>
+                </v-img>
+
+                <v-card-title>ACTIVIDAD:</v-card-title>
+
+                <v-card-text>
+                  <div class="my-4 text-subtitle-1">{{actividad.actividad}}</div>
+                  <v-row align="center" class="mx-0">
+                    <v-rating
+                      :value="5"
+                      color="amber"
+                      dense
+                      half-increments
+                      readonly
+                      size="14"
+                    ></v-rating>
+
+                    <div class="grey--text ms-4">{{actividad.kg}}kg ({{actividad.timestandar}}min)</div>
+                  </v-row>
+
+                  <v-chip-group
+                    v-model="selection"
+                    active-class="deep-purple accent-4 white--text"
+                    column
+                  >
+                    <v-chip style="background-color:green">INICIO</v-chip>
+
+                    <v-chip style="background-color:red;">EN PAUSA</v-chip>
+
+                    <v-chip style="background-color:#d1d10b">TERMINADO</v-chip>
+                  </v-chip-group>
+                </v-card-text>
+
+                <v-divider class="mx-4"></v-divider>
+
+                <v-card-title>AUXILIARES:</v-card-title>
+
+                <v-card-text>
+
+                </v-card-text>
+
+                <v-card-actions>
+
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+
           <v-card class="mt-5" style="padding: 10px">
             <v-text-field
               v-model="search"
@@ -87,7 +193,9 @@
                       dark
                       v-bind="attrs"
                       v-on="on"
-                      @click="(actualizar(item.idasigactivi)),(mostEvidencias(item.idasigactivi))"
+                      @click="
+                        actualizar(item.idasigactivi), mostEvidencias(item.idasigactivi)
+                      "
                       small
                       class="mr-2"
                     >
@@ -156,7 +264,7 @@
                           </v-col>
                           <v-col cols="12" md="6">
                             <ImageZoom
-                              style="margin: 15px; max-width: 100%; "
+                              style="margin: 15px; max-width: 100%"
                               :thumbnail="item.imageUrl"
                               :fullImage="item.imageUrl"
                             />
@@ -251,7 +359,7 @@ export default {
     };
   },
   mounted() {
-    this.socket = io("http://192.168.1.97:3004");
+    this.socket = io("http://localhost:3004");
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.mostrar();

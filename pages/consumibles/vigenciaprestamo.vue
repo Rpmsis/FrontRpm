@@ -39,7 +39,8 @@ export default {
       datosentregasafi: [],
       headers: [
         { text: "id del activo ", value: "folioActivo" },
-        { text: "Fecha de entrega", value: "fecha" },
+        { text: "Fecha del prestamo", value: "fecha"},
+        { text: "Fecha de entrega", value: "fechavigencia"},
         { text: "Responsable", value: "responsable" },
         { text: "Área", value: "area" },
         { text: "Estatus", value: "estatus" },

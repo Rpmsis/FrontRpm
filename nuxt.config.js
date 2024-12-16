@@ -3,6 +3,13 @@ import path from 'path'
 import fs from 'fs'
 
 export default {
+  server: {
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, 'server.key')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'mi_certificado.crt'))
+    },
+    port: 3001, // El puerto en el que se ejecutará el servidor
+  },
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
@@ -67,5 +74,5 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   },
-  
+
 }

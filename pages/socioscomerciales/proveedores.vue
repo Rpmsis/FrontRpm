@@ -18,6 +18,7 @@
           'items-per-page-options': [5, 10, 20, 30, 40, 50],
         }"
         :items-per-page="5"
+        :sort-by="['idproveedor']"
         :sort-desc="true"
       >
         <template v-slot:item.actions="{ item }">
@@ -585,6 +586,7 @@
                       ></v-text-field>
                     </v-col>
                   </v-row>
+
                   <v-row v-show="caja2">
                     <v-col cols="12" md="6">
                       <center>
@@ -841,7 +843,7 @@ export default {
       coloni: false,
       proveedores: ["Ejemplo1", "Ejemplo2", "Ejemplo3"],
       headers: [
-        { text: "Id del activo ", value: "foliorpm" },
+        { text: "Id del activo ", value: "idproveedor" },
         { text: "Nombre completo", value: "nombre" },
         { text: "Móvil", value: "movil" },
         { text: "Télefono", value: "tel" },
@@ -880,7 +882,7 @@ export default {
         cdias: "",
       },
       formDataact: {
-        idusuarioprov: "",
+        idproveedor: "",
         nombre: "",
         email: "",
         movil: "",
@@ -950,8 +952,9 @@ export default {
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
+          //console.log(datos);
           this.datosproveedores = datos.respuesta.respuesta;
-          console.log(datos.respuesta.respuesta);
+          //console.log(datos.respuesta.respuesta);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -988,10 +991,10 @@ export default {
     },
     /* Abre el formulario de actualizar */
     async actualizar(item) {
-      console.log(item);
+      //console.log(item);
       const objeto = this.datosproveedores.find((filtro) => filtro.idproveedor === item);
       this.formDataact = objeto;
-      console.log(this.formDataact);
+      //console.log(this.formDataact);
       this.proveactualizar = true;
     },
     /* -------------------------------- */
@@ -1016,6 +1019,8 @@ export default {
           this.Titulo = "DATOS GUARDADOS:"; */
           this.limpiarFormulario();
           this.siguientef();
+          this.caja2= false;
+          
           this.mostrar();
         }
       }
@@ -1023,10 +1028,10 @@ export default {
     },
     /* ------------------------------------------------------------ */
 
-    /* Api que actualiza los datos  de la tabla */
+    /* Api que actualiza los datos de la tabla */
     async actualizaracti() {
-      const res = await fetch("http://localhost:3001/insertarProveedor", {
-        method: "POST",
+      const res = await fetch("http://localhost:3001/actualizarproveedor", {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -1043,6 +1048,9 @@ export default {
         this.Titulo = "Datos actualizados";
         this.Mensaje = " ";
         this.proveactualizar = false;
+        this.caja1 =  true;
+        this.caja2 = false;
+        this.caja3 = false;
         this.mostrar();
       }
     },

@@ -2,13 +2,26 @@
   <v-container>
     <v-card class="mt-5">
       <v-card-title>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Buscar"
-          single-line
-          hide-details
-        ></v-text-field>
+        <v-row>
+          <v-col cols="12" md="8" sm="8">
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Buscar"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="4" sm="4">
+            <v-select
+              v-model="sucursal"
+              :items="sucursales"
+              label="Selecciona una sucursal"
+              filled
+              @change="mostrar()"
+            ></v-select>
+          </v-col>
+        </v-row>
       </v-card-title>
       <v-data-table
         :headers="headers"
@@ -126,7 +139,7 @@
               <v-divider></v-divider>
               <v-form class="mt-5" @submit.prevent="insertCompra">
                 <v-row>
-                  <v-col cols="12" md="8">
+                  <v-col cols="12" md="4" sm="4">
                     <h2>ID del activo:</h2>
                     <center>
                       <h4 style="font-size: 35px; color: chocolate">
@@ -134,7 +147,16 @@
                       </h4>
                     </center>
                   </v-col>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="4" sm="4">
+                    <v-select
+                      v-model="sucursal"
+                      :items="sucursales"
+                      label="Selecciona una sucursal"
+                      filled
+                      @change="mostrar(), mostrarCompras(folio)"
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12" md="4" sm="4">
                     <v-text-field
                       type="text"
                       label="CÓDIGO DE BARRAS"
@@ -146,6 +168,13 @@
                   </v-col>
                 </v-row>
                 <v-row>
+                  <v-col cols="12" md="1">
+                    <v-btn icon @click="insertprove = true">
+                      <v-icon style="font-size: 50px"
+                        >mdi-plus-circle theme--dark green--text</v-icon
+                      >
+                    </v-btn>
+                  </v-col>
                   <v-col cols="12" md="4">
                     <v-select
                       :items="proveedores"
@@ -168,7 +197,7 @@
                       </template>
                     </v-select>
                   </v-col>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="3">
                     <v-text-field
                       v-model="formData.oc"
                       type="text"
@@ -191,17 +220,6 @@
                       type="text"
                       prefix="$"
                       label="PRECIO COMPRA"
-                      filled
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-text-field
-                      v-model="formData.descrip"
-                      type="text"
-                      label="DESCRIPCIÓN DE LA COMPRA.."
-                      @input="formData.descrip = formData.descrip.toUpperCase()"
                       filled
                     ></v-text-field>
                   </v-col>
@@ -274,6 +292,86 @@
           </v-dialog>
         </div>
       </template>
+
+      <!-- Formulario del proveedor -->
+      <template>
+        <div class="pa-4 text-center">
+          <v-dialog v-model="insertprove" max-width="1200px">
+            <v-card style="padding: 15px">
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn icon @click="insertprove = false">
+                  <v-icon style="font-size: 30px"
+                    >mdi-close theme--dark red--text</v-icon
+                  ></v-btn
+                >
+              </v-card-actions>
+              <v-divider></v-divider>
+              <v-divider></v-divider>
+
+              <v-form class="mt-7" @submit.prevent="insertarproveedor">
+                <div>
+                  <h4>DATOS DEL SOCIO COMERCIAL:</h4>
+                  <!-- row 1: nombre, email -->
+                  <v-row>
+                    <v-col cols="12" md="6">
+                      <v-text-field
+                        v-model="formproveedor.nombre"
+                        type="text"
+                        label="Nombre completo"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-text-field
+                        v-model="formproveedor.rsocial"
+                        type="text"
+                        label="DENOMINACIÓN O RAZON SOCIAL"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" md="4">
+                      <v-text-field
+                        v-model="formproveedor.email"
+                        type="email"
+                        label="Correo electrónico"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-text-field
+                        v-model="formproveedor.movil"
+                        type="text"
+                        label="Celular"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-text-field
+                        v-model="formproveedor.tel"
+                        type="text"
+                        label="Teléfono"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" md="12"
+                      ><center>
+                        <v-btn outlined color="orange" class="btnEnviar" type="submit"
+                          >Guardar</v-btn
+                        >
+                      </center>
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-form>
+            </v-card>
+          </v-dialog>
+        </div>
+      </template>
     </v-card>
 
     <!-- Ventana emergente -->
@@ -333,6 +431,8 @@ export default {
   layout: "barra",
   data() {
     return {
+      folio: "",
+      insertprove: false,
       edit: false,
       delet: false,
       alerta: false,
@@ -360,17 +460,13 @@ export default {
         "SERVICIOS",
       ],
       unidadesmedida: ["PIEZAS", "LITROS", "KILOS", "EVENTO"],
+      sucursal: "",
+      sucursales: ["CANOA", "SAN LUIS POTOSI", "QUERETARO", "19 NTE", "VALSEQUILLO"],
       search: "",
       consu: false,
       consucompra: false,
       headers: [
         { text: "Id del activo", value: "folioActivo" },
-        {
-          text: "Fecha\ncreación",
-          value: "fecha",
-          align: "star",
-          class: "multi-line-header",
-        },
         { text: "Descripción", value: "descripcion" },
         { text: "Tipo", value: "tipo" },
         {
@@ -381,7 +477,7 @@ export default {
         },
         { text: "Cantidad", value: "cantidad" },
         {
-          text: "Valor\ninventario\nactual",
+          text: "Valor\ninventario",
           value: "costo",
           align: "star",
           class: "multi-line-header",
@@ -427,6 +523,7 @@ export default {
         codigobarras: "",
         descrip: "",
         minimo: "",
+        sucursal: "",
       },
 
       formDataact: {
@@ -460,10 +557,20 @@ export default {
       searchProvInsert: "",
       proveedoresFijos: [],
       /* --------------- */
+
+      /* INSERTAR PROVEEDOR */
+      formproveedor: {
+        nombre: "",
+        rsocial: "",
+        email: "",
+        movil: "",
+        tel: "",
+      },
+      /* ------------------ */
     };
   },
   mounted() {
-    this.socket = io("http://192.168.1.97:3003");
+    this.socket = io("http://localhost:3003");
     this.socket.on("verificado", (datos) => {
       console.log(datos);
       this.alerta = true;
@@ -471,6 +578,7 @@ export default {
       this.Mensaje = "Se valido la entrada de proveedor";
       this.mostrar();
     });
+    this.sucursal = "CANOA";
     this.mostrar();
     this.TT();
     this.mostrarProveedores();
@@ -536,13 +644,13 @@ export default {
     /* Mostrar los datos de la tabla consumibles*/
     async mostrar() {
       try {
-        const res = await fetch("http://localhost:3001/consumibles");
+        const res = await fetch("http://localhost:3001/consumibles/" + this.sucursal);
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          this.consumibles = datos.respuesta.respuesta;
-          //console.log(datos.respuesta.respuesta);
+          this.consumibles = datos.respuesta;
+          //console.log(datos.respuesta);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -551,15 +659,18 @@ export default {
 
     /* Mostrar los datos de la tabla compras*/
     async mostrarCompras(folio) {
-      //console.log(folio);
+      this.folio = folio;
+      //console.log(this.folio);
       try {
-        const res = await fetch(`http://localhost:3001/compras?compra=${folio}`);
+        const res = await fetch(
+          `http://localhost:3001/compras?compra=${folio}&sucursal=${this.sucursal}`
+        );
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          this.compras = datos.respuesta.respuesta;
-          console.log(datos.respuesta.respuesta);
+          this.compras = datos.respuesta;
+          //console.log(datos.respuesta);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -572,6 +683,7 @@ export default {
       this.consucompra = true;
       this.formData.folioActivo = item.folioActivo;
       this.formData.idconsumibles = item.idconsumibles;
+      this.formData.descrip = item.descripcion;
       this.mostrarCompras(item.folioActivo);
     },
     /* -------------------------------- */
@@ -604,6 +716,7 @@ export default {
 
     /* Api que actualiza los datos  de la tabla */
     async insertCompra() {
+      this.formData.sucursal = this.sucursal;
       const res = await fetch("http://localhost:3001/insertarCompra", {
         method: "POST",
         headers: {
@@ -669,7 +782,7 @@ export default {
     },
     /* ----------------- */
 
-    /* Actualizar piezas */
+    /* ELIMINAR piezas */
     async deletP() {
       const res = await fetch("http://localhost:3001/eliminarcompra", {
         method: "PUT",
@@ -689,12 +802,38 @@ export default {
         this.Titulo = "Compra eliminada";
         this.Mensaje = "";
         this.delet = false;
-        this.deletcompra.motivo= "";
+        this.deletcompra.motivo = "";
         this.mostrarCompras(this.formData.folioActivo);
         this.mostrar();
       }
     },
     /* ----------------- */
+    async insertarproveedor() {
+      const res = await fetch("http://localhost:3001/insertarProveedorinsumos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.formproveedor),
+      });
+      const datos = await res.json();
+      if (res.status === 400) {
+        this.alerta = true;
+        this.Titulo = "¡Upss!";
+        this.Mensaje =
+          "Parece que existen campos vacíos, válida la información nuevamente";
+      } else {
+        if (res.status === 200) {
+          this.alerta = true;
+          //this.Titulo = "El ID del activo es: ";
+          this.Titulo = "DATOS GUARDADOS:";
+          this.Mensaje = datos.respuesta;
+          this.insertprove = false;
+          this.mostrarProveedores();
+        }
+      }
+      console.log(datos);
+    },
   },
 };
 </script>

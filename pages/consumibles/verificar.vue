@@ -84,12 +84,17 @@ export default {
     async mostrarCompras() {
       //console.log(folio);
       try {
-        const res = await fetch(`http://localhost:3001/verificarcompras`);
+        const res = await fetch(`http://localhost:3001/verificarcompras`, {
+          method: "GET",
+          headers: {
+            token: localStorage.token,
+          },
+        });
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          this.compras = datos.respuesta.respuesta;
+          this.compras = datos.respuesta;
           //console.log(datos.respuesta.respuesta);
         }
       } catch (error) {

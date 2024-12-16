@@ -4,8 +4,13 @@
       <v-layout row wrap>
         <v-flex xs12>
           <v-row>
-            <v-col cols="12" md="12">
-              <v-btn @click="startRegistration">Registrar con huella digital</v-btn>
+            <v-col cols="12" md="6">
+              <v-btn @click="takePicture" color="red">Tomar Foto</v-btn>
+              <video ref="video" width="100%" height="50%" autoplay></video>
+            </v-col>
+            <v-col cols="12" md="6">
+              <canvas ref="canvas" style="display: none"></canvas>
+              <img v-if="photo" :src="photo" alt="Foto Capturada" width="100%" height="100%"/>
             </v-col>
           </v-row>
         </v-flex>
@@ -19,68 +24,61 @@
 export default {
   layout: "barra",
   data() {
-    return {};
+    return {
+      photo: null,
+    };
   },
-  mounted() {},
+  mounted() {
+    if (process.client) {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        this.startCamera();
+      } else {
+        console.error(
+          "No se puede acceder a la cámara: navigator.mediaDevices.getUserMedia no está disponible."
+        );
+      }
+    }
+    console.log(navigator.mediaDevices);
+  },
 
   computed: {},
   methods: {
-    async startRegistration() {
-      if (window.PublicKeyCredential) {
-        console.log("WebAuthn está disponible.");
-      } else {
-        console.log("WebAuthn no es compatible con este navegador.");
+    // Iniciar la cámara
+    async startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
+        this.$refs.video.srcObject = stream;
+
+        // Verificar que la cámara esté lista
+        this.$refs.video.onloadedmetadata = () => {
+          this.$refs.video.play();
+        };
+      } catch (err) {
+        console.error("Error al acceder a la cámara", err);
       }
+    },
 
-      // Iniciar el registro: hacer una petición POST para obtener el challenge
-      /*  const response = await fetch("http://192.168.1.97:3005/registerBegin", {
-        method: "POST",
-      });
+    // Tomar una foto
+    takePicture() {
+      const canvas = this.$refs.canvas;
+      const context = canvas.getContext("2d");
+      const video = this.$refs.video;
 
-      // Verificar si la respuesta fue exitosa
-      if (!response.ok) {
-        throw new Error("Error al comenzar el registro");
-      }
+      // Establecer las dimensiones del canvas
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
 
-      const challenge = await response.json();
+      // Dibujar el fotograma del video en el canvas
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      // Convertir el challenge a un formato compatible con WebAuthn
-      const publicKeyCredentialCreationOptions = {
-        challenge: new TextEncoder().encode(challenge.challenge),
-        rp: { name: "Tu Aplicación" },
-        user: {
-          id: new TextEncoder().encode("usuario123"),
-          name: "usuario123",
-          displayName: "Usuario",
-        },
-        pubKeyCredParams: [{ type: "public-key", alg: -7 }],
-        timeout: 60000,
-        attestation: "direct",
-        excludeCredentials: [],
-      };
+      // Obtener la imagen como base64
+      this.photo = canvas.toDataURL();
+      console.log("foto obtenida= ",this.photo);
 
-      // Usar la API WebAuthn para crear las credenciales
-      const credential = await navigator.credentials.create({
-        publicKey: publicKeyCredentialCreationOptions,
-      });
-
-      // Enviar el resultado al servidor para completar el registro
-      const completeResponse = await fetch("http://192.168.1.97:3005/registerComplete", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credential),
-      });
-
-      // Verificar si la respuesta de completar el registro fue exitosa
-      if (!completeResponse.ok) {
-        throw new Error("Error al completar el registro");
-      }
-
-      // Opcionalmente, gestionar la respuesta del registro completado
-      const completeData = await completeResponse.json();
-      return completeData; */
+      // Opcionalmente, puedes enviar la imagen al servidor aquí
+      // this.uploadPhoto(this.photo);
     },
   },
 };
