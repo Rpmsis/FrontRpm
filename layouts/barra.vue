@@ -1,45 +1,62 @@
 <template>
   <v-app>
     <v-app-bar app fixed color="#022031">
+      <v-btn icon :to="'/inicio'"><v-icon color="white">mdi-home</v-icon></v-btn>
+      <v-spacer style="text-align:center;">
+        <center>
+          <div style="display: flex; justify-content: center;  width: 100%;">
+            <p style="font-family: Georgia, 'Times New Roman', Times, serif;">{{ nombres }}</p>
+            <p style="padding-left: 5px;">{{ apellidos }}</p>
+          </div>
+        </center>
+      </v-spacer>
 
-      <v-btn icon :to="'/inicio'" ><v-icon color="white">mdi-home</v-icon></v-btn>
-      <v-spacer></v-spacer>
-
-      <v-btn icon @click="log">
-        <v-icon color="red darken-4">mdi-power</v-icon></v-btn>
+      <v-btn icon @click="log"> <v-icon color="red darken-4">mdi-power</v-icon></v-btn>
     </v-app-bar>
-    <v-card>
-
-    </v-card>
+    <v-card> </v-card>
     <v-main>
       <v-container>
         <Nuxt />
       </v-container>
-    </v-main>   
+    </v-main>
   </v-app>
 </template>
 
-
 <script>
 export default {
-  middleware: 'auth',
+  middleware: "auth",
   data() {
-    return {     
-      name: '',
-      usuario:
-      {
+    return {
+      name: "",
+      usuario: {
         nombre: this.$store.state.nombre,
-        area: this.$store.state.Area
+        area: this.$store.state.Area,
       },
-     
-    }
-  },   
-  methods:{
+      nombre: this.$store.state.nombre,
+      nombres: "",
+      apellidos: "",
+    };
+  },
+  mounted() {
+    this.estilosnombre();
+  },
+  methods: {
     log() {
-      this.$store.commit("auth/saveToken", null)
-      localStorage.token = null
-      this.$router.push({ name: 'index' })
+      this.$store.commit("auth/saveToken", null);
+      localStorage.token = null;
+      this.$router.push({ name: "index" });
     },
-  }
-}
+    estilosnombre() {
+      //const nuevonombre2 = [];
+      this.nuevonombre = this.nombre.split(" ");
+      //console.log(this.nuevonombre.length);
+      if (this.nuevonombre.length === 3) {
+        this.nombres = this.nuevonombre[0];
+        this.apellidos = this.nuevonombre[1] + " " + this.nuevonombre[2];
+        console.log("Nombre: ", this.nombres);
+        console.log("Apellidos", this.apellidos);
+      }
+    },
+  },
+};
 </script>

@@ -13,7 +13,6 @@ const _2c0b7c1e = () => interopDefault(import('..\\pages\\actividades\\asignacio
 const _9d1964f8 = () => interopDefault(import('..\\pages\\actividades\\control.vue' /* webpackChunkName: "pages/actividades/control" */))
 const _2afd93b3 = () => interopDefault(import('..\\pages\\actividades\\editeficienciakg.vue' /* webpackChunkName: "pages/actividades/editeficienciakg" */))
 const _4f257e9e = () => interopDefault(import('..\\pages\\actividades\\eficacia.vue' /* webpackChunkName: "pages/actividades/eficacia" */))
-const _7b8211dc = () => interopDefault(import('..\\pages\\actividades\\huella.vue' /* webpackChunkName: "pages/actividades/huella" */))
 const _329c3024 = () => interopDefault(import('..\\pages\\actividades\\porusuario.vue' /* webpackChunkName: "pages/actividades/porusuario" */))
 const _39f3443f = () => interopDefault(import('..\\pages\\actividades\\tablerologistica.vue' /* webpackChunkName: "pages/actividades/tablerologistica" */))
 const _64883dae = () => interopDefault(import('..\\pages\\activos\\activosFijos.vue' /* webpackChunkName: "pages/activos/activosFijos" */))
@@ -24,6 +23,7 @@ const _ec095468 = () => interopDefault(import('..\\pages\\activos\\mostActmantt.
 const _13c93b66 = () => interopDefault(import('..\\pages\\activos\\mostmantt.vue' /* webpackChunkName: "pages/activos/mostmantt" */))
 const _35847f64 = () => interopDefault(import('..\\pages\\activos\\ubicacion.vue' /* webpackChunkName: "pages/activos/ubicacion" */))
 const _b1c0ac36 = () => interopDefault(import('..\\pages\\capital_humano\\asistencia.vue' /* webpackChunkName: "pages/capital_humano/asistencia" */))
+const _4838cede = () => interopDefault(import('..\\pages\\capital_humano\\reconomiento-facial.vue' /* webpackChunkName: "pages/capital_humano/reconomiento-facial" */))
 const _14fd6e2b = () => interopDefault(import('..\\pages\\capital_humano\\todoasistencia.vue' /* webpackChunkName: "pages/capital_humano/todoasistencia" */))
 const _f0bd7928 = () => interopDefault(import('..\\pages\\capital_humano\\user_registro.vue' /* webpackChunkName: "pages/capital_humano/user_registro" */))
 const _01ac8500 = () => interopDefault(import('..\\pages\\consumibles\\codigobarras.vue' /* webpackChunkName: "pages/consumibles/codigobarras" */))
@@ -48,6 +48,7 @@ const _3b104d80 = () => interopDefault(import('..\\pages\\SGI\\noconformidad.vue
 const _fc00e0d8 = () => interopDefault(import('..\\pages\\socioscomerciales\\mostrarProv.vue' /* webpackChunkName: "pages/socioscomerciales/mostrarProv" */))
 const _3356acd7 = () => interopDefault(import('..\\pages\\socioscomerciales\\proveedores.vue' /* webpackChunkName: "pages/socioscomerciales/proveedores" */))
 const _0e7bf7f0 = () => interopDefault(import('..\\pages\\socioscomerciales\\provusuario.vue' /* webpackChunkName: "pages/socioscomerciales/provusuario" */))
+const _f2d855b8 = () => interopDefault(import('..\\pages\\tikets\\vertickets.vue' /* webpackChunkName: "pages/tikets/vertickets" */))
 const _3935de50 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages/index" */))
 
 const emptyFn = () => {}
@@ -98,10 +99,6 @@ export const routerOptions = {
     component: _4f257e9e,
     name: "actividades-eficacia"
   }, {
-    path: "/actividades/huella",
-    component: _7b8211dc,
-    name: "actividades-huella"
-  }, {
     path: "/actividades/porusuario",
     component: _329c3024,
     name: "actividades-porusuario"
@@ -141,6 +138,10 @@ export const routerOptions = {
     path: "/capital_humano/asistencia",
     component: _b1c0ac36,
     name: "capital_humano-asistencia"
+  }, {
+    path: "/capital_humano/reconomiento-facial",
+    component: _4838cede,
+    name: "capital_humano-reconomiento-facial"
   }, {
     path: "/capital_humano/todoasistencia",
     component: _14fd6e2b,
@@ -237,6 +238,10 @@ export const routerOptions = {
     path: "/socioscomerciales/provusuario",
     component: _0e7bf7f0,
     name: "socioscomerciales-provusuario"
+  }, {
+    path: "/tikets/vertickets",
+    component: _f2d855b8,
+    name: "tikets-vertickets"
   }, {
     path: "/",
     component: _3935de50,

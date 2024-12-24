@@ -63,13 +63,6 @@
     "_name": "_4f257e9e"
   },
   {
-    "name": "actividades-huella",
-    "path": "/actividades/huella",
-    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\huella.vue",
-    "chunkName": "pages/actividades/huella",
-    "_name": "_7b8211dc"
-  },
-  {
     "name": "actividades-porusuario",
     "path": "/actividades/porusuario",
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\actividades\\\\porusuario.vue",
@@ -138,6 +131,13 @@
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\capital_humano\\\\asistencia.vue",
     "chunkName": "pages/capital_humano/asistencia",
     "_name": "_b1c0ac36"
+  },
+  {
+    "name": "capital_humano-reconomiento-facial",
+    "path": "/capital_humano/reconomiento-facial",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\capital_humano\\\\reconomiento-facial.vue",
+    "chunkName": "pages/capital_humano/reconomiento-facial",
+    "_name": "_4838cede"
   },
   {
     "name": "capital_humano-todoasistencia",
@@ -306,6 +306,13 @@
     "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\socioscomerciales\\\\provusuario.vue",
     "chunkName": "pages/socioscomerciales/provusuario",
     "_name": "_0e7bf7f0"
+  },
+  {
+    "name": "tikets-vertickets",
+    "path": "/tikets/vertickets",
+    "component": "C:\\\\Users\\\\brisa\\\\Documents\\\\Brisa\\\\PlantillaSteelpro\\\\pages\\\\tikets\\\\vertickets.vue",
+    "chunkName": "pages/tikets/vertickets",
+    "_name": "_f2d855b8"
   },
   {
     "name": "index",

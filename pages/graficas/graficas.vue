@@ -2,7 +2,7 @@
   <v-container>
     <div style="margin-bottom: 10%">
       <v-card class="mt-10" style="padding: 10px; position: fixed; z-index: 1">
-        <v-row justify="center" max-width: 450%>
+        <v-row justify="center">
           <v-col cols="12" md="3">
             <v-select
               v-model="empresa"
@@ -117,11 +117,6 @@
             </div>
           </template>
         </v-card>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12" md="12">
-        //Implementar geo
       </v-col>
     </v-row>
   </v-container>

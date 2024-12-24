@@ -41,27 +41,58 @@
               <v-divider></v-divider>
               <v-form class="mt-5" @submit.prevent="submitForm">
                 <v-row>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" sm="6">
+                    <center>
+                      <img
+                        v-if="imagePreview1"
+                        :width="180"
+                        :height="200"
+                        aspect-ratio="16/9"
+                        cover
+                        :src="imagePreview1"
+                        alt="Foto guardada"
+                      />
+                    </center>
+                  </v-col>
+                  <v-col cols="12" md="6" sm="6">
+                    <v-file-input
+                      counter
+                      show-size
+                      prepend-icon="mdi-camera-plus"
+                      label="Foto a guardar"
+                      v-model="Solicitud.archivo"
+                      @change="updateImagePreview"
+                    ></v-file-input>
                     <v-text-field
                       v-model="formData.idcheck"
                       type="text"
                       prepend-icon="mdi-qrcode-scan"
                       label="Id del usuario"
                     ></v-text-field>
+                    <v-select
+                      v-model="formData.turno"
+                      :items="turnos"
+                      prepend-icon="mdi-store-clock "
+                      item-text="text"
+                      item-value="value"
+                      label="Turno.."
+                    >
+                    </v-select>
                   </v-col>
-                  <v-col cols="12" md="6">
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="6" sm="12">
                     <v-select
                       v-model="formData.descanso"
                       :items="items"
                       label="Días de descanso"
+                      prepend-icon="mdi-weather-sunset"
                       chips
                       multiple
                       @change="descansos"
                     ></v-select>
                   </v-col>
-                </v-row>
-                <v-row v-show="relojMD">
-                  <v-col cols="12" md="6">
+                  <v-col v-show="relojMD" cols="12" md="3" sm="6">
                     <v-menu
                       ref="menu"
                       v-model="menu2"
@@ -77,7 +108,7 @@
                         <v-text-field
                           v-model="time"
                           label="Hora de entrada fin de semana"
-                          prepend-icon="mdi-clock-time-four-outline"
+                          prepend-icon="mdi-clock-start"
                           readonly
                           v-bind="attrs"
                           v-on="on"
@@ -92,7 +123,7 @@
                       ></v-time-picker>
                     </v-menu>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col v-show="relojMD" cols="12" md="3" sm="6">
                     <v-menu
                       ref="menu3"
                       v-model="menu4"
@@ -108,7 +139,7 @@
                         <v-text-field
                           v-model="time2"
                           label="Hora de salida fin de semana"
-                          prepend-icon="mdi-clock-time-four-outline"
+                          prepend-icon="mdi-clock-end"
                           readonly
                           v-bind="attrs"
                           v-on="on"
@@ -143,7 +174,6 @@
                     ></v-time-picker>
                   </v-col>
                 </v-row>
-
                 <center v-show="btnregistrar">
                   <v-btn class="btnEnviar" type="submit" block outlined color="success"
                     >Registrar usuario</v-btn
@@ -180,6 +210,8 @@
 <script>
 import io from "socket.io-client";
 import ImageZoom from "~/components/ImageZoom.vue";
+import * as faceapi from "face-api.js";
+
 export default {
   components: {
     ImageZoom,
@@ -187,6 +219,7 @@ export default {
   layout: "barra",
   data() {
     return {
+      modelPath: "/models",
       perrito: "/perrito.gif",
       landscape: true,
       alerta: false,
@@ -203,16 +236,10 @@ export default {
       menu4: false,
       btnregistrar: true,
       jirafita: false,
+      turnos: ["PRIMERO", "SEGUNDO", "TERCERO"],
       headers: [
         { text: "id de registro ", value: "iduser_asistencia" },
         { text: "Nombre completo", value: "nombre" },
-        { text: "Privilegios", value: "privilegios" },
-        {
-          text: "Usuario\nbiometrico",
-          value: "userid",
-          align: "center",
-          class: "multi-line-header2",
-        },
         {
           text: "Hora\nde\nentrada",
           value: "horaentrada",
@@ -229,28 +256,50 @@ export default {
       ],
       formData: {
         idcheck: "",
-        descanso: "",
         horainicio: "",
         horafin: "",
+        descanso: "",
         horainicioMD: "",
         horafinMD: "",
+        turno: "",
+        descrip: "",
+      },
+      imagePreview1: null,
+      Solicitud: {
+        archivo: null,
       },
     };
   },
 
-  mounted() {
+  async mounted() {
+    this.mostrar();
+    await faceapi.nets.ssdMobilenetv1.loadFromUri(this.modelPath);
+    await faceapi.nets.faceLandmark68Net.loadFromUri(this.modelPath);
+    await faceapi.nets.faceRecognitionNet.loadFromUri(this.modelPath);
+
+    console.log("Modelos cargados correctamente");
+
     this.socket = io("http://192.168.1.97:3003");
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.mostrar();
     });
-    this.socket.on("deshabilitar", (datos) => {
-      //console.log(datos);
-      this.ocultarbtn();
-    });
-    this.mostrar();
   },
   methods: {
+    updateImagePreview() {
+      //console.log(this.Solicitud.archivo);
+      const file = this.Solicitud.archivo;
+      if (file && file instanceof File) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.imagePreview1 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        this.imagePreview1 = null;
+      }
+    },
+
     ocultarbtn() {
       this.btnregistrar = false;
       this.jirafita = true;
@@ -282,33 +331,59 @@ export default {
       }
     },
     async submitForm() {
-      this.formData.horainicioMD = this.time;
-      this.formData.horafinMD = this.time2;
-      const res = await fetch("http://localhost:3001/insertarBiometrico", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this.formData),
-      });
-      const datos = await res.json();
-      if (res.status === 400) {
-        this.alerta = true;
-        this.Titulo = "¡Upss!";
-        this.Mensaje = datos.mensaje;
-        this.btnregistrar = true;
-        this.jirafita = false;
-      } else {
-        this.alerta = true;
-        //this.Titulo = "El ID del activo es: ";
-        this.Titulo = datos.respuesta.mensaje;
-        this.Mensaje = "";
-        this.limpiarFormulario();
-        this.registrar = false;
-        this.btnregistrar = true;
-        this.jirafita = false;
+      if (this.imagePreview1) {
+        this.ocultarbtn();
+        this.formData.horainicioMD = this.time;
+        this.formData.horafinMD = this.time2;
+        const img = await faceapi.fetchImage(this.imagePreview1); // Ruta de la foto guardada
+        const detection = await faceapi
+          .detectSingleFace(img)
+          .withFaceLandmarks()
+          .withFaceDescriptor();
+
+        if (detection) {
+          this.formData.descrip = detection.descriptor;
+          console.log("Descriptor de la foto guardada cargado.");
+          console.log(detection.descriptor);
+          
+          const formulario = new FormData();
+          formulario.append("idcheck", this.formData.idcheck);
+          formulario.append("horainicio", this.formData.horainicio);
+          formulario.append("horafin", this.formData.horafin);
+          formulario.append("descanso", this.formData.descanso);
+          formulario.append("horainicioMD", this.formData.horainicioMD);
+          formulario.append("horafinMD", this.formData.horafinMD);
+          formulario.append("turno", this.formData.turno);
+          formulario.append("descrip", this.formData.descrip);
+          formulario.append("archivo", this.Solicitud.archivo);
+          const res = await fetch("http://localhost:3001/registrarUserasistencia", {
+            method: "POST",
+            headers: {
+              token: localStorage.token,
+            },
+            body: formulario,
+          });
+          const datos = await res.json();
+          if (res.status === 400) {
+            this.alerta = true;
+            this.Titulo = "¡Upss!";
+            this.Mensaje = datos.mensaje;
+            this.btnregistrar = true;
+            this.jirafita = false;
+          } else {
+            this.alerta = true;
+            //this.Titulo = "El ID del activo es: ";
+            this.Titulo = datos.respuesta.mensaje;
+            this.Mensaje = "";
+            this.limpiarFormulario();
+            this.registrar = false;
+            this.btnregistrar = true;
+            this.jirafita = false;
+            this.mostrar();
+          }
+          console.log(datos);
+        }
       }
-      console.log(datos);
     },
     limpiarFormulario() {
       this.formData.idcheck = "";

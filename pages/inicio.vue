@@ -4,7 +4,7 @@
       <v-layout row wrap style="padding: 20px">
         <v-flex>
           <v-row>
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="4">
               <v-card>
                 <v-card-title>REPORTES</v-card-title>
                 <v-card class="v-sheet theme--dark">
@@ -14,12 +14,37 @@
                 </v-card>
               </v-card>
             </v-col>
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="4">
               <v-card>
-                <v-card-title>huella</v-card-title>
+                <v-card-title>REPORTES</v-card-title>
                 <v-card class="v-sheet theme--dark">
-                  <a href="/actividades/huella">
-                    <h4 class="modulo">Registrar huella</h4>
+                  <a href="/graficas/graficas">
+                    <h4 class="modulo">Reporte de operadores</h4>
+                  </a>
+                </v-card>
+              </v-card>
+            </v-col>
+            <v-col cols="12" md="4">
+              <v-card>
+                <v-card-title>ASISTENCIA</v-card-title>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/capital_humano/user_registro">
+                    <h4 class="modulo">AGREGAR USUARIO</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/capital_humano/reconomiento-facial">
+                    <h4 class="modulo">RECONOMIENTO FACIAL</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/capital_humano/asistencia">
+                    <h4 class="modulo">ASISTENCIAS DEL DÍA</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/capital_humano/todoasistencia">
+                    <h4 class="modulo">TODAS LAS ASISTENCIAS</h4>
                   </a>
                 </v-card>
               </v-card>
@@ -426,6 +451,8 @@ export default {
       viernes: "",
 
       items: [],
+
+      nuevonombre: [],
     };
   },
   mounted() {

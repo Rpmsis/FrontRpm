@@ -32,9 +32,8 @@
               <v-tooltip
                 bottom
                 v-if="
-                  item.estatus != 'FALTA' &&
-                  item.estatus != 'JUSTIFICADO' &&
-                  item.horafin != 'NA'
+                  item.estatus === 'RETARDO' ||
+                  item.estatus === 'ENTRADA'
                 "
               >
                 <template v-slot:activator="{ on, attrs }">
@@ -84,7 +83,7 @@
                     dark
                     v-bind="attrs"
                     v-on="on"
-                    @click="actualizar2(item.userid)"
+                    @click="actualizar2(item.idcheck)"
                     small
                     class="mr-2"
                   >
@@ -254,7 +253,6 @@ export default {
       ],
 
       headers2: [
-        { text: "id biometrico ", value: "userid" },
         { text: "Nombre completo", value: "nombre" },
         {
           text: "Verificar falta",
@@ -279,7 +277,7 @@ export default {
   },
 
   mounted() {
-    this.socket = io("http://192.168.1.97:3004");
+    this.socket = io("http://localhost:3003");
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.mostrar();
@@ -443,9 +441,6 @@ export default {
 .v-card__title {
   justify-content: center !important;
   font-size: 30px !important;
-}
-.row {
-  padding: 0px 10px 0px 10px;
 }
 .btnEnviar {
   margin-top: 10px;
