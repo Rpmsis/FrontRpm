@@ -1,17 +1,17 @@
 <template>
   <v-app>
-    <v-app-bar app fixed color="#022031">
-      <v-btn icon :to="'/inicio'"><v-icon color="white">mdi-home</v-icon></v-btn>
+    <v-app-bar app fixed color="#522073">
+      <v-btn icon :to="'/inicio'"><v-icon color="#AFA3BF" large>mdi-home</v-icon></v-btn>
       <v-spacer style="text-align:center;">
         <center>
           <div style="display: flex; justify-content: center;  width: 100%;">
-            <p style="font-family: Georgia, 'Times New Roman', Times, serif;">{{ nombres }}</p>
-            <p style="padding-left: 5px;">{{ apellidos }}</p>
+            <h3 style="font-family: Georgia, 'Times New Roman', Times, serif;">{{ nombres }}</h3>
+            <h3 style="padding-left: 5px;">{{ apellidos }}</h3>
           </div>
         </center>
       </v-spacer>
 
-      <v-btn icon @click="log"> <v-icon color="red darken-4">mdi-power</v-icon></v-btn>
+      <v-btn icon @click="log"> <v-icon color="red darken-4" large>mdi-power</v-icon></v-btn>
     </v-app-bar>
     <v-card> </v-card>
     <v-main>

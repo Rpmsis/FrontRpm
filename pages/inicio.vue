@@ -4,6 +4,34 @@
       <v-layout row wrap style="padding: 20px">
         <v-flex>
           <v-row>
+            <v-col cols="12" md="6">
+              <v-card>
+                <v-card-title>HOJAS VIAJERAS</v-card-title>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/hojasviajeras/registro_bascula">
+                    <h4 class="modulo">Registro bascula</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/hojasviajeras/revisar_hviajeras">
+                    <h4 class="modulo">Revisar por produccion</h4>
+                  </a>
+                </v-card>
+              </v-card>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-card>
+                <v-card-title>REPORTES</v-card-title>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/tikets/vertickets">
+                    <h4 class="modulo">Tikets</h4>
+                  </a>
+                </v-card>
+              </v-card>
+            </v-col>
+            
+          </v-row>
+          <v-row>
             <v-col cols="12" md="4">
               <v-card>
                 <v-card-title>REPORTES</v-card-title>
@@ -166,6 +194,11 @@
               <v-card>
                 <v-card-title>MONITOREO DE ACTIVIDADES</v-card-title>
                 <v-card class="v-sheet theme--dark">
+                  <a href="/actividades/pdm">
+                    <h4 class="modulo">Movimiento interno</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
                   <a href="/actividades/actForaneas">
                     <h4 class="modulo">Alta de actividades</h4>
                   </a>
@@ -280,7 +313,6 @@
                 <v-card class="v-sheet theme--dark">
                   <a
                     href="/activos/insumos"
-                    v-if="nombre === 'LUIS REY HERNANDEZ ROMERO'"
                   >
                     <h4 class="modulo">Activos de insumos</h4>
                   </a>

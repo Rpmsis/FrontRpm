@@ -5,19 +5,6 @@
         <v-flex xs12>
           <v-row justify="center">
             <v-col cols="12" md="4">
-              <!-- <v-card
-                class="mt-5"
-                style="padding: 10px; text-align: center; font-size: 30px"
-              >
-                <v-card-title style="background-color: aliceblue; color: black">
-                  ASIGNADAS:
-                </v-card-title>
-                <center>
-                  <h1>
-                    {{ asignaciones }}
-                  </h1>
-                </center>
-              </v-card> -->
               <v-card
                 class="mx-auto mt-5"
                 max-width="344"
@@ -53,28 +40,21 @@
                   </v-progress-linear>
                 </v-card-actions>
               </v-card>
-            </v-col>
-            <v-col cols="12" md="4">
-              <!-- <v-card
-                class="mt-5"
-                style="padding: 10px; text-align: center; font-size: 30px"
+              <v-card
+                color="white"
+                class="mx-auto mt-5"
+                max-width="344"
+                outlined
+                elevation="24"
               >
-                <v-card-title style="background-color: aliceblue; color: black">
-                  PORCENTAJE DE EFICIENCIA :
-                </v-card-title>
-                <center>
-                  <h1>{{ promedio }}%</h1>
-                </center>
-              </v-card> -->
-              <v-card class="mx-auto mt-5" max-width="344" outlined elevation="24">
                 <v-list-item three-line>
-                  <v-list-item-content>
+                  <v-list-item-content style="color: black">
                     <div class="text-overline mb-4">EFICIENCIA</div>
                     <v-list-item-title class="text-h5 mb-1">
                       TERMINADAS
                     </v-list-item-title>
-                    <v-list-item-subtitle
-                      >Porcentaje de eficiencia de las actividades
+                    <v-list-item-subtitle style="color: black">
+                      Porcentaje de eficiencia de las actividades
                       terminadas.</v-list-item-subtitle
                     >
                   </v-list-item-content>
@@ -84,88 +64,126 @@
                     tile
                     size="80"
                     color="primary"
-                    >{{ promedio }}%</v-list-item-avatar
                   >
+                    {{ promedio }}%
+                  </v-list-item-avatar>
                 </v-list-item>
 
-                <v-card-actions> </v-card-actions>
-              </v-card>
-            </v-col>
-          </v-row>
-
-          <!-- <v-card class="mt-10" style="padding: 10px">
-            <v-slider
-              label="ACTIVIDADES REALIZADAS:"
-              v-model="slider1"
-              model-value="30"
-              readonly
-              thumb-label="always"
-              :thumb-size="40"
-              :max="asignaciones"
-            ></v-slider>
-          </v-card> -->
-
-          <v-row>
-            <v-col v-for="(actividad, index) in actividades" :key="index" cols="12" md="4">
-              <v-card class="mx-auto my-12" max-width="374">
-                <v-img
-                  height="150"
-                  src="https://media.licdn.com/dms/image/v2/D4E22AQFN7GuX8omFNg/feedshare-shrink_800/feedshare-shrink_800/0/1714511284311?e=2147483647&v=beta&t=GOTGOlfhgSZvoy8Es20gJaRw0vd05Kzn3M_QvuXPW14"
-                  style="text-align: center; color: #04273f"
-                >
-                  <h1
-                    style="position: relative; bottom: -50px; background-color: #f5f5dcb8"
-                  >
-                    {{actividad.empresa}}
-                  </h1>
-                </v-img>
-
-                <v-card-title>ACTIVIDAD:</v-card-title>
-
-                <v-card-text>
-                  <div class="my-4 text-subtitle-1">{{actividad.actividad}}</div>
-                  <v-row align="center" class="mx-0">
-                    <v-rating
-                      :value="5"
-                      color="amber"
-                      dense
-                      half-increments
-                      readonly
-                      size="14"
-                    ></v-rating>
-
-                    <div class="grey--text ms-4">{{actividad.kg}}kg ({{actividad.timestandar}}min)</div>
-                  </v-row>
-
-                  <v-chip-group
-                    v-model="selection"
-                    active-class="deep-purple accent-4 white--text"
-                    column
-                  >
-                    <v-chip style="background-color:green">INICIO</v-chip>
-
-                    <v-chip style="background-color:red;">EN PAUSA</v-chip>
-
-                    <v-chip style="background-color:#d1d10b">TERMINADO</v-chip>
-                  </v-chip-group>
-                </v-card-text>
-
-                <v-divider class="mx-4"></v-divider>
-
-                <v-card-title>AUXILIARES:</v-card-title>
-
-                <v-card-text>
-
-                </v-card-text>
-
                 <v-card-actions>
-
+                  <v-progress-linear v-model="promedioasig" height="25" color="white">
+                    <strong>{{ Math.ceil(promedioasig) }}%</strong>
+                  </v-progress-linear>
                 </v-card-actions>
               </v-card>
             </v-col>
+            <v-col cols="12" md="6">
+              <v-card
+                class="mx-auto mt-5 scroll-container"
+                outlined
+                elevation="8"
+                color="white"
+                style="border-radius: 20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1)"
+              >
+                <v-row>
+                  <v-col cols="12" md="4" v-for="(respu, index) in naves" :key="index">
+                    <v-card
+                      max-width="400"
+                      outlined
+                      elevation="4"
+                      color="black"
+                      style="
+                        border-radius: 15px;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                      "
+                    >
+                      <!-- Titulo con la ubicación, en grande y elegante -->
+                      <v-card-title
+                        class="text-center py-6"
+                        style="
+                          background: linear-gradient(135deg, #6a11cb, #2575fc);
+                          color: white;
+                          border-radius: 15px 15px 0 0;
+                        "
+                      >
+                        <v-icon left>mdi-clock-time-four</v-icon>
+                        {{ respu.hrtranscurrido }}:{{ respu.mintranscurrido }}
+                      </v-card-title>
+
+                      <!-- Subtítulo de tiempo transcurrido -->
+                      <v-card-subtitle
+                        class="text-center"
+                        style="font-size: 14px; color: white"
+                      >
+                        {{ respu.ubicacion }}
+                      </v-card-subtitle>
+
+                      <!-- Detalles sobre disponibilidad y personal -->
+                      <v-card-text>
+                        <div class="d-flex align-center" style="justify-content: center">
+                          <div
+                            class="text-subtitle-1"
+                            style="font-weight: 500; color: #4caf50"
+                          >
+                            <v-badge
+                              :content="respu.personas"
+                              :value="respu.personas"
+                              color="green"
+                              overlap
+                            >
+                              <v-icon large>mdi-account-group </v-icon>
+                            </v-badge>
+                          </div>
+                        </div>
+                        <div class="d-flex align-center" style="justify-content: center">
+                          <div
+                            class="text-subtitle-1"
+                            style="font-weight: 500; color: #4caf50; text-align: center"
+                          >
+                            <strong>Disponible:</strong>
+                            {{ respu.horareal }}:{{ respu.minreal }}H/h
+                          </div>
+                        </div>
+                      </v-card-text>
+
+                      <v-divider></v-divider>
+
+                      <!-- Información restante -->
+                      <v-card-text
+                        class="my-4 align-center"
+                        style="font-size: 16px; color: #757575; text-align: center"
+                      >
+                        <strong>Restante:</strong>
+                        <div
+                          class="text-subtitle-1"
+                          style="font-size: 18px; font-weight: bold"
+                        >
+                          <v-icon left>mdi-clock-time-four</v-icon>
+                          {{ respu.hrrestante }}:{{ respu.minrestante }}
+                        </div>
+                      </v-card-text>
+
+                      <v-divider></v-divider>
+
+                      <!-- Barra de progreso con un estilo más elegante -->
+                      <v-card-actions>
+                        <v-progress-linear
+                          v-model="respu.porcentaje"
+                          height="15"
+                          color="blue"
+                          :style="{ borderRadius: '6px' }"
+                          disabled="true"
+                        >
+                          <strong> {{ Math.ceil(respu.porcentaje) }}% </strong>
+                        </v-progress-linear>
+                      </v-card-actions>
+                    </v-card>
+                  </v-col>
+                </v-row>
+              </v-card>
+            </v-col>
           </v-row>
 
-          <v-card class="mt-5" style="padding: 10px">
+          <!-- <v-card class="mt-5" style="padding: 10px">
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
@@ -176,6 +194,8 @@
             <v-data-table
               :headers="headers"
               :items="actividades"
+              :single-expand="singleExpand"
+              :expanded.sync="expanded"
               :search="search"
               :footer-props="{
                 'items-per-page-options': [5, 10, 20, 30, 40, 50],
@@ -194,7 +214,8 @@
                       v-bind="attrs"
                       v-on="on"
                       @click="
-                        actualizar(item.idasigactivi), mostEvidencias(item.idasigactivi)
+                        mostresponsables(item.idasigactivi),
+                          mostEvidencias(item.idasigactivi)
                       "
                       small
                       class="mr-2"
@@ -209,7 +230,225 @@
                 {{ `${item.eficienciasig}%` }}
               </template>
             </v-data-table>
-          </v-card>
+          </v-card> -->
+
+          <v-row>
+            <v-col cols="12" md="12" sm="12">
+              <v-data-iterator
+                :items="porcard"
+                :items-per-page.sync="itemsPerPage"
+                :page.sync="page"
+                :search="searchcard"
+                :sort-by="sortBy.toLowerCase()"
+                :sort-desc="sortDesc"
+                hide-default-footer
+              >
+                <template v-slot:header>
+                  <v-toolbar dark color="blue darken-3" class="mb-1">
+                    <v-text-field
+                      v-model="searchcard"
+                      clearable
+                      flat
+                      solo-inverted
+                      hide-details
+                      prepend-inner-icon="mdi-magnify"
+                      label="Search"
+                    ></v-text-field>
+                    <template v-if="$vuetify.breakpoint.mdAndUp">
+                      <v-spacer></v-spacer>
+                      <v-select
+                        v-model="sortBy"
+                        flat
+                        solo-inverted
+                        hide-details
+                        :items="keys"
+                        prepend-inner-icon="mdi-magnify"
+                        label="Sort by"
+                      ></v-select>
+                      <v-spacer></v-spacer>
+                      <v-btn-toggle v-model="sortDesc" mandatory>
+                        <v-btn large depressed color="blue" :value="false">
+                          <v-icon>mdi-arrow-up</v-icon>
+                        </v-btn>
+                        <v-btn large depressed color="blue" :value="true">
+                          <v-icon>mdi-arrow-down</v-icon>
+                        </v-btn>
+                      </v-btn-toggle>
+                    </template>
+                  </v-toolbar>
+                </template>
+
+                <template v-slot:default="props">
+                  <v-row>
+                    <v-col
+                      v-for="item in props.items"
+                      :key="item.Id"
+                      cols="12"
+                      sm="6"
+                      md="6"
+                      lg="6"
+                    >
+                      <v-card style="border-radius: 15px 15px 0 0;">
+                        <v-card
+                          outlined
+                          elevation="4"
+                          color="black"
+                          style="
+                            border-radius: 15px;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                          "
+                        >
+                          <!-- Titulo con la ubicación, en grande y elegante -->
+                          <v-card-title
+                            class="text-center py-6"
+                            style="
+                              background: linear-gradient(135deg, rgb(92 83 102), rgb(90 111 147));
+                              color: white;
+                              border-radius: 15px 15px 0 0;
+                            "
+                          >
+                            <v-row>
+                              <v-col cols="12" md="4" sm="4">
+                                <v-icon large left>mdi-clock-time-four</v-icon>
+                                {{ item.TiempoTranscurrido }}
+                              </v-col>
+                              <v-col cols="12" md="4" sm="4">
+                                <v-icon large left> mdi-weight-kilogram </v-icon>
+                                {{ item.KgRealizados }}
+                              </v-col>
+                              <v-col cols="12" md="4" sm="4">
+                                <v-icon large left> mdi-finance </v-icon>
+                                {{ item.Eficiencia }}
+                              </v-col>
+                            </v-row>
+                          </v-card-title>
+
+                          <!-- Subtítulo de tiempo transcurrido -->
+                          <v-card-subtitle
+                            class="text-center"
+                            style="font-size: 14px; color: white"
+                          >
+                            {{ item.Empresa }}
+                          </v-card-subtitle>
+
+                          <!-- Información restante -->
+                          <v-card-text
+                            class="align-center"
+                            style="font-size: 16px; color: #757575; text-align: center"
+                          >
+                            <v-card-title class="subheading font-weight-bold">
+                              <v-icon large> mdi-pound-box-outline</v-icon>
+                              {{ item.Id }}
+                              <v-spacer></v-spacer>
+                              <strong>Actividad</strong>
+                            </v-card-title>
+
+                            <div
+                              class="text-subtitle-1"
+                              style="font-size: 18px; font-weight: bold"
+                            >
+                              {{ item.Actividad }}
+                            </div>
+                            <div
+                              class="text-subtitle-1"
+                              style="font-weight: 500; color: #4caf50; text-align: right"
+                            >
+                              <v-badge
+                                :content="item.Responsables"
+                                :value="item.Responsables"
+                                color="green"
+                                overlap
+                              >
+                                <v-icon large>mdi-account-group </v-icon>
+                              </v-badge>
+                            </div>
+                            <v-list style="max-height: 200px; overflow-y: auto" two-line>
+                              <v-list-item
+                                v-for="(sujeto, index) in item.asignados || []"
+                                :key="index"
+                              >
+                                <v-list-item-icon>
+                                  <v-icon color="indigo"> mdi-account </v-icon>
+                                </v-list-item-icon>
+
+                                <v-list-item-content>
+                                  <v-list-item-title>
+                                    Nombre: {{ sujeto.nombre }}
+                                  </v-list-item-title>
+                                  <v-list-item-title style="color:#4caf50;">
+                                    Tiempo: {{ sujeto.tiempo }}
+                                  </v-list-item-title>
+                                  <v-list-item-subtitle>
+                                    Estatus: {{ sujeto.estatus }}
+                                  </v-list-item-subtitle>
+                                </v-list-item-content>
+                              </v-list-item>
+                            </v-list>
+                          </v-card-text>
+                          <v-divider></v-divider>
+                          <!-- Detalles sobre disponibilidad y personal -->
+                          <v-card-text>
+                            <v-card-title>
+                              {{ item.Estatus }}
+                            </v-card-title>
+                          </v-card-text>
+                        </v-card>
+                        <v-divider></v-divider>
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                </template>
+
+                <template v-slot:footer>
+                  <v-row class="mt-2" align="center" justify="center">
+                    <span class="grey--text">Items per page</span>
+                    <v-menu offset-y>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          dark
+                          text
+                          color="primary"
+                          class="ml-2"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          {{ itemsPerPage }}
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                      </template>
+                      <v-list>
+                        <v-list-item
+                          v-for="(number, index) in itemsPerPageArray"
+                          :key="index"
+                          @click="updateItemsPerPage(number)"
+                        >
+                          <v-list-item-title>{{ number }}</v-list-item-title>
+                        </v-list-item>
+                      </v-list>
+                    </v-menu>
+
+                    <v-spacer></v-spacer>
+
+                    <span class="mr-4 grey--text">
+                      Page {{ page }} of {{ numberOfPages }}
+                    </span>
+                    <v-btn
+                      fab
+                      dark
+                      color="blue darken-3"
+                      class="mr-1"
+                      @click="formerPage"
+                    >
+                      <v-icon>mdi-chevron-left</v-icon>
+                    </v-btn>
+                    <v-btn fab dark color="blue darken-3" class="ml-1" @click="nextPage">
+                      <v-icon>mdi-chevron-right</v-icon>
+                    </v-btn>
+                  </v-row>
+                </template>
+              </v-data-iterator>
+            </v-col>
+          </v-row>
         </v-flex>
 
         <!-- Tabla personas que estan realizando la actividad-->
@@ -258,9 +497,9 @@
                       <template v-slot:default="{ item }"
                         ><v-row style="padding: 20px">
                           <v-col cols="12" md="6">
-                            <h4 class="namecolor">{{ item.fullName }}</h4>
-                            <h4>{{ item.fecha }}</h4>
-                            <h4>{{ item.hora }}</h4>
+                            <h4>{{ item.fullName }}</h4>
+                            <h5>{{ item.fecha }}</h5>
+                            <h5>{{ item.hora }}</h5>
                           </v-col>
                           <v-col cols="12" md="6">
                             <ImageZoom
@@ -287,14 +526,20 @@
 <script>
 import io from "socket.io-client";
 import ImageZoom from "~/components/ImageZoom.vue";
+import VueApexCharts from "vue-apexcharts";
 
 export default {
   components: {
     ImageZoom,
+    VueApexCharts,
   },
   layout: "barra",
   data() {
     return {
+      personas: 0,
+      expanded: [],
+      singleExpand: false,
+
       slider1: 0,
       asignaciones: 0,
       promedio: 0,
@@ -305,7 +550,7 @@ export default {
       Titulo: "",
       search: "",
       search2: "",
-      actividades: [],
+
       responsables: [],
       statusres: false,
       headers: [
@@ -356,6 +601,23 @@ export default {
 
       name2: [],
       evidencias: [],
+
+      horastrans: 0,
+      mintrans: 0,
+      tiempodisponible: 0,
+      porcentaje: 0,
+      naves: [],
+
+      //Datos de la tabla por card
+      porcard: [],
+      itemsPerPageArray: [4, 6, 8, 12, 20],
+      searchcard: "",
+      filter: {},
+      sortDesc: false,
+      page: 1,
+      itemsPerPage: 12,
+      sortBy: "id",
+      keys: [],
     };
   },
   mounted() {
@@ -384,14 +646,28 @@ export default {
         };
       });
     },
+
+    numberOfPages() {
+      return Math.ceil(this.porcard.length / this.itemsPerPage);
+    },
+    filteredKeys() {
+      return this.keys.filter((key) => key !== "Id");
+    },
   },
 
   methods: {
-    nuevaevidencia(datos) {
-      this.actualizar(datos);
+    //Metodos de los card
+    nextPage() {
+      if (this.page + 1 <= this.numberOfPages) this.page += 1;
+    },
+    formerPage() {
+      if (this.page - 1 >= 1) this.page -= 1;
+    },
+    updateItemsPerPage(number) {
+      this.itemsPerPage = number;
     },
 
-    /* Mostrar Actividad */
+    /* Muestra todas las actividades de día */
     async mostrar() {
       try {
         const res = await fetch("http://localhost:3005/actividiarias", {
@@ -404,8 +680,9 @@ export default {
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          this.actividades = datos.respuesta;
-          console.log(this.actividades);
+          this.porcard = datos.nuevoarray;
+          this.keys = Object.keys(datos.nuevoarray[0]);
+          console.log(this.porcard);
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -425,7 +702,8 @@ export default {
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          console.log(datos);
+          this.naves = datos.hhombretotal;
+          //console.log(this.naves);
           this.asignaciones = datos.deldiatotal;
           this.slider1 = datos.terminadastotal;
           this.promedio = datos.promediototal;
@@ -437,8 +715,8 @@ export default {
       }
     },
 
-    /* Mostrar las actividades de los responsables */
-    async actualizar(idasigactivi) {
+    /* Mostrar los responsables por actividad */
+    async mostresponsables(idasigactivi) {
       //console.log(idactividad);
       //console.log(idasigactivi);
       try {
@@ -465,6 +743,7 @@ export default {
       }
     },
 
+    /* Muestra las evidencias cargadas */
     async mostEvidencias(idasigactivi) {
       //console.log(idactividad);
       //console.log(idasigactivi);
@@ -484,16 +763,12 @@ export default {
       }
     },
 
+    /* Si esta TERMINADO lo pone de otro color */
     buscarkgfaltantes(item) {
       if (item.kg > 0 && item.kgControl === 0 && item.status === "TERMINADO") {
         return "highlight-row"; // Clase CSS para destacar la fila
       }
       return "";
-    },
-
-    created() {
-      this.mostrar();
-      this.mostrarGlobal();
     },
   },
 };
@@ -525,5 +800,16 @@ export default {
 }
 .namecolor {
   color: brown;
+}
+.theme--dark.v-application .text--primary {
+  color: #615c5c !important;
+}
+
+.scroll-container {
+  max-height: 374px; /* Ajusta según sea necesario */
+  overflow-y: auto; /* Habilita el desplazamiento vertical */
+}
+.theme--dark.v-list {
+  background: rgb(30 27 27 / 54%);
 }
 </style>

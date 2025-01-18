@@ -77,13 +77,13 @@
                 </v-list-item>
 
                 <v-card-actions>
-                  <v-progress-linear
+                  <!-- <v-progress-linear
                     v-model="porcentajeterminadas"
                     height="25"
                     color="orange"
                   >
                     <strong>{{ Math.ceil(porcentajeterminadas) }}%</strong>
-                  </v-progress-linear>
+                  </v-progress-linear> -->
                 </v-card-actions>
               </v-card>
             </v-col>
@@ -110,9 +110,9 @@
                   >
                 </v-list-item>
 
-                <v-card-actions>
+                <!-- <v-card-actions>
                   <v-btn outlined rounded text> ACTIVIDADES</v-btn>
-                </v-card-actions>
+                </v-card-actions> -->
               </v-card>
             </v-col>
           </v-row>
@@ -171,7 +171,7 @@
               </v-card>
             </v-col>
           </v-row>
-          <v-card class="mt-5" style="padding: 10px" v-if="datos === true">
+          <!-- <v-card class="mt-5" style="padding: 10px" v-if="datos === true">
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
@@ -190,7 +190,7 @@
               :sort-desc="true"
             >
             </v-data-table>
-          </v-card>
+          </v-card> -->
         </v-flex>
         <v-dialog v-model="alerta" max-width="500">
           <v-card>

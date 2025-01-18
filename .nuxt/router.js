@@ -4,15 +4,14 @@ import { normalizeURL, decode } from 'ufo'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _e3df6410 = () => interopDefault(import('..\\pages\\ayuda.vue' /* webpackChunkName: "pages/ayuda" */))
 const _74f9e757 = () => interopDefault(import('..\\pages\\inicio.vue' /* webpackChunkName: "pages/inicio" */))
-const _1ace9570 = () => interopDefault(import('..\\pages\\tabla.vue' /* webpackChunkName: "pages/tabla" */))
 const _5e3a3608 = () => interopDefault(import('..\\pages\\actividades\\actdiarias.vue' /* webpackChunkName: "pages/actividades/actdiarias" */))
 const _024ce13a = () => interopDefault(import('..\\pages\\actividades\\actForaneas.vue' /* webpackChunkName: "pages/actividades/actForaneas" */))
 const _2c0b7c1e = () => interopDefault(import('..\\pages\\actividades\\asignacion.vue' /* webpackChunkName: "pages/actividades/asignacion" */))
 const _9d1964f8 = () => interopDefault(import('..\\pages\\actividades\\control.vue' /* webpackChunkName: "pages/actividades/control" */))
 const _2afd93b3 = () => interopDefault(import('..\\pages\\actividades\\editeficienciakg.vue' /* webpackChunkName: "pages/actividades/editeficienciakg" */))
 const _4f257e9e = () => interopDefault(import('..\\pages\\actividades\\eficacia.vue' /* webpackChunkName: "pages/actividades/eficacia" */))
+const _b3d66ac0 = () => interopDefault(import('..\\pages\\actividades\\pdm.vue' /* webpackChunkName: "pages/actividades/pdm" */))
 const _329c3024 = () => interopDefault(import('..\\pages\\actividades\\porusuario.vue' /* webpackChunkName: "pages/actividades/porusuario" */))
 const _39f3443f = () => interopDefault(import('..\\pages\\actividades\\tablerologistica.vue' /* webpackChunkName: "pages/actividades/tablerologistica" */))
 const _64883dae = () => interopDefault(import('..\\pages\\activos\\activosFijos.vue' /* webpackChunkName: "pages/activos/activosFijos" */))
@@ -34,6 +33,8 @@ const _6a298ca2 = () => interopDefault(import('..\\pages\\consumibles\\minimo.vu
 const _657be076 = () => interopDefault(import('..\\pages\\consumibles\\verificar.vue' /* webpackChunkName: "pages/consumibles/verificar" */))
 const _02551ed3 = () => interopDefault(import('..\\pages\\consumibles\\vigenciaprestamo.vue' /* webpackChunkName: "pages/consumibles/vigenciaprestamo" */))
 const _5dae19ac = () => interopDefault(import('..\\pages\\graficas\\graficas.vue' /* webpackChunkName: "pages/graficas/graficas" */))
+const _330252dd = () => interopDefault(import('..\\pages\\hojasviajeras\\registro_bascula.vue' /* webpackChunkName: "pages/hojasviajeras/registro_bascula" */))
+const _b42e8db8 = () => interopDefault(import('..\\pages\\hojasviajeras\\revisar_hviajeras.vue' /* webpackChunkName: "pages/hojasviajeras/revisar_hviajeras" */))
 const _0865f59c = () => interopDefault(import('..\\pages\\idusuarios\\idusuarios.vue' /* webpackChunkName: "pages/idusuarios/idusuarios" */))
 const _5a7be277 = () => interopDefault(import('..\\pages\\mantenimiento\\tablero.vue' /* webpackChunkName: "pages/mantenimiento/tablero" */))
 const _452a8a7e = () => interopDefault(import('..\\pages\\menusemana\\Cargarimagen.vue' /* webpackChunkName: "pages/menusemana/Cargarimagen" */))
@@ -63,17 +64,9 @@ export const routerOptions = {
   scrollBehavior,
 
   routes: [{
-    path: "/ayuda",
-    component: _e3df6410,
-    name: "ayuda"
-  }, {
     path: "/inicio",
     component: _74f9e757,
     name: "inicio"
-  }, {
-    path: "/tabla",
-    component: _1ace9570,
-    name: "tabla"
   }, {
     path: "/actividades/actdiarias",
     component: _5e3a3608,
@@ -98,6 +91,10 @@ export const routerOptions = {
     path: "/actividades/eficacia",
     component: _4f257e9e,
     name: "actividades-eficacia"
+  }, {
+    path: "/actividades/pdm",
+    component: _b3d66ac0,
+    name: "actividades-pdm"
   }, {
     path: "/actividades/porusuario",
     component: _329c3024,
@@ -182,6 +179,14 @@ export const routerOptions = {
     path: "/graficas/graficas",
     component: _5dae19ac,
     name: "graficas-graficas"
+  }, {
+    path: "/hojasviajeras/registro_bascula",
+    component: _330252dd,
+    name: "hojasviajeras-registro_bascula"
+  }, {
+    path: "/hojasviajeras/revisar_hviajeras",
+    component: _b42e8db8,
+    name: "hojasviajeras-revisar_hviajeras"
   }, {
     path: "/idusuarios/idusuarios",
     component: _0865f59c,

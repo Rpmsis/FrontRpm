@@ -330,6 +330,8 @@ export default {
         "MAQUINARIA",
         "EQUIPOS ELECTRONICOS",
         "EQUIPOS DE OFICINA",
+        "LLANTAS",
+        "BATERIAS"
       ],
       headers: [
         { text: "Id del activo ", value: "folioInsumos" },

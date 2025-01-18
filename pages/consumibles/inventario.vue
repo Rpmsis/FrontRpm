@@ -6,8 +6,8 @@
           <v-card>
             <br />
             <v-row>
+              <h2 style="color: orange">ESCANEA EL CÓDIGO DE BARRAS DEL CONSUMIBLE:</h2>
               <v-col cols="12" md="12">
-                <h2 style="color: orange">ESCANEA EL CÓDIGO DE BARRAS DEL CONSUMIBLE: </h2>
                 <v-text-field
                   type="text"
                   label="CÓDIGO DE BARRAS"
@@ -22,9 +22,9 @@
           <v-card class="mt-5" style="padding: 10px">
             <v-card style="padding: 15px" v-show="movimiento">
               <v-form class="mt-5" @submit.prevent="submitForm">
+                <center><h3 style="color: orange">REGISTRAR MOVIMIENTO:</h3></center>
                 <v-row>
                   <v-col cols="12" md="6">
-                    <h3 style="color: orange">REGISTRAR MOVIMIENTO: </h3>
                     <v-text-field
                       v-model="datosMovimiento.responsable"
                       type="text"
@@ -46,6 +46,12 @@
                     </center>
                   </v-col>
                   <v-col cols="12" md="6">
+                    <v-select
+                      v-model="sucursal"
+                      :items="sucursales"
+                      label="Selecciona una sucursal"
+                      filled
+                    ></v-select>
                     <v-data-table
                       :headers="headers"
                       :items="folios"
@@ -62,27 +68,29 @@
               </v-form>
             </v-card>
 
-            <v-card class="mt-5" style="padding: 15px" v-show="movimiento" >
+            <v-card class="mt-5" style="padding: 15px" v-show="movimiento">
               <v-row>
                 <v-col cols="12" md="12">
-                  <h3 style="color: orange">HISTORIAL: </h3>
+                  <h3 style="color: orange">HISTORIAL:</h3>
                   <v-data-table
-                      :headers="headersHistorial"
-                      :items="historialcb"
-                      :footer-props="{
-                        'items-per-page-options': [5, 10, 20, 30, 40, 50],
-                      }"
-                      :items-per-page="5"
-                      :sort-by="['idcompras']"
-                      :sort-desc="true"
-                    >
-                    </v-data-table>
+                    :headers="headersHistorial"
+                    :items="historialcb"
+                    :footer-props="{
+                      'items-per-page-options': [5, 10, 20, 30, 40, 50],
+                    }"
+                    :items-per-page="5"
+                    :sort-by="['idcompras']"
+                    :sort-desc="true"
+                  >
+                  </v-data-table>
                 </v-col>
               </v-row>
             </v-card>
 
             <v-card style="padding: 15px" v-show="msjmovimiento">
-              <v-card-title class="text-h2" style="color: red" > EL ACTIVO NO EXISTE </v-card-title>
+              <v-card-title class="text-h2" style="color: red">
+                EL ACTIVO NO EXISTE
+              </v-card-title>
             </v-card>
           </v-card>
         </v-flex>
@@ -122,9 +130,9 @@ export default {
       msjmovimiento: false,
       activo: [],
       folios: [],
-      historialcb:[],
-      historialfijo:[],
-      historialres:[],
+      historialcb: [],
+      historialfijo: [],
+      historialres: [],
       headers: [
         { text: "Id del activo", value: "folioActivo" },
         { text: "Tipo", value: "tipo" },
@@ -143,15 +151,17 @@ export default {
         codigobarras: "",
       },
       datosMovimiento: {
-        idconsumibles:"",
-        folioActivo:"",
-        costo:"",
+        idconsumibles: "",
+        folioActivo: "",
+        costo: "",
         cantidad: "",
         responsable: "",
-        area:"",
-        tipo:"",
-        codigobarras:""
+        area: "",
+        tipo: "",
+        codigobarras: "",
       },
+      sucursales: ["CANOA", "SAN LUIS POTOSI", "QUERETARO", "19 NTE", "VALSEQUILLO"],
+      sucursal: "CANOA",
     };
   },
   mounted() {},
@@ -162,28 +172,31 @@ export default {
       console.log(codigobarras);
       const cb = codigobarras;
       try {
-        const res = await fetch(`http://localhost:3001/movimientos?cb=${cb}`);
+        const res = await fetch(`http://localhost:3001/movimientos?cb=${cb}`, {
+          headers: {
+            token: localStorage.token,
+          },
+        });
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
+          console.log(datos.respuesta.respuesta);
           this.folios = datos.respuesta.respuesta;
-          if(this.formData.codigobarras){
+          if (this.formData.codigobarras) {
             if (this.folios && this.folios.length > 0) {
-            this.movimiento = true;
-            this.msjmovimiento = false;
-            this.mostrarHistorialcb(this.folios[0].folioActivo);
+              this.movimiento = true;
+              this.msjmovimiento = false;
+              this.mostrarHistorialcb(this.folios[0].folioActivo);
             } else {
               this.msjmovimiento = true;
               this.movimiento = false;
             }
-          }
-          else{
+          } else {
             this.msjmovimiento = false;
             this.movimiento = false;
           }
           console.log(this.folios[0].folioActivo);
-
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -193,15 +206,16 @@ export default {
     async mostrarHistorialcb(folioActivo) {
       console.log(folioActivo);
       try {
-        const res = await fetch(`http://localhost:3001/Historialcb?folioActivo=${folioActivo}`);
+        const res = await fetch(
+          `http://localhost:3001/Historialcb?folioActivo=${folioActivo}`
+        );
         const datos = await res.json();
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
           this.historialfijo = datos.respuesta.respuesta;
           console.log(this.historialcb);
-          this.historialcb = this.historialfijo
-
+          this.historialcb = this.historialfijo;
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -209,16 +223,17 @@ export default {
     },
 
     /* Mostrar el hostorial del responsable */
-    async historialresponsable(){
+    async historialresponsable() {
       /* @input="historialresponsable" */
       const respon = this.datosMovimiento.responsable;
-      if(respon){
-        const nuevohistorial = this.historialfijo.filter((filtro) => filtro.idcheck === respon);
+      if (respon) {
+        const nuevohistorial = this.historialfijo.filter(
+          (filtro) => filtro.idcheck === respon
+        );
         this.historialcb = nuevohistorial;
         console.log("Historial repsonsable ", nuevohistorial);
-      }
-      else{
-        this.historialcb= this.historialfijo;
+      } else {
+        this.historialcb = this.historialfijo;
       }
     },
     /* Enviar formulario de actividades */
@@ -253,9 +268,9 @@ export default {
     /* ------------------------------------------------------------ */
 
     limpiarFormulario() {
-      this.datosMovimiento.responsable= "";
-      this.datosMovimiento.cantidad= "";
-      this.formData.codigobarras= "";
+      this.datosMovimiento.responsable = "";
+      this.datosMovimiento.cantidad = "";
+      this.formData.codigobarras = "";
     },
   },
 };

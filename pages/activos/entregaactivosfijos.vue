@@ -44,20 +44,41 @@
                 <v-row>
                   <v-col cols="12" md="6">
                     <v-text-field
+                      v-model="formData.folioActivo"
+                      type="text"
+                      prepend-icon="mdi-barcode-scan"
+                      label="Id del activo"
+                      @change="Buscarinsumo()"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    v-if="
+                      tipoactivo && (tipoactivo != 'LLANTAS' && tipoactivo != 'BATERIAS')
+                    "
+                    cols="12"
+                    md="6"
+                  >
+                    <v-text-field
                       v-model="formData.idcheck"
                       type="text"
                       prepend-icon="mdi-qrcode-scan"
                       label="Id del usuario"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="6">
-                    <v-text-field
-                      v-model="formData.folioActivo"
-                      type="text"
-                      prepend-icon="mdi-barcode-scan"
-                      label="Id del activo"
-                      
-                    ></v-text-field>
+                  <v-col
+                    v-if="
+                      tipoactivo && (tipoactivo === 'LLANTAS' || tipoactivo === 'BATERIAS')
+                    "
+                    cols="12"
+                    md="6"
+                  >
+                    <v-select
+                      :items="unidades"
+                      v-model="formData.utilitario"
+                      label="Utilitario"
+                      filled
+                    >
+                    </v-select>
                   </v-col>
                 </v-row>
                 <center>
@@ -109,12 +130,15 @@ export default {
         { text: "id del activo ", value: "folioActivo" },
         { text: "Fecha de entrega", value: "fecha" },
         { text: "Área", value: "area" },
-        { text: "Estatus", value: "estatus" },
+        { text: "Utilitario", value: "utilitario" },
       ],
+      unidades: ["UNIDAD 1", "UNIDAD 2", "UNIDAD 3"],
       formData: {
         folioActivo: "",
         idcheck: "",
+        utilitario: "",
       },
+      tipoactivo: "",
     };
   },
 
@@ -136,7 +160,7 @@ export default {
         console.error("Error al obtener los datos:", error);
       }
     },
-    async Buscar() {
+    async Buscarinsumo() {
       if (this.formData.folioActivo === "") {
         return false;
       } else {
@@ -150,28 +174,15 @@ export default {
           }
         );
         const dato = await res.json();
-        console.log(dato);
-        /* if (res.status === 400) {
-        this.alerta = true;
-        this.Titulo = "¡Upss!";
-        this.Mensaje =dato.mensaje;
-        this.datos = false;
-      } else {
-        this.datos = true;
-        //console.log("Actividades: ",dato.actividades.respuesta);
-        this.actividad = dato.actividades.respuesta.map((filtro) => ({
-            id: filtro.idactividades,
-            text: filtro.actividad,
-            idasigactivi: filtro.idasigactivi,
-          }));
-        //console.log("Responsables",dato.responsables.respuesta);
-        this.operadores = dato.responsables.respuesta.map((filtro) => ({
-            id: filtro.idPMD,
-            text: filtro.Nombre,
-          })); 
-          this.mostrarControl();
-      } */
-        //console.log(dato.results3)
+        if (res.status === 400) {
+          this.alerta = true;
+          this.Titulo = "¡Upss!";
+          this.Mensaje = dato.mensaje;
+          this.tipoactivo = "";
+        } else {
+          console.log(dato.respuesta.tipoAct);
+          this.tipoactivo = dato.respuesta.tipoAct;
+        }
       }
     },
     async submitForm() {
@@ -187,7 +198,6 @@ export default {
         this.alerta = true;
         this.Titulo = "¡Upss!";
         this.Mensaje = datos.mensaje;
-        
       } else {
         this.alerta = true;
         //this.Titulo = "El ID del activo es: ";
