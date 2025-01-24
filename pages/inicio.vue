@@ -21,7 +21,7 @@
             </v-col>
             <v-col cols="12" md="6">
               <v-card>
-                <v-card-title>REPORTES</v-card-title>
+                <v-card-title>Tickets</v-card-title>
                 <v-card class="v-sheet theme--dark">
                   <a href="/tikets/vertickets">
                     <h4 class="modulo">Tikets</h4>
@@ -34,7 +34,7 @@
           <v-row>
             <v-col cols="12" md="4">
               <v-card>
-                <v-card-title>REPORTES</v-card-title>
+                <v-card-title>REPORTES PDM</v-card-title>
                 <v-card class="v-sheet theme--dark">
                   <a href="/graficas/graficas">
                     <h4 class="modulo">Reporte en graficas</h4>
@@ -44,10 +44,15 @@
             </v-col>
             <v-col cols="12" md="4">
               <v-card>
-                <v-card-title>REPORTES</v-card-title>
+                <v-card-title>LOSGISTICA</v-card-title>
                 <v-card class="v-sheet theme--dark">
                   <a href="/graficas/graficas">
                     <h4 class="modulo">Reporte de operadores</h4>
+                  </a>
+                </v-card>
+                <v-card class="v-sheet theme--dark">
+                  <a href="/logistica/movimientopersonal">
+                    <h4 class="modulo">Movimiento interno</h4>
                   </a>
                 </v-card>
               </v-card>

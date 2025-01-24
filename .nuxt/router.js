@@ -36,6 +36,7 @@ const _5dae19ac = () => interopDefault(import('..\\pages\\graficas\\graficas.vue
 const _330252dd = () => interopDefault(import('..\\pages\\hojasviajeras\\registro_bascula.vue' /* webpackChunkName: "pages/hojasviajeras/registro_bascula" */))
 const _b42e8db8 = () => interopDefault(import('..\\pages\\hojasviajeras\\revisar_hviajeras.vue' /* webpackChunkName: "pages/hojasviajeras/revisar_hviajeras" */))
 const _0865f59c = () => interopDefault(import('..\\pages\\idusuarios\\idusuarios.vue' /* webpackChunkName: "pages/idusuarios/idusuarios" */))
+const _878a8b58 = () => interopDefault(import('..\\pages\\logistica\\movimientopersonal.vue' /* webpackChunkName: "pages/logistica/movimientopersonal" */))
 const _5a7be277 = () => interopDefault(import('..\\pages\\mantenimiento\\tablero.vue' /* webpackChunkName: "pages/mantenimiento/tablero" */))
 const _452a8a7e = () => interopDefault(import('..\\pages\\menusemana\\Cargarimagen.vue' /* webpackChunkName: "pages/menusemana/Cargarimagen" */))
 const _26c168ee = () => interopDefault(import('..\\pages\\menusemana\\form.vue' /* webpackChunkName: "pages/menusemana/form" */))
@@ -191,6 +192,10 @@ export const routerOptions = {
     path: "/idusuarios/idusuarios",
     component: _0865f59c,
     name: "idusuarios-idusuarios"
+  }, {
+    path: "/logistica/movimientopersonal",
+    component: _878a8b58,
+    name: "logistica-movimientopersonal"
   }, {
     path: "/mantenimiento/tablero",
     component: _5a7be277,

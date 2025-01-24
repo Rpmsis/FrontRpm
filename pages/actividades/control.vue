@@ -159,9 +159,9 @@
                       <v-btn
                         :color="estaTusresponsables(item)"
                         x-small
-                        style="color: #000000; font-family: cursive;"
+                        style="color: #000000; font-family: cursive"
                       >
-                      <b>{{ tituloresponsables(item) }}</b>
+                        <b>{{ tituloresponsables(item) }}</b>
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -285,7 +285,7 @@ export default {
           console.error("Error al obtener los datos:", error);
         } else {
           console.log(datos);
-          this.controlactivi= [];
+          this.controlactivi = [];
           const nuevocontrol = datos.result;
 
           // Definir el orden de los estatus
@@ -299,11 +299,11 @@ export default {
               this.controlactivi.push({ ...datos, estatusIndex });
             }
           });
-          console.log("sort",this.controlactivi);
+          console.log("sort", this.controlactivi);
 
           // Ordenar nuevocontrol por el índice del estatus
           this.controlactivi.sort((a, b) => a.estatusIndex - b.estatusIndex);
-          
+
           // Eliminar el campo 'estatusIndex' después de ordenar
           this.controlactivi.forEach((datos) => {
             delete datos.estatusIndex;
@@ -388,11 +388,13 @@ export default {
             text: filtro.actividad,
             idasigactivi: filtro.idasigactivi,
           }));
-          //console.log("Responsables", dato.responsables.respuesta);
-          this.operadores = dato.responsables.respuesta.map((filtro) => ({
-            id: filtro.idPMD,
-            text: filtro.Nombre,
-          }));
+          console.log("Responsables", dato.responsables.respuesta);
+          this.operadores = dato.responsables.respuesta.map((filtro) => {
+            return {
+              id: filtro.idPMD,
+              text: filtro.Nombre,
+            };
+          });
           //console.log("Asignadas", dato.asignadas);
           this.asignadas = dato.asignadas;
           this.mostrarControl();
