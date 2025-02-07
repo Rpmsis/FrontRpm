@@ -3,13 +3,13 @@ import path from 'path'
 import fs from 'fs'
 
 export default {
-  /* server: {
+  server: {
     https: {
       key: fs.readFileSync(path.resolve(__dirname, 'server.key')),
       cert: fs.readFileSync(path.resolve(__dirname, 'mi_certificado.crt'))
     },
     port: 3001, // El puerto en el que se ejecutará el servidor
-  }, */
+  },
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 

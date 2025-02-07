@@ -300,7 +300,7 @@
             <v-card style="padding: 15px">
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn icon @click="insertprove = false">
+                <v-btn icon @click="(insertprove = false), limpiarFormularioProveedor()">
                   <v-icon style="font-size: 30px"
                     >mdi-close theme--dark red--text</v-icon
                   ></v-btn
@@ -830,10 +830,19 @@ export default {
           this.Mensaje = datos.respuesta;
           this.insertprove = false;
           this.mostrarProveedores();
+          this.limpiarFormularioProveedor();
         }
       }
       console.log(datos);
     },
+    limpiarFormularioProveedor() {
+      this.formproveedor.email="";
+      this.formproveedor.movil= "";
+      this.formproveedor.nombre= "";
+      this.formproveedor.rsocial= "";
+      this.formproveedor.tel="";
+    },
+
   },
 };
 </script>

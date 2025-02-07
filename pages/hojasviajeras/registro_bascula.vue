@@ -104,10 +104,10 @@
                 <v-card>
                   <v-card-actions>
                     <v-card-title class="subheading font-weight-bold">
-                      Id del viaje: {{ item.id }}
+                      Id hoja viajera: {{ item.id }}
                     </v-card-title>
                     <v-spacer></v-spacer>
-                    <v-btn icon @click="cancelarfolios(item.viaje)">
+                    <v-btn icon @click="cancelarconpermiso(item.viaje)">
                       <v-icon style="font-size: 30px">
                         mdi-close theme--dark red--text
                       </v-icon>
@@ -170,6 +170,37 @@
         </v-data-iterator>
       </v-col>
     </v-row>
+    <!-- Ventana emergente -->
+    <v-dialog v-model="permiso" max-width="500" persistent>
+      <v-card style="background-color: rgb(4 0 4 / 70%)">
+        <v-card-title class="text-h4">
+          Viaje: {{ formData.idviaje }}
+        </v-card-title>
+        <v-card-text class="text-h6 text-center">
+          <v-row>
+            <v-col cols="12" md="12">
+              <v-text-field
+                v-model="formData.idcheck"
+                label="QR de autorización"
+                autofocus
+                type="password"
+               
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn class="ma-1" color="grey" text @click="(permiso = false), (formData.idcheck = '')">
+            Cerrar
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn class="ma-1" color="error" text @click="cancelarfolios()">
+            Delete
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <!-- Ventana emergente -->
     <v-dialog v-model="alerta" max-width="500">
@@ -208,6 +239,8 @@ export default {
       registros: [],
       infolios: [],
 
+      permiso: false,
+
       headers: [
         { text: "Id viaje ", value: "idviajes" },
         { text: "Folio", value: "folio" },
@@ -217,7 +250,8 @@ export default {
         viaje: "",
         folio: "",
         infoviaje: "",
-        idviaje: ""
+        idviaje: "",
+        idcheck: "",
       },
 
       //Datos de la tabla por card
@@ -235,7 +269,7 @@ export default {
   async mounted() {
     this.mostrar();
     this.mostrarviajes();
-    this.socket = io("http://192.168.1.97:3003");
+    this.socket = io("http://localhost:3003");
     this.socket.on("revisado", (datos) => {
       //console.log(datos);
       this.mostrar();
@@ -275,7 +309,7 @@ export default {
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          console.log(datos.respuesta);
+          //console.log(datos.respuesta);
           this.infolios = datos.respuesta;
         }
       } catch (error) {
@@ -294,7 +328,7 @@ export default {
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          console.log(datos);
+          //console.log(datos);
           this.registros = datos.respuesta;
           this.keys = Object.keys(datos.respuesta[0]);
         }
@@ -315,7 +349,7 @@ export default {
         body: JSON.stringify(this.formData),
       });
       const datos = await res.json();
-      console.log(datos);
+      //console.log(datos);
       if (res.status === 400) {
         this.alerta = true;
         this.Titulo = "¡Upss!";
@@ -337,9 +371,13 @@ export default {
       this.formData.viaje = "";
     },
 
-    async cancelarfolios(item){
-      console.log(item);
-      this.formData.idviaje= item;
+    cancelarconpermiso(item) {
+      //console.log(item);
+      this.permiso = true;
+      this.formData.idviaje = item;
+    },
+
+    async cancelarfolios() {
       const res = await fetch("http://localhost:3001/cancelarfolio", {
         method: "PUT",
         headers: {
@@ -353,14 +391,16 @@ export default {
         this.alerta = true;
         this.Titulo = "¡Upss!";
         this.Mensaje = datos.mensaje;
+        this.formData.idcheck = "";
       } else {
         this.alerta = true;
-        //this.Titulo = "El ID del activo es: ";
-        this.Titulo = "Se cancelo correctamente.";
+        this.Titulo = "Cancelado!!";
         this.Mensaje = "";
+        this.permiso = false;
+        this.formData.idcheck = "";
         this.mostrarviajes();
       }
-    }
+    },
   },
 };
 </script>

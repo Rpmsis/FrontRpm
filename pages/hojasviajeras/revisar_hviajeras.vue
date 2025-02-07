@@ -152,7 +152,7 @@ export default {
 
   async mounted() {
     this.mostrar();
-    this.socket = io("http://192.168.1.97:3003");
+    this.socket = io("http://localhost:3003");
     this.socket.on("registrado", (datos) => {
       //console.log(datos);
       this.mostrar();

@@ -60,7 +60,7 @@
                   <v-list-item-avatar
                     style="font-size: 25px"
                     tile
-                    size="80"
+                    size="100"
                     color="primary"
                   >
                     {{ promedio }}%
@@ -208,7 +208,7 @@
                           :items="sucursales"
                           prepend-inner-icon="mdi-magnify"
                           label="Empresa"
-                          @change="(datosenviar.nombre=''),mostrarFiltrados()"
+                          @change="(datosenviar.nombre = ''), mostrarFiltrados()"
                           clearable
                         ></v-select>
                       </v-col>
@@ -231,7 +231,7 @@
                 </template>
 
                 <template v-slot:default="props">
-                  <v-row>
+                  <v-row style="border: solid black 1px">
                     <v-col
                       v-for="item in props.items"
                       :key="item.Id"
@@ -271,10 +271,12 @@
                                 {{ item.TiempoTranscurrido }}
                               </v-col>
                               <v-col cols="4" md="4" sm="4" xs="4">
-                                <v-icon meddium left v-if="$vuetify.breakpoint.smAndUp">
-                                  mdi-weight-kilogram
-                                </v-icon>
-                                {{ item.KgRealizados }}
+                                <v-div v-if="item.kgactividades > 0">
+                                  <v-icon meddium left v-if="$vuetify.breakpoint.mdAndUp">
+                                    mdi-weight-kilogram
+                                  </v-icon>
+                                  {{ item.KgRealizados }}
+                                </v-div>
                               </v-col>
                               <v-col cols="4" md="4" sm="4" xs="4">
                                 <v-icon meddium left v-if="$vuetify.breakpoint.smAndUp">
@@ -307,7 +309,7 @@
                               >
                               {{ item.Id }}
                               <v-spacer></v-spacer>
-                              <strong>Actividad</strong>
+                              <strong>ACTIVIDAD</strong>
                             </v-card-title>
 
                             <div
@@ -349,16 +351,50 @@
                                     <h3>{{ sujeto.nombre }}</h3>
                                   </v-list-item-title>
                                   <v-list-item-title>
-                                    <h3 style="">
-                                      <v-icon medium left> mdi-clock-time-four </v-icon>
-                                      {{ sujeto.tiempo }}
-                                    </h3>
+                                    <v-row
+                                      :class="titulosdatos"
+                                      no-gutters
+                                      justify="center"
+                                    >
+                                      <v-col cols="4" md="4" sm="4" xs="4">
+                                        <v-icon
+                                          meddium
+                                          left
+                                          v-if="$vuetify.breakpoint.smAndUp"
+                                          >mdi-clock-time-four</v-icon
+                                        >
+                                        {{ sujeto.tiempo }}
+                                      </v-col>
+                                      <v-col cols="4" md="4" sm="4" xs="4">
+                                        <v-div v-if="item.kgactividades > 0">
+                                          <v-icon
+                                            meddium
+                                            left
+                                            v-if="$vuetify.breakpoint.smAndUp"
+                                          >
+                                            mdi-weight-kilogram
+                                          </v-icon>
+                                          {{ sujeto.kg }}
+                                        </v-div>
+                                      </v-col>
+                                      <v-col cols="4" md="4" sm="4" xs="4">
+                                        <v-icon
+                                          meddium
+                                          left
+                                          v-if="$vuetify.breakpoint.smAndUp"
+                                        >
+                                          mdi-finance
+                                        </v-icon>
+                                        {{ sujeto.eficiencia }}
+                                      </v-col>
+                                    </v-row>
                                   </v-list-item-title>
                                   <v-list-item-subtitle>
                                     <v-btn
                                       outlined
                                       small
                                       :color="colorestatus(sujeto.estatus)"
+                                      block
                                     >
                                       <h4>{{ sujeto.estatus }}</h4>
                                     </v-btn>
@@ -558,7 +594,7 @@ export default {
             this.porcard = asignaciones;
           } else {
             this.porcard = datos.nuevoarray;
-            //console.log(this.porcard);
+            console.log(this.porcard);
           }
 
           this.sucursales = datos.uniempresas;
@@ -639,7 +675,7 @@ export default {
         this.searchcard = "";
         this.datosenviar.empresa = "";
         this.datosenviar.nombre = "";
-        this.trabajadores=[];
+        this.trabajadores = [];
         //console.log(this.datosenviar);
       }
     },
@@ -691,42 +727,34 @@ export default {
       }
     }, */
 
-    /* Si esta TERMINADO lo pone de otro color */
-    buscarkgfaltantes(item) {
-      if (item.kg > 0 && item.kgControl === 0 && item.status === "TERMINADO") {
-        return "highlight-row"; // Clase CSS para destacar la fila
-      }
-      return "";
-    },
-
     colorestatusbtn(item) {
       //console.log("EstatusC: ", item.estatusC);
-      if (item.Estatus === "INICIAR" || item.estatus === "INICIAR") {
-        return "#09bfc5"; // Clase CSS para destacar la fila
+      if (item.Estatus === "INICIAR") {
+        return "#09bfc5";
       }
-      if (item.Estatus === "EN PROCESO" || item.estatus === "EN PROCESO") {
-        return "rgb(8,243,5)"; // Clase CSS para destacar la fila
+      if (item.Estatus === "EN PROCESO") {
+        return "rgb(8,243,5)";
       }
-      if (item.Estatus === "EN PAUSA" || item.estatus === "EN PAUSA") {
-        return "red"; // Clase CSS para destacar la fila
+      if (item.Estatus === "EN PAUSA") {
+        return "red";
       }
-      if (item.Estatus === "TERMINADO" || item.estatus === "TERMINADO") {
-        return "#ddd000"; // Clase CSS para destacar la fila
+      if (item.Estatus === "TERMINADO") {
+        return "#ddd000";
       }
     },
     colorestatus(item) {
       //console.log("estatus: ", item);
       if (item === "INICIAR") {
-        return "#09bfc5"; // Clase CSS para destacar la fila
+        return "#09bfc5";
       }
       if (item === "EN PROCESO") {
-        return "rgb(8,243,5)"; // Clase CSS para destacar la fila
+        return "rgb(8,243,5)";
       }
       if (item === "EN PAUSA") {
-        return "red"; // Clase CSS para destacar la fila
+        return "red";
       }
       if (item === "TERMINADO") {
-        return "#ddd000"; // Clase CSS para destacar la fila
+        return "#ddd000";
       }
     },
   },

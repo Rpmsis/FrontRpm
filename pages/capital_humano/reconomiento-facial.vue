@@ -3,31 +3,16 @@
     <v-container>
       <v-layout row wrap>
         <v-flex xs12>
-          <v-card class="mt-5" color="black">
-            <v-row justify="center">
-              <v-col cols="4" md="4" sm="2">
-                <v-btn
-                  @click="takePicture"
-                  color="#27272782; !important;"
-                  style="height: 100px; border-radius: 40px"
-                >
-                  <v-icon style="font-size: 100px" x-large> mdi-camera-outline </v-icon>
-                </v-btn>
-              </v-col>
-              <v-col cols="4" md="4" sm="4">
-                <div style="position: relative; width: 35%; height: auto; left: 100%">
+          <v-row justify="center">
+            <v-col cols="4" md="4" sm="12">
+              <v-card class="mt-5" color="black" style="justify-items: center; padding:15px;">
+                <h6>Mira a la camará.</h6>
+                <div style="position: relative; width: 70%; height: auto">
                   <video
                     ref="video"
                     autoplay
                     muted
-                    style="
-                      position: absolute;
-                      top: 0;
-                      right: 0;
-                      z-index: 1;
-                      width: 100%;
-                      height: auto;
-                    "
+                    style="z-index: 1; width: 100%; height: auto"
                   ></video>
                   <canvas
                     ref="overlay"
@@ -41,12 +26,20 @@
                     "
                   ></canvas>
                   <canvas ref="canvas" style="display: none"></canvas>
+                  <v-text-field
+                    v-model="datoescaneado"
+                    label="Escanear QR"
+                    hide-details
+                    type="text"
+                    @change="escaneando"
+                    disabled
+                  />
                 </div>
-              </v-col>
-            </v-row>
-          </v-card>
+              </v-card>
+            </v-col>
+          </v-row>
           <v-row class="mt-5" justify="center">
-            <v-col cols="12" md="4" sm="4">
+            <v-col cols="12" md="12" sm="4">
               <!-- <v-card
                 v-show="foto"
                 style="padding: 15px; border: solid white; background-color: black"
@@ -65,6 +58,8 @@
                   </h3>
                 </center>
               </v-card> -->
+
+              <!-- Campo de texto donde se escaneará el valor -->
             </v-col>
           </v-row>
         </v-flex>
@@ -83,7 +78,13 @@
           </v-card-title>
           <v-card-text class="text-h6 text-center">
             <h2>{{ Mensaje }}</h2>
-            <img v-if="photo" :src="photo" alt="Foto Capturada" width="100%" height="80%" />
+            <img
+              v-if="photo"
+              :src="photo"
+              alt="Foto Capturada"
+              width="100%"
+              height="80%"
+            />
           </v-card-text>
           <v-divider></v-divider>
           <v-card-actions>
@@ -120,6 +121,8 @@ export default {
       formCaptura: {
         captura: "",
       },
+
+      datoescaneado: "",
     };
   },
   async mounted() {
@@ -128,7 +131,7 @@ export default {
     await faceapi.nets.faceLandmark68Net.loadFromUri(this.modelPath);
     await faceapi.nets.faceRecognitionNet.loadFromUri(this.modelPath);
 
-    console.log("Modelos cargados correctamente");
+    //console.log("Modelos cargados correctamente");
 
     // Cargar la foto guardada y obtener su descriptor
     //await this.loadSavedPhoto();
@@ -141,8 +144,26 @@ export default {
         "No se puede acceder a la cámara: navigator.mediaDevices.getUserMedia no está disponible."
       );
     }
+
+    document.addEventListener("keydown", this.obtenerdatos);
   },
+  watch: {},
+
   methods: {
+    escaneando() {
+      // style="position: absolute; opacity: 0; pointer-events: none"
+      console.log("Dato escaneado: ", this.datoescaneado);
+      //this.takePicture();
+    },
+    obtenerdatos(event) {
+      if (event.key.length === 1) {
+        this.datoescaneado += event.key;
+      } else if (event.key === "Enter") {
+        this.takePicture();
+        console.log("Escaneo completo: ", this.datoescaneado);
+      }
+    },
+
     // Iniciar la cámara
     async startCamera() {
       try {
@@ -182,12 +203,14 @@ export default {
         this.comparacion = "";
         this.photo = null;
         this.foto = false;
+        this.datoescaneado = "";
 
         setTimeout(() => {
           this.alerta = false;
           this.Titulo = " ";
           this.Mensaje = " ";
           this.foto = false;
+          this.datoescaneado = "";
         }, 2000);
 
         return;
@@ -201,13 +224,14 @@ export default {
     async compareFace(detection) {
       const captura = detection.descriptor;
       //this.formCaptura.captura = detection.descriptor;
-      console.log("Captura  ", captura);
+      //console.log("Captura  ", captura);
       if (captura === "") {
         console.error("No se ha cargado un descriptor de la foto guardada.");
         return;
       } else {
         const formulario = new FormData();
         formulario.append("captura", captura);
+        formulario.append("idcheck", this.datoescaneado);
         const res = await fetch("http://localhost:3001/compararcaras", {
           method: "POST",
           headers: {
@@ -216,7 +240,7 @@ export default {
           body: formulario,
         });
         const dato = await res.json();
-        console.log(dato);
+        //console.log(dato);
         if (res.status === 400) {
           this.alerta = true;
           this.Titulo = "¡Upss!";
@@ -224,23 +248,27 @@ export default {
           this.comparacion = "";
           this.photo = null;
           this.foto = false;
+          this.datoescaneado = "";
 
           setTimeout(() => {
             this.alerta = false;
             this.Titulo = " ";
             this.Mensaje = " ";
             this.foto = false;
+            this.datoescaneado = "";
           }, 2000);
         } else {
           this.alerta = true;
           this.Titulo = dato.titulo;
           this.Mensaje = dato.mensaje;
+          this.datoescaneado = "";
 
           setTimeout(() => {
             this.alerta = false;
             this.Titulo = " ";
             this.Mensaje = " ";
             this.foto = false;
+            this.datoescaneado = "";
           }, 2000);
         }
       }

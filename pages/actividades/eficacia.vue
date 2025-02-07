@@ -1,31 +1,280 @@
 <template>
   <v-container>
     <v-card class="mt-5">
-      <v-card-title>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Buscar"
-          single-line
-          hide-details
-        ></v-text-field>
-      </v-card-title>
-      <v-data-table
-        :headers="headers"
-        :items="datosEficacia"
-        :search="search"
-        :footer-props="{
-          'items-per-page-options': [10, 20, 30, 40, 50],
-        }"
-        :items-per-page="10"
-        :sort-by="['fechainicio']"
-        :sort-desc="true"
-        :item-class="buscarkgfaltantes"
-      >
-        <template v-slot:item.concatenado2="{ item }">
-          {{ `${item.eficienciasig}%` }}
-        </template>
-      </v-data-table>
+      <v-row>
+        <v-col cols="12" md="12" sm="12" xs="12">
+          <v-data-iterator
+            :items="porcard"
+            :items-per-page.sync="itemsPerPage"
+            :page.sync="page"
+            :search="searchcard"
+            :sort-by="['fecha']"
+            :sort-desc="true"
+            hide-default-footer
+          >
+            <template v-slot:header>
+              <v-toolbar dark color="black darken-3" class="mb-1">
+                <v-row>
+                  <v-col cols="12" md="4">
+                    <div>
+                      <v-menu
+                        ref="menu"
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="date"
+                            label="Fecha inicio"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="date"
+                          :active-picker.sync="activePicker"
+                          :max="
+                            new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+                              .toISOString()
+                              .substring(0, 10)
+                          "
+                          min="1950-01-01"
+                          @change="save"
+                        ></v-date-picker>
+                      </v-menu>
+                    </div>
+                  </v-col>
+                  <!-- <v-col cols="12" md="4" sm="12">
+                    <v-select
+                      flat
+                      solo-inverted
+                      hide-details
+                      prepend-inner-icon="mdi-magnify"
+                      label="Empresa"
+                      clearable
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12" md="8" sm="12">
+                    <v-select
+                      flat
+                      solo-inverted
+                      hide-details
+                      prepend-inner-icon="mdi-magnify"
+                      label="Responsables"
+                    ></v-select>
+                  </v-col> -->
+                </v-row>
+              </v-toolbar>
+            </template>
+
+            <template v-slot:default="props">
+              <v-row>
+                <v-col
+                  v-for="item in props.items"
+                  :key="item.idasigactivi"
+                  cols="12"
+                  sm="6"
+                  md="6"
+                  lg="6"
+                >
+                  <v-card style="border-radius: 15px 15px 0 0">
+                    <v-card
+                      outlined
+                      elevation="4"
+                      color="black"
+                      style="
+                        border-radius: 15px;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                      "
+                    >
+                      <!-- Titulo con la ubicación, en grande y elegante -->
+                      <v-card-title
+                        class="text-center py-6"
+                        style="
+                          background: linear-gradient(
+                            135deg,
+                            rgb(92 83 102),
+                            rgb(90 111 147)
+                          );
+                          color: white;
+                          border-radius: 15px 15px 0 0;
+                        "
+                      >
+                        <v-row :class="titulosdatos" no-gutters justify="center">
+                          <v-col cols="4" md="4" sm="4" xs="4">
+                            <v-icon meddium left v-if="$vuetify.breakpoint.smAndUp"
+                              >mdi-clock-time-four</v-icon
+                            >
+                            {{ item.timeControl }}
+                          </v-col>
+                          <v-col cols="4" md="4" sm="4" xs="4">
+                            <v-icon meddium left v-if="$vuetify.breakpoint.smAndUp">
+                              mdi-weight-kilogram
+                            </v-icon>
+                            {{ item.kgControl }}
+                          </v-col>
+                          <v-col cols="4" md="4" sm="4" xs="4">
+                            <v-icon meddium left v-if="$vuetify.breakpoint.smAndUp">
+                              mdi-finance
+                            </v-icon>
+                            {{ item.eficienciasig }}
+                          </v-col>
+                        </v-row>
+                      </v-card-title>
+
+                      <!-- Subtítulo de tiempo transcurrido -->
+                      <v-card-subtitle
+                        class="text-center"
+                        style="font-size: 14px; color: white"
+                      >
+                        {{ item.empresa }}
+                      </v-card-subtitle>
+
+                      <!-- Información restante -->
+                      <v-card-text
+                        class="align-center"
+                        style="font-size: 16px; color: #757575; text-align: center"
+                      >
+                        <v-card-title :class="textos" class="subheading font-weight-bold">
+                          <v-icon large v-if="$vuetify.breakpoint.smAndUp">
+                            mdi-pound-box-outline</v-icon
+                          >
+                          {{ item.idasigactivi }}
+                          <v-spacer></v-spacer>
+                          <strong>{{ item.fecha }}</strong>
+                        </v-card-title>
+
+                        <div
+                          class="text-subtitle-1"
+                          style="font-size: 18px; font-weight: bold"
+                        >
+                          {{ item.actividad }}
+                        </div>
+                        <div
+                          class="text-subtitle-1"
+                          style="font-weight: 500; color: #4caf50; text-align: right"
+                        >
+                          <v-badge
+                            :content="item.numpersonas"
+                            :value="item.numpersonas"
+                            color="green"
+                            overlap
+                          >
+                            <v-icon large>mdi-account-group </v-icon>
+                          </v-badge>
+                        </div>
+                        <v-list style="max-height: 100px; overflow-y: auto" two-line>
+                          <v-list-item
+                            v-for="(sujeto, index) in item.asignados || []"
+                            :key="index"
+                          >
+                            <v-list-item-icon v-if="$vuetify.breakpoint.smAndUp">
+                              <v-icon color="indigo"> mdi-account </v-icon>
+                            </v-list-item-icon>
+
+                            <v-list-item-content>
+                              <v-list-item-title>
+                                <h3>{{ sujeto.nombre }}</h3>
+                              </v-list-item-title>
+                              <v-list-item-title>
+                                <h3 style="">
+                                  <v-icon medium left> mdi-clock-time-four </v-icon>
+                                  {{ sujeto.tiempo }}
+                                </h3>
+                              </v-list-item-title>
+                              <v-list-item-subtitle>
+                                <v-btn
+                                  outlined
+                                  small
+                                  :color="colorestatus(sujeto.estatus)"
+                                >
+                                  <h4>{{ sujeto.estatus }}</h4>
+                                </v-btn>
+                              </v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </v-list>
+                      </v-card-text>
+                      <v-divider></v-divider>
+                      <v-card-text
+                        v-if="item.kgactividad !== 0 && item.kgControl === 0"
+                        style="text-align: center; background-color: red"
+                      >
+                        <div
+                          class="text-subtitle-1"
+                          style="font-size: 18px; font-weight: bold"
+                        >
+                          Valida los kilos faltantes!!!
+                        </div>
+                      </v-card-text>
+                      <!-- Detalles sobre disponibilidad y personal -->
+                    </v-card>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </template>
+
+            <template v-slot:footer>
+              <v-row class="mt-2" align="center" justify="center">
+                <span class="grey--text">Items per page</span>
+                <v-menu offset-y>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      dark
+                      text
+                      color="primary"
+                      class="ml-2"
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      {{ itemsPerPage }}
+                      <v-icon>mdi-chevron-down</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-list>
+                    <v-list-item
+                      v-for="(number, index) in itemsPerPageArray"
+                      :key="index"
+                      @click="updateItemsPerPage(number)"
+                    >
+                      <v-list-item-title>{{ number }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+
+                <v-spacer></v-spacer>
+
+                <span class="mr-4 grey--text">
+                  Page {{ page }} of {{ numberOfPages }}
+                </span>
+                <v-btn
+                  fab
+                  dark
+                  color="#283037 !important; darken-3"
+                  class="mr-1"
+                  @click="formerPage"
+                >
+                  <v-icon>mdi-chevron-left</v-icon>
+                </v-btn>
+                <v-btn
+                  fab
+                  dark
+                  color="#283037 !important; darken-3"
+                  class="ml-1"
+                  @click="nextPage"
+                >
+                  <v-icon>mdi-chevron-right</v-icon>
+                </v-btn>
+              </v-row>
+            </template>
+          </v-data-iterator>
+        </v-col>
+      </v-row>
     </v-card>
   </v-container>
 </template>
@@ -41,20 +290,20 @@ export default {
   layout: "barra",
   data() {
     return {
-      search: "",
-      datosEficacia: [],
-      headers: [
-        { text: "id de asignación", value: "idasigactivi" },
-        { text: "Fecha de inicio", value: "fechainicio" },
-        { text: "Actividad", value: "actividad" },
-        { text: "Empresa", value: "empresa" },
-        { text: "Número de personas", value: "numpersonas" },
-        { text: "Tiempo realizado", value: "timeControl" },
-        { text: "Kilogramos realizados", value: "kgControl" },
-        { text: "Tiempo estandar", value: "timestandar" },
-        { text: "Kilogramos record", value: "kg" },
-        { text: "Eficiencia", value: "concatenado2" },
-      ],
+      //Datos de la tabla por card
+      porcard: [],
+      itemsPerPageArray: [4, 6, 8, 12, 20],
+      searchcard: "",
+      filter: {},
+      sortDesc: false,
+      page: 1,
+      itemsPerPage: 8,
+      sortBy: "id",
+
+      //FECHAS
+      activePicker: null,
+      date: null,
+      menu: false,
     };
   },
 
@@ -66,10 +315,41 @@ export default {
     });
     this.mostrar();
   },
+  watch: {
+    menu(val) {
+      val && setTimeout(() => (this.activePicker = "YEAR"));
+    },
+  },
+
+  computed: {
+    numberOfPages() {
+      return Math.ceil(this.porcard.length / this.itemsPerPage);
+    },
+
+    //Cambiar estilos
+    titulosdatos() {
+      return this.$vuetify.breakpoint.sm ? "esverdad" : "noesverdad";
+    },
+    textos() {
+      return this.$vuetify.breakpoint.xs ? "esverdadtxt" : "noesverdadtxt";
+    },
+  },
+
   methods: {
+    //Metodos de los card
+    nextPage() {
+      if (this.page + 1 <= this.numberOfPages) this.page += 1;
+    },
+    formerPage() {
+      if (this.page - 1 >= 1) this.page -= 1;
+    },
+    updateItemsPerPage(number) {
+      this.itemsPerPage = number;
+    },
+
     async mostrar() {
       try {
-        const res = await fetch("http://localhost:3005/Eficacia",{
+        const res = await fetch("http://localhost:3005/Eficacia", {
           method: "GET",
           headers: {
             token: localStorage.token,
@@ -80,17 +360,30 @@ export default {
           console.error("Error al obtener los datos:", error);
         } else {
           console.log(datos.respuesta);
-          this.datosEficacia = datos.respuesta;
+          this.porcard = datos.respuesta;
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
     },
-    buscarkgfaltantes(item) {
-      if (item.kg > 0 && item.kgControl === 0 && item.status==="TERMINADO") {
-        return "highlight-row"; 
+
+    colorestatus(item) {
+      //console.log("estatus: ", item);
+      if (item === "INICIAR") {
+        return "#09bfc5"; // Clase CSS para destacar la fila
       }
-      return "";
+      if (item === "EN PROCESO") {
+        return "rgb(8,243,5)"; // Clase CSS para destacar la fila
+      }
+      if (item === "EN PAUSA") {
+        return "red"; // Clase CSS para destacar la fila
+      }
+      if (item === "TERMINADO") {
+        return "#ddd000"; // Clase CSS para destacar la fila
+      }
+    },
+    save(date) {
+      this.$refs.menu.save(date);
     },
   },
 };
@@ -106,14 +399,5 @@ export default {
 }
 .row {
   padding: 0px 10px 0px 10px;
-}
-.btnEnviar {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  width: 30%;
-  font-size: 20px !important;
-}
-.highlight-row {
-  background-color: rgb(187, 0, 0); /* Cambia el color según lo que prefieras */
 }
 </style>

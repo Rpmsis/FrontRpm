@@ -314,7 +314,7 @@ export default {
   },
   mounted() {
     this.fecha = this.fechaMinima;
-    this.socket = io("http://192.168.1.97:3004");
+    this.socket = io("http://localhost:3004");
     this.socket.on("escuchando", (datos) => {
       //console.log(datos);
       this.mostrarubi();
@@ -339,7 +339,7 @@ export default {
     /* Mostrar la lista de actividades que ya cargaron el actForaneas */
     async mostrarActividades() {
       const empre = this.datoNuevo.empresa;
-      //console.log(empre);
+      console.log(empre);
       try {
         const res = await fetch("http://localhost:3005/actividades",{
           method: "GET",
@@ -348,14 +348,14 @@ export default {
           },
         });
         const datos = await res.json();
-        //console.log(datos);
+        //console.log("datos ",datos);
         if (res.status == 404) {
           console.error("Error al obtener los datos:", error);
         } else {
-          const datosA = datos.respuesta.respuesta.filter(
+          const datosA = datos.respuesta.filter(
             (filtro) => filtro.ubicacion === empre
           );
-          //console.log(datosA);
+          //console.log("datosA ",datosA);
           this.actividades = datosA.map((filtro) => ({
             id: filtro.idactividades,
             text: filtro.actividad,
@@ -381,10 +381,7 @@ export default {
           console.error("Error al obtener los datos:", error);
         } else {
           //console.log(datos.ubicacionesPDM);
-          this.ubicaciones = datos.ubicacionesPDM.map((filtro) => ({
-            id: filtro.idubicacion,
-            text: filtro.descrip,
-          }));
+          this.ubicaciones = datos.ubicacionesPDM.map((ubi) => { return ubi.descrip});
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
